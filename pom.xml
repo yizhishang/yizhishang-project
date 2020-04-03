@@ -24,15 +24,6 @@
         <poi.version>3.9</poi.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.11</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <repositories>
         <repository>
             <id>maven-public</id>
