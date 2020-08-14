@@ -20,6 +20,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <poi.version>3.9</poi.version>
+        <swagger.version>2.7.0</swagger.version>
     </properties>
 
     <dependencies>
@@ -130,7 +131,33 @@
             <artifactId>jul-to-slf4j</artifactId>
             <version>1.7.26</version>
         </dependency>
+
+        <!-- 自动生成API文档 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>guava</artifactId>
+                    <groupId>com.google.guava</groupId>
+                </exclusion>
+            </exclusions>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-extension</artifactId>
+            <version>3.1.0</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
-
-
 </project>
