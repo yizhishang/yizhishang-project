@@ -29,7 +29,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.16.22</version>
+            <version>1.18.12</version>
             <scope>compile</scope>
         </dependency>
         <!-- 自动生成API文档 -->
@@ -79,7 +79,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.10.2</version>
+            <version>2.11.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
