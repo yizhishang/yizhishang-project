@@ -43,9 +43,9 @@ public class BaseDTO {
     private String tenantCode;
 
     @ApiModelProperty(value = "页码")
-    private Integer pageNum;
+    private Integer pageNum = 1;
 
     @ApiModelProperty(value = "页大小")
-    private Integer pageSize;
+    private Integer pageSize = 15;
 
 }
