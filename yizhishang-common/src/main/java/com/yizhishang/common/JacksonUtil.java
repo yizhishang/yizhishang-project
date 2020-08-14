@@ -73,7 +73,7 @@ public class JacksonUtil {
     }
 
 
-    public static <T> T jsonToList(String json, TypeReference typeReference) {
+    public static <T> T jsonToList(String json, TypeReference<T> typeReference) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);//设置可用单引号
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);//设置字段可以不用双引号包括
