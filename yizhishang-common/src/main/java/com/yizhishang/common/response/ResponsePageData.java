@@ -17,6 +17,7 @@ public class ResponsePageData<T> extends ResponseData {
 
     private ResponsePageData(Page<T> data) {
         this(true, DEFAULT_SUCCESS_CODE, "default.success.message", data);
+        this.data = data;
     }
 
     public ResponsePageData(Boolean success, Integer code, String messageKey, Page<T> data) {
@@ -24,6 +25,7 @@ public class ResponsePageData<T> extends ResponseData {
         this.data = data;
     }
 
+    @Override
     public Page<T> getData() {
         return this.data;
     }
@@ -33,7 +35,7 @@ public class ResponsePageData<T> extends ResponseData {
     }
 
     public static ResponsePageData successPage(Object object) {
-        return new ResponsePageData((Page)object);
+        return new ResponsePageData(true, DEFAULT_SUCCESS_CODE, "default.success.message", (Page)object);
     }
 
 }
