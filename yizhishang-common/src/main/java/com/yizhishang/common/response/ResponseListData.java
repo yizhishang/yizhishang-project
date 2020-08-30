@@ -16,7 +16,7 @@ public class ResponseListData<T> extends ResponseData {
     @ApiModelProperty("list响应对象")
     private List<T> data;
 
-    public ResponseListData() {
+    private ResponseListData() {
     }
 
     private ResponseListData(List<T> data) {
@@ -27,10 +27,6 @@ public class ResponseListData<T> extends ResponseData {
     @Override
     public List<T> getData() {
         return this.data;
-    }
-
-    public void setData(List<T> data) {
-        this.data = data;
     }
 
     public static ResponseListData successList(List<?> data) {

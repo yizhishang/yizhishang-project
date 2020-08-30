@@ -16,7 +16,7 @@ public class ResponsePageData<T> extends ResponseData {
     @ApiModelProperty("分页响应对象")
     private Page<T> data;
 
-    public ResponsePageData() {
+    private ResponsePageData() {
     }
 
     private ResponsePageData(Page<T> data) {
@@ -27,10 +27,6 @@ public class ResponsePageData<T> extends ResponseData {
     @Override
     public Page<T> getData() {
         return this.data;
-    }
-
-    public void setData(Page<T> data) {
-        this.data = data;
     }
 
     public static ResponsePageData successPage(IPage<?> data) {
