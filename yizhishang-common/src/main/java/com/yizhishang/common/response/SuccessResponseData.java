@@ -1,5 +1,8 @@
 package com.yizhishang.common.response;
 
+/**
+ * @author yizhishang
+ */
 public class SuccessResponseData extends ResponseData {
     public SuccessResponseData() {
         super(true, DEFAULT_SUCCESS_CODE, "default.success.message", (Object) null);

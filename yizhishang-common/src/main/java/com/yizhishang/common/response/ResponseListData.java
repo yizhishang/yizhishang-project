@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author yizhishang
+ */
 @Data
 @ApiModel("通用Response对象")
 public class ResponseListData<T> extends ResponseData {
@@ -17,11 +20,7 @@ public class ResponseListData<T> extends ResponseData {
     }
 
     private ResponseListData(List<T> data) {
-        this(true, DEFAULT_SUCCESS_CODE, "default.success.message", data);
-    }
-
-    public ResponseListData(Boolean success, Integer code, String messageKey, List<T> data) {
-        super(success, code, messageKey, data);
+        super(true, DEFAULT_SUCCESS_CODE, "default.success.message");
         this.data = data;
     }
 
@@ -34,8 +33,8 @@ public class ResponseListData<T> extends ResponseData {
         this.data = data;
     }
 
-    public static ResponseListData successList(Object object) {
-        return new ResponseListData((List)object);
+    public static ResponseListData successList(List<?> data) {
+        return new ResponseListData(data);
     }
 
 }

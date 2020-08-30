@@ -1,5 +1,9 @@
 package com.yizhishang.common.enums;
 
+/**
+ * @author yizhishang
+ */
+
 public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
     SERVER_ERROR(500, "server.error"),
     DATABASE_NOT_WORK(501, "database.not.work"),

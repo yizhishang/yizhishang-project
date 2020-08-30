@@ -1,5 +1,8 @@
 package com.yizhishang.common.response;
 
+/**
+ * @author yizhishang
+ */
 public class ErrorResponseData extends ResponseData {
     private String exceptionClazz;
 
@@ -27,6 +30,7 @@ public class ErrorResponseData extends ResponseData {
         this.exceptionClazz = exceptionClazz;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
@@ -52,10 +56,12 @@ public class ErrorResponseData extends ResponseData {
         }
     }
 
+    @Override
     protected boolean canEqual(Object other) {
         return other instanceof ErrorResponseData;
     }
 
+    @Override
     public int hashCode() {
         int result = 1;
         Object $exceptionClazz = this.getExceptionClazz();
@@ -63,6 +69,7 @@ public class ErrorResponseData extends ResponseData {
         return result;
     }
 
+    @Override
     public String toString() {
         return "ErrorResponseData(exceptionClazz=" + this.getExceptionClazz() + ")";
     }

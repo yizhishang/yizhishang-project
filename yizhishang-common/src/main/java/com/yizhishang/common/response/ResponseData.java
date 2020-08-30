@@ -7,6 +7,9 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+/**
+ * @author yizhishang
+ */
 @ApiModel("通用Response对象")
 public class ResponseData<T> {
 
@@ -55,23 +58,8 @@ public class ResponseData<T> {
     }
 
     public ResponseData(Boolean success, Integer code, String messageKey, T data) {
-        this.success = success;
-        this.code = code;
-        this.messageKey = messageKey;
+        this(success, code, messageKey);
         this.data = data;
-        if (messageKey != null) {
-            ResourceBundle zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
-            ResourceBundle en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
-
-            try {
-                this.zhMessage = zh.getString(messageKey);
-                this.enMessage = en.getString(messageKey);
-            } catch (MissingResourceException var8) {
-                this.zhMessage = messageKey;
-                this.enMessage = messageKey;
-            }
-        }
-
     }
 
     public static SuccessResponseData success() {
@@ -150,6 +138,7 @@ public class ResponseData<T> {
         this.data = data;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
@@ -239,6 +228,7 @@ public class ResponseData<T> {
         return other instanceof ResponseData;
     }
 
+    @Override
     public int hashCode() {
         int result = 1;
         Object $success = this.getSuccess();
@@ -256,6 +246,7 @@ public class ResponseData<T> {
         return result;
     }
 
+    @Override
     public String toString() {
         return "ResponseData(success=" + this.getSuccess() + ", code=" + this.getCode() + ", messageKey=" + this.getMessageKey() + ", zhMessage=" + this.getZhMessage() + ", enMessage=" + this.getEnMessage() + ", data=" + this.getData() + ")";
     }
