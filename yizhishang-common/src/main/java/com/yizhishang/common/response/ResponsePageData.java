@@ -14,27 +14,27 @@ import lombok.Data;
 public class ResponsePageData<T> extends ResponseData {
 
     @ApiModelProperty("分页响应对象")
-    private IPage<T> data;
+    private Page<T> data;
 
     public ResponsePageData() {
     }
 
-    private ResponsePageData(IPage<T> data) {
+    private ResponsePageData(Page<T> data) {
         super(true, DEFAULT_SUCCESS_CODE, "default.success.message");
         this.data = data;
     }
 
     @Override
-    public IPage<T> getData() {
+    public Page<T> getData() {
         return this.data;
     }
 
-    public void setData(IPage<T> data) {
+    public void setData(Page<T> data) {
         this.data = data;
     }
 
     public static ResponsePageData successPage(IPage<?> data) {
-        return new ResponsePageData(data);
+        return new ResponsePageData((Page)data);
     }
 
 }
