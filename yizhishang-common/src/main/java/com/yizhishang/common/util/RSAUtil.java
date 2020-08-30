@@ -1,4 +1,4 @@
-package com.yizhishang.common.rsa;
+package com.yizhishang.common.util;
 
 import javax.crypto.Cipher;
 import java.io.IOException;

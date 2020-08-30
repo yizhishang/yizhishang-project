@@ -1,4 +1,4 @@
-package com.yizhishang.common;
+package com.yizhishang.common.util;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

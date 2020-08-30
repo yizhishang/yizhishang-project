@@ -1,4 +1,4 @@
-package com.yizhishang.common;
+package com.yizhishang.common.util;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;

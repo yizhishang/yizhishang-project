@@ -1,4 +1,4 @@
-package com.yizhishang.common;
+package com.yizhishang.common.util;
 
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;

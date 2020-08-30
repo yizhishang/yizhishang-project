@@ -1,4 +1,4 @@
-package com.yizhishang.common;
+package com.yizhishang.common.util;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
