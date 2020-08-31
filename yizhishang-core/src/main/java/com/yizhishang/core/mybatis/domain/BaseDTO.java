@@ -42,10 +42,10 @@ public class BaseDTO {
     @ApiModelProperty(value = "租户code")
     private String tenantCode;
 
-    @ApiModelProperty(value = "页码")
-    private Integer pageNum = 1;
+    @ApiModelProperty(value = "页码", example = "1")
+    private Integer pageNum;
 
-    @ApiModelProperty(value = "页大小")
-    private Integer pageSize = 15;
+    @ApiModelProperty(value = "页大小", example = "10")
+    private Integer pageSize;
 
 }
