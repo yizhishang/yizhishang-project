@@ -6,10 +6,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
     @ApiModelProperty(value = "主键id")
     @TableId("ID")

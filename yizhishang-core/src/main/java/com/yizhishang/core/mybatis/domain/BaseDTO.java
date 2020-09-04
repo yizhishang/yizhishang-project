@@ -7,10 +7,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class BaseDTO {
+public class BaseDTO implements Serializable {
 
     @JsonSerialize(using = ToStringSerializer.class)
     @ApiModelProperty(value = "主键id")
