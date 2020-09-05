@@ -1,4 +1,4 @@
-package com.yizhishang.common.valid;
+package com.yizhishang.common.validation.group;
 
 /**
  * @author yizhishang
