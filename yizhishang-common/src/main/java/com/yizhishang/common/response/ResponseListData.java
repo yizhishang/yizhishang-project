@@ -10,7 +10,7 @@ import java.util.List;
  * @author yizhishang
  */
 @Data
-@ApiModel("通用Response对象")
+@ApiModel("通用ResponseListData对象")
 public class ResponseListData<T> extends ResponseData {
 
     @ApiModelProperty("list响应对象")
@@ -22,11 +22,6 @@ public class ResponseListData<T> extends ResponseData {
     private ResponseListData(List<T> data) {
         super(true, DEFAULT_SUCCESS_CODE, "default.success.message");
         this.data = data;
-    }
-
-    @Override
-    public List<T> getData() {
-        return this.data;
     }
 
     public static ResponseListData successList(List<?> data) {

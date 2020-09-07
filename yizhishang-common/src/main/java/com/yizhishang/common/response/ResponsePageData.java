@@ -10,7 +10,7 @@ import lombok.Data;
  * @author yizhishang
  */
 @Data
-@ApiModel("通用Response对象")
+@ApiModel("通用ResponsePageData对象")
 public class ResponsePageData<T> extends ResponseData {
 
     @ApiModelProperty("分页响应对象")
@@ -22,11 +22,6 @@ public class ResponsePageData<T> extends ResponseData {
     private ResponsePageData(Page<T> data) {
         super(true, DEFAULT_SUCCESS_CODE, "default.success.message");
         this.data = data;
-    }
-
-    @Override
-    public Page<T> getData() {
-        return this.data;
     }
 
     public static ResponsePageData successPage(IPage<?> data) {
