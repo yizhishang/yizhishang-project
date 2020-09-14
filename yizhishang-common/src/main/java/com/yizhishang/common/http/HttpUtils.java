@@ -25,42 +25,38 @@ import java.util.Map;
 
 /**
  * http 请求
+ *
  * @author yizhishang
  */
 public class HttpUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(HttpUtils.class);
 
-    private static final RequestConfig requestConfig = RequestConfig.custom()
+    private static final RequestConfig REQUEST_CONFIG = RequestConfig.custom()
             .setConnectTimeout(5000).setConnectionRequestTimeout(2000)
             .setSocketTimeout(20000).build();
 
     public static HttpResult request(RequestMethod method, String url, Map<String, String> requestParams) {
-        HttpResult httpResult = null;
         switch (method) {
             case GET:
-                httpResult = doGet(url, requestParams);
-                break;
+                return doGet(url, requestParams);
             case POST:
-                httpResult = doPost(url, requestParams);
-                break;
+                return doPost(url, requestParams);
             case PUT:
-                httpResult = doPut(url, requestParams);
-                break;
+                return doPut(url, requestParams);
             case DELETE:
-                httpResult = doDelete(url, requestParams);
-                break;
+                return doDelete(url, requestParams);
             case POST2:
-                httpResult = doPost2(url, requestParams);
-                break;
+                return doPost2(url, requestParams);
+            default:
+                return null;
         }
-        return httpResult;
     }
 
     /**
      * Http Get
      *
-     * @param url 请求路径
+     * @param url    请求路径
      * @param params 参数
      * @return http响应状态及json结果
      */
@@ -86,7 +82,7 @@ public class HttpUtils {
     /**
      * Http Post
      *
-     * @param url 请求路径
+     * @param url    请求路径
      * @param params 参数
      * @return http响应状态及json结果
      */
@@ -119,7 +115,7 @@ public class HttpUtils {
     /**
      * Http POST 拼接url的方式请求POST
      *
-     * @param url 请求路径
+     * @param url    请求路径
      * @param params 参数
      * @return http响应状态及json结果
      */
@@ -145,7 +141,7 @@ public class HttpUtils {
     /**
      * Http Put
      *
-     * @param url 请求路径
+     * @param url    请求路径
      * @param params 参数
      * @return http响应状态及json结果
      */
@@ -171,7 +167,7 @@ public class HttpUtils {
     /**
      * Http Delete
      *
-     * @param url 请求路径
+     * @param url    请求路径
      * @param params 参数
      * @return http响应状态及json结果
      */
@@ -197,7 +193,7 @@ public class HttpUtils {
     /**
      * 拼装url
      *
-     * @param url url
+     * @param url    url
      * @param params 参数
      */
     private static String contactUrl(String url, Map<String, String> params) {
@@ -236,7 +232,7 @@ public class HttpUtils {
      * 执行GET/PUT/DELETE请求
      */
     private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpRequestBase request) throws IOException {
-        request.setConfig(requestConfig);
+        request.setConfig(REQUEST_CONFIG);
         return execute(httpClient, request);
     }
 
@@ -244,7 +240,7 @@ public class HttpUtils {
      * 执行POST请求
      */
     private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpEntityEnclosingRequestBase request, List<NameValuePair> pairs) throws IOException {
-        request.setConfig(requestConfig);
+        request.setConfig(REQUEST_CONFIG);
         StringEntity entity;
 //        if (pairs.size() == 1 && (pairs.get(0).getName().equals("json") || pairs.get(0).getName().equals("xml"))) {
 //            entity = new StringEntity(pairs.get(0).getValue(), "UTF-8");

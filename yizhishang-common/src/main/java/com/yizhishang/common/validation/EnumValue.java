@@ -88,15 +88,13 @@ public @interface EnumValue {
                 if (result == null) {
                     return false;
                 }
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                result = null;
                 e.printStackTrace();
             } finally {
                 return result;
             }
+
         }
     }
 

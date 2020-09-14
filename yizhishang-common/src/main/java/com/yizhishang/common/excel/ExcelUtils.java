@@ -94,13 +94,13 @@ public class ExcelUtils<T> {
         cellStyle.setFillBackgroundColor(HSSFColor.BLUE.index);
 
         // 标题数据
-        Object[] title_temp = null;
+        Object[] titleTemp;
 
         // 行数据
-        Object[] rowData = null;
+        Object[] rowData;
 
         // 工作表数据
-        List<? extends Object[]> sheetData = null;
+        List<? extends Object[]> sheetData;
 
         // 遍历sheet
         for (int sheetNumber = 0; sheetNumber < sheetName.length; sheetNumber++) {
@@ -111,14 +111,14 @@ public class ExcelUtils<T> {
             // 设置工作表名称
             wb.setSheetName(sheetNumber, sheetName[sheetNumber]);
             // 设置标题
-            title_temp = title.get(sheetNumber);
+            titleTemp = title.get(sheetNumber);
             row = sheet.createRow(0);
 
             // 写入标题
-            for (int i = 0; title_temp != null && i < title_temp.length; i++) {
+            for (int i = 0; titleTemp != null && i < titleTemp.length; i++) {
                 cell = row.createCell(i);
                 cell.setCellStyle(titleStyle);
-                cell.setCellValue(title_temp[i].toString());
+                cell.setCellValue(titleTemp[i].toString());
             }
 
             try {
@@ -129,7 +129,7 @@ public class ExcelUtils<T> {
             // 写入行数据
             for (int rowNumber = 0; rowNumber < sheetData.size(); rowNumber++) {
                 // 如果没有标题栏，起始行就是0，如果有标题栏，行号就应该为1
-                row = sheet.createRow(title_temp == null ? rowNumber : (rowNumber + 1));
+                row = sheet.createRow(titleTemp == null ? rowNumber : (rowNumber + 1));
                 rowData = sheetData.get(rowNumber);
                 for (int columnNumber = 0; columnNumber < rowData.length; columnNumber++) {
                     cell = row.createCell(columnNumber);
@@ -342,13 +342,13 @@ public class ExcelUtils<T> {
         Field[] fields = cls.getDeclaredFields();
         Map<String, String> textToKey = new HashMap<>();
 
-        ExcelField _excelField;
+        ExcelField excelField;
         for (Field field : fields) {
-            _excelField = field.getAnnotation(ExcelField.class);
-            if (_excelField == null || _excelField.skip()) {
+            excelField = field.getAnnotation(ExcelField.class);
+            if (excelField == null || excelField.skip()) {
                 continue;
             }
-            textToKey.put(_excelField.name(), field.getName());
+            textToKey.put(excelField.name(), field.getName());
         }
 
         InputStream is = new FileInputStream(file);

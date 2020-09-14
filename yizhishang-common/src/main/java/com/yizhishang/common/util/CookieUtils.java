@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class CookieUtils {
 
-    public static final String split = "|";
+    public static final String SPLIT = "|";
     public static final String SAFE_COOKIE_NAME = "gspKey";
     private static String privateEncryptKey = "*scxn%iz53F0Z$87rky6&gnuecH%mzv7Jsglt0sK2S2tOa4pQ$0*x@i6Q5VYhwWoJK2LC#U%4Kwau^kbBCIC188EyYY!*KEvP^a";
     private static String domainSign = "_gsp_gr158_";

@@ -41,13 +41,13 @@ public class ErrorResponseData extends ResponseData {
             if (!other.canEqual(this)) {
                 return false;
             } else {
-                Object this$exceptionClazz = this.getExceptionClazz();
-                Object other$exceptionClazz = other.getExceptionClazz();
-                if (this$exceptionClazz == null) {
-                    if (other$exceptionClazz != null) {
+                Object exceptionClazz = this.getExceptionClazz();
+                Object otherExceptionClazz = other.getExceptionClazz();
+                if (exceptionClazz == null) {
+                    if (otherExceptionClazz != null) {
                         return false;
                     }
-                } else if (!this$exceptionClazz.equals(other$exceptionClazz)) {
+                } else if (!exceptionClazz.equals(otherExceptionClazz)) {
                     return false;
                 }
 
@@ -64,8 +64,8 @@ public class ErrorResponseData extends ResponseData {
     @Override
     public int hashCode() {
         int result = 1;
-        Object $exceptionClazz = this.getExceptionClazz();
-        result = result * 59 + ($exceptionClazz == null ? 43 : $exceptionClazz.hashCode());
+        Object exceptionClazz = this.getExceptionClazz();
+        result = result * 59 + (exceptionClazz == null ? 43 : exceptionClazz.hashCode());
         return result;
     }
 

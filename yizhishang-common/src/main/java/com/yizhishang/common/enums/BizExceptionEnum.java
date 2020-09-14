@@ -5,6 +5,9 @@ package com.yizhishang.common.enums;
  */
 
 public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
+    /**
+     * 服务器异常
+     */
     SERVER_ERROR(500, "server.error"),
     DATABASE_NOT_WORK(501, "database.not.work"),
     MANIPULATE_DATA_FAILED(501, "manipulate.data.failed"),
@@ -46,10 +49,12 @@ public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
         this.message = message;
     }
 
+    @Override
     public Integer getCode() {
         return this.code;
     }
 
+    @Override
     public String getMessage() {
         return this.message;
     }

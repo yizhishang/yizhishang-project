@@ -1,6 +1,9 @@
 package com.yizhishang.common.http;
 
 public enum RequestMethod {
+    /**
+     * get 请求
+     */
     GET(1),
     POST(2),
     PUT(3),

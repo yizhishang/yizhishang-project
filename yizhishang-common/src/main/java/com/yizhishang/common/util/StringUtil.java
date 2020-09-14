@@ -15,9 +15,9 @@ import java.util.regex.Pattern;
 @Slf4j
 public class StringUtil extends StringUtils {
 
-    private static final Pattern reUnicode = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
+    private static final Pattern RE_UNICODE = Pattern.compile("\\\\u([0-9a-zA-Z]{4})");
     private static List<Pattern> patterns = null;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     /**
      * 插入换行符<br/>
@@ -242,7 +242,7 @@ public class StringUtil extends StringUtils {
      * @return 包含任何转换为非转义形式的转义字符的字符串。
      */
     public static String unEscape(String str) {
-        Matcher m = reUnicode.matcher(str);
+        Matcher m = RE_UNICODE.matcher(str);
         StringBuffer sb = new StringBuffer(str.length());
         while (m.find()) {
             m.appendReplacement(sb,
@@ -262,7 +262,7 @@ public class StringUtil extends StringUtils {
         String base = "abcdefghijklmnopqrstuvwxyz0123456789";
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {
-            int number = random.nextInt(base.length());
+            int number = RANDOM.nextInt(base.length());
             sb.append(base.charAt(number));
         }
         return sb.toString();

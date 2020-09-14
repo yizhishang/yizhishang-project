@@ -149,45 +149,45 @@ public class ResponseData<T> {
             if (!other.canEqual(this)) {
                 return false;
             } else {
-                Object this$success = this.getSuccess();
-                Object other$success = other.getSuccess();
-                if (this$success == null) {
-                    if (other$success != null) {
+                Object success = this.getSuccess();
+                Object otherSuccess = other.getSuccess();
+                if (success == null) {
+                    if (otherSuccess != null) {
                         return false;
                     }
-                } else if (!this$success.equals(other$success)) {
+                } else if (!success.equals(otherSuccess)) {
                     return false;
                 }
 
-                Object this$code = this.getCode();
-                Object other$code = other.getCode();
-                if (this$code == null) {
-                    if (other$code != null) {
+                Object code = this.getCode();
+                Object otherCode = other.getCode();
+                if (code == null) {
+                    if (otherCode != null) {
                         return false;
                     }
-                } else if (!this$code.equals(other$code)) {
+                } else if (!code.equals(otherCode)) {
                     return false;
                 }
 
-                Object this$messageKey = this.getMessageKey();
-                Object other$messageKey = other.getMessageKey();
-                if (this$messageKey == null) {
-                    if (other$messageKey != null) {
+                Object messageKey = this.getMessageKey();
+                Object otherMessageKey = other.getMessageKey();
+                if (messageKey == null) {
+                    if (otherMessageKey != null) {
                         return false;
                     }
-                } else if (!this$messageKey.equals(other$messageKey)) {
+                } else if (!messageKey.equals(otherMessageKey)) {
                     return false;
                 }
 
                 label62:
                 {
-                    Object this$zhMessage = this.getZhMessage();
-                    Object other$zhMessage = other.getZhMessage();
-                    if (this$zhMessage == null) {
-                        if (other$zhMessage == null) {
+                    Object zhMessage = this.getZhMessage();
+                    Object otherZhMessage = other.getZhMessage();
+                    if (zhMessage == null) {
+                        if (otherZhMessage == null) {
                             break label62;
                         }
-                    } else if (this$zhMessage.equals(other$zhMessage)) {
+                    } else if (zhMessage.equals(otherZhMessage)) {
                         break label62;
                     }
 
@@ -196,26 +196,26 @@ public class ResponseData<T> {
 
                 label55:
                 {
-                    Object this$enMessage = this.getEnMessage();
-                    Object other$enMessage = other.getEnMessage();
-                    if (this$enMessage == null) {
-                        if (other$enMessage == null) {
+                    Object enMessage = this.getEnMessage();
+                    Object otherEnMessage = other.getEnMessage();
+                    if (enMessage == null) {
+                        if (otherEnMessage == null) {
                             break label55;
                         }
-                    } else if (this$enMessage.equals(other$enMessage)) {
+                    } else if (enMessage.equals(otherEnMessage)) {
                         break label55;
                     }
 
                     return false;
                 }
 
-                Object this$data = this.getData();
-                Object other$data = other.getData();
-                if (this$data == null) {
-                    if (other$data != null) {
+                Object data = this.getData();
+                Object otherData = other.getData();
+                if (data == null) {
+                    if (otherData != null) {
                         return false;
                     }
-                } else if (!this$data.equals(other$data)) {
+                } else if (!data.equals(otherData)) {
                     return false;
                 }
 
@@ -231,18 +231,18 @@ public class ResponseData<T> {
     @Override
     public int hashCode() {
         int result = 1;
-        Object $success = this.getSuccess();
-        result = result * 59 + ($success == null ? 43 : $success.hashCode());
-        Object $code = this.getCode();
-        result = result * 59 + ($code == null ? 43 : $code.hashCode());
-        Object $messageKey = this.getMessageKey();
-        result = result * 59 + ($messageKey == null ? 43 : $messageKey.hashCode());
-        Object $zhMessage = this.getZhMessage();
-        result = result * 59 + ($zhMessage == null ? 43 : $zhMessage.hashCode());
-        Object $enMessage = this.getEnMessage();
-        result = result * 59 + ($enMessage == null ? 43 : $enMessage.hashCode());
-        Object $data = this.getData();
-        result = result * 59 + ($data == null ? 43 : $data.hashCode());
+        Object success = this.getSuccess();
+        result = result * 59 + (success == null ? 43 : success.hashCode());
+        Object code = this.getCode();
+        result = result * 59 + (code == null ? 43 : code.hashCode());
+        Object messageKey = this.getMessageKey();
+        result = result * 59 + (messageKey == null ? 43 : messageKey.hashCode());
+        Object zhMessage = this.getZhMessage();
+        result = result * 59 + (zhMessage == null ? 43 : zhMessage.hashCode());
+        Object enMessage = this.getEnMessage();
+        result = result * 59 + (enMessage == null ? 43 : enMessage.hashCode());
+        Object data = this.getData();
+        result = result * 59 + (data == null ? 43 : data.hashCode());
         return result;
     }
 
