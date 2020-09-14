@@ -1,5 +1,6 @@
 package com.yizhishang.common.util;
 
+import com.yizhishang.common.enums.BrowserEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -145,7 +146,7 @@ public class NetworkUtil {
             }
 
             // 微信浏览器
-            if (entry.getKey().equals("MicroMessenger")) {
+            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage())) {
 
                 if (null != temp && temp.length == 2) {
                     broswer = entry.getKey();
@@ -155,7 +156,7 @@ public class NetworkUtil {
             }
 
             // qq浏览器
-            if (entry.getKey().equals("TencentTraveler")) {
+            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage())) {
 
                 if (null != temp && temp.length == 2) {
                     broswer = entry.getKey();
