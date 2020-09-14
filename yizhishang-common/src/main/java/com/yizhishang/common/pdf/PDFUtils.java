@@ -33,6 +33,10 @@ public class PDFUtils {
 
     private static final String PATTERN = "yyy-MM-dd";
 
+    private PDFUtils() {
+
+    }
+
     /**
      * @param title 表格标题名
      * @param cls   javaBean
@@ -76,9 +80,8 @@ public class PDFUtils {
 
         Font titleFont = new Font(baseFont, 20, Font.BOLD);
         Font docFont = new Font(baseFont, 10, Font.NORMAL);
-        try {
-            File file = new File(path);
-            FileOutputStream out = new FileOutputStream(file);
+        File file = new File(path);
+        try (FileOutputStream out = new FileOutputStream(file)) {
             PdfWriter.getInstance(document, out);
 
             document.open();
