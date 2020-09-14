@@ -1,5 +1,6 @@
 package com.yizhishang.common.http;
 
+import cn.hutool.core.map.MapUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -36,6 +37,10 @@ public class HttpUtils {
             .setConnectTimeout(5000).setConnectionRequestTimeout(2000)
             .setSocketTimeout(20000).build();
 
+    private HttpUtils() {
+
+    }
+
     public static HttpResult request(RequestMethod method, String url, Map<String, String> requestParams) {
         switch (method) {
             case GET:
@@ -61,22 +66,24 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doGet(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        url = contactUrl(url, params);
-        HttpGet httpGet = new HttpGet(url);
-        HttpResult result = null;
+        CloseableHttpClient httpClient = null;
         try {
-            result = executeRequest(httpClient, httpGet);
+            httpClient = HttpClients.createDefault();
+            url = contactUrl(url, params);
+            HttpGet httpGet = new HttpGet(url);
+            return executeRequest(httpClient, httpGet);
         } catch (IOException e) {
             logger.error("GET请求异常：" + url, e);
+            return null;
         } finally {
             try {
-                httpClient.close();
+                if (httpClient != null) {
+                    httpClient.close();
+                }
             } catch (IOException e) {
                 logger.error("GET请求连接关闭异常：" + url, e);
             }
         }
-        return result;
     }
 
     /**
@@ -197,7 +204,7 @@ public class HttpUtils {
      * @param params 参数
      */
     private static String contactUrl(String url, Map<String, String> params) {
-        if (params != null && !params.isEmpty()) {
+        if (MapUtil.isNotEmpty(params)) {
             StringBuilder param = new StringBuilder();
             Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
             while (iterator.hasNext()) {
