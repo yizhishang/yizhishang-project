@@ -1,7 +1,10 @@
 package com.yizhishang.common.exception;
 
-import com.yizhishang.common.enums.AbstractBaseExceptionEnum;
+import com.yizhishang.common.enums.CommonEnum;
 
+/**
+ * @author yizhishang
+ */
 public class ServiceException extends RuntimeException {
     private Integer code;
     private String errorMessage;
@@ -17,7 +20,7 @@ public class ServiceException extends RuntimeException {
         this.errorMessage = errorMessage;
     }
 
-    public ServiceException(AbstractBaseExceptionEnum exception) {
+    public ServiceException(CommonEnum exception) {
         super(exception.getMessage());
         this.code = exception.getCode();
         this.errorMessage = exception.getMessage();

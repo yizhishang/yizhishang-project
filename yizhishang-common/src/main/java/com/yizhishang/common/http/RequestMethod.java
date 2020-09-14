@@ -1,5 +1,9 @@
 package com.yizhishang.common.http;
 
+/**
+ * @author yizhishang
+ */
+
 public enum RequestMethod {
     /**
      * get 请求

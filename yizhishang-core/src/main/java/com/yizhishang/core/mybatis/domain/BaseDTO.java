@@ -10,6 +10,9 @@ import org.hibernate.validator.constraints.Length;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * @author yizhishang
+ */
 @Data
 public class BaseDTO implements Serializable {
 

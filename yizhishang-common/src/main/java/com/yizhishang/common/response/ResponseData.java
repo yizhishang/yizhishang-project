@@ -44,10 +44,9 @@ public class ResponseData<T> {
         this.code = code;
         this.messageKey = messageKey;
         if (messageKey != null) {
-            ResourceBundle zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
-            ResourceBundle en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
-
             try {
+                ResourceBundle zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
+                ResourceBundle en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
                 this.zhMessage = zh.getString(messageKey);
                 this.enMessage = en.getString(messageKey);
             } catch (MissingResourceException var8) {
@@ -229,5 +228,12 @@ public class ResponseData<T> {
     @Override
     public String toString() {
         return "ResponseData(success=" + this.getSuccess() + ", code=" + this.getCode() + ", messageKey=" + this.getMessageKey() + ", zhMessage=" + this.getZhMessage() + ", enMessage=" + this.getEnMessage() + ", data=" + this.getData() + ")";
+    }
+
+    public static void main(String[] args) {
+        ResponseData r1 = ResponseData.success("world");
+        ResponseData r2 = ResponseData.success("hello");
+        System.out.println(r1.equals(r2));
+
     }
 }

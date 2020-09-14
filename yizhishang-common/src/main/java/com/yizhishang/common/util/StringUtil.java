@@ -12,6 +12,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @author yizhishang
+ */
 @Slf4j
 public class StringUtil extends StringUtils {
 

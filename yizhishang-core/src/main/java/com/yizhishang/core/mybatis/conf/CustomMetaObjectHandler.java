@@ -9,6 +9,9 @@ import org.apache.ibatis.reflection.ReflectionException;
 import java.time.LocalDateTime;
 import java.util.Date;
 
+/**
+ * @author yizhishang
+ */
 @Slf4j
 public class CustomMetaObjectHandler implements MetaObjectHandler {
 

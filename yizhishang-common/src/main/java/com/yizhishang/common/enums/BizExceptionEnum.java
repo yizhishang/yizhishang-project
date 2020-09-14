@@ -3,7 +3,7 @@ package com.yizhishang.common.enums;
 /**
  * @author yizhishang
  */
-public enum BizExceptionEnum implements AbstractBaseExceptionEnum {
+public enum BizExceptionEnum implements CommonEnum {
     /**
      * 服务器异常
      */

@@ -1,11 +1,15 @@
 package com.yizhishang.common.exception;
 
-import com.yizhishang.common.enums.AbstractBaseExceptionEnum;
+import com.yizhishang.common.enums.CommonEnum;
 
 import java.io.Serializable;
 
+/**
+ * @author yizhishang
+ */
 public class BizException extends ServiceException implements Serializable {
-    public BizException(AbstractBaseExceptionEnum exception) {
+
+    public BizException(CommonEnum exception) {
         super(exception);
     }
 

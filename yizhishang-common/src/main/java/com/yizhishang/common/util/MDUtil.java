@@ -6,6 +6,7 @@ import java.security.NoSuchAlgorithmException;
 
 /**
  * 密码加密
+ * @author yizhishang
  */
 public class MDUtil {
 
