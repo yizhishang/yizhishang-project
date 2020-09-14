@@ -11,12 +11,17 @@ import java.util.List;
  */
 @Data
 @ApiModel("通用ResponseListData对象")
-public class ResponseListData<T> extends ResponseData<T> {
+public class ResponseListData<T> extends ResponseData<List<T>> {
 
     @ApiModelProperty("list响应对象")
     private List<T> data;
 
     private ResponseListData() {
+    }
+
+    @Override
+    public List<T> getData() {
+        return data;
     }
 
     private ResponseListData(List<T> data) {
