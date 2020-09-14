@@ -38,8 +38,10 @@ public class ErrorResponseData extends ResponseData {
             return false;
         }
         Object otherExceptionClazz = other.getExceptionClazz();
-        if (exceptionClazz == null && otherExceptionClazz != null) {
-            return false;
+        if (exceptionClazz == null) {
+            if (otherExceptionClazz != null) {
+                return false;
+            }
         } else if (!exceptionClazz.equals(otherExceptionClazz)) {
             return false;
         }

@@ -1,10 +1,8 @@
 package com.yizhishang.common.util;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -26,10 +24,6 @@ public class JacksonUtil {
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         try {
             return mapper.writeValueAsString(obj);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -49,10 +43,6 @@ public class JacksonUtil {
 //        mapper.disable(JsonGenerator.Feature.FAIL_ON_UNKNOWN_PROPERTIES);
         try {
             return mapper.readValue(json, clazz);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -69,10 +59,6 @@ public class JacksonUtil {
         try {
             JavaType javaType = mapper.getTypeFactory().constructParametricType(ArrayList.class, clazz);
             return mapper.readValue(json, javaType);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -103,10 +89,6 @@ public class JacksonUtil {
         String json = "";
         try {
             json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(t);
-        } catch (JsonGenerationException e) {
-            e.printStackTrace();
-        } catch (JsonMappingException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -27,7 +27,7 @@ import java.util.*;
 public class ExcelUtils<T> {
 
     private ThreadLocal<SimpleDateFormat> local = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
-    private int etimes = 0;
+    private int readCount = 0;
 
     /**
      * 将数据写入到Excel文件
@@ -380,7 +380,7 @@ public class ExcelUtils<T> {
 
             for (int i = 0; i < columnCount; i++) {
                 cell = row.getCell(i);
-                etimes = 0;
+                readCount = 0;
                 t = readCellContent(textToKey.get(titles[i]), fields, cell, t, edf);
             }
             list.add(t);
@@ -518,10 +518,10 @@ public class ExcelUtils<T> {
         } catch (Exception ex) {
             ex.printStackTrace();
             // 如果还是读到的数据格式还是不对，只能放弃了
-            if (etimes > 7) {
+            if (readCount > 7) {
                 throw ex;
             }
-            etimes++;
+            readCount++;
             t = readCellContent(key, fields, cell, t, edf);
         }
         return t;

@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import cn.hutool.core.util.StrUtil;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @Description : 加密字符串 替换* 号
@@ -30,7 +31,7 @@ public class EncryptorUtil {
      * @后使用星号*隐藏后几位（保留1位），点号后直接显示， 如：Qio***@s***.com，637***@q***.com。
      */
     public static String hideMailbox(String email) {
-        if (StringUtil.isBlank(email) || email.indexOf(A) == -1 || email.indexOf(D) == -1) {
+        if (StringUtils.isBlank(email) || email.indexOf(A) == -1 || email.indexOf(D) == -1) {
             return email;
         }
         String[] emailArr = email.split(A);
@@ -68,7 +69,7 @@ public class EncryptorUtil {
      * @return
      */
     public static String hideNumber(String number) {
-        if (StringUtil.isBlank(number)) {
+        if (StringUtils.isBlank(number)) {
             return number;
         }
         int length = number.length();

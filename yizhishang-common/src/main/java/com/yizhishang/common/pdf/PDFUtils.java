@@ -77,7 +77,6 @@ public class PDFUtils {
         Font titleFont = new Font(baseFont, 20, Font.BOLD);
         Font docFont = new Font(baseFont, 10, Font.NORMAL);
         try {
-
             File file = new File(path);
             FileOutputStream out = new FileOutputStream(file);
             PdfWriter.getInstance(document, out);

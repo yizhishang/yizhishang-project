@@ -1,9 +1,7 @@
 package com.yizhishang.common.http;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.httpclient.ConnectTimeoutException;
 import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.params.HttpConnectionParams;
@@ -35,22 +33,20 @@ import java.util.Map;
 public class HttpsUtils implements ProtocolSocketFactory {
 
     private SSLContext sslcontext = null;
+    
+    private static final String HTTPS = "https";
 
     public static String sendGetRequest(String url) {
         String result;
-        Protocol https = new Protocol("https", new HttpsUtils(), 443);
-        Protocol.registerProtocol("https", https);
+        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
+        Protocol.registerProtocol(HTTPS, https);
         GetMethod get = new GetMethod(url);
         HttpClient client = new HttpClient();
         try {
             client.executeMethod(get);
             result = get.getResponseBodyAsString();
-            Protocol.unregisterProtocol("https");
+            Protocol.unregisterProtocol(HTTPS);
             return result;
-        } catch (HttpException e) {
-            log.error(e.getMessage(), e);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -59,8 +55,8 @@ public class HttpsUtils implements ProtocolSocketFactory {
 
     public static String sendPostRequest(String url, Map<String, String> params) {
         String result = "";
-        Protocol https = new Protocol("https", new HttpsUtils(), 443);
-        Protocol.registerProtocol("https", https);
+        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
+        Protocol.registerProtocol(HTTPS, https);
         PostMethod post = new PostMethod(url);
         if (null != params && !params.isEmpty()) {
             post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, StandardCharsets.UTF_8);
@@ -69,16 +65,13 @@ public class HttpsUtils implements ProtocolSocketFactory {
             }
         }
 
-        HttpClient client = new HttpClient();
+
         try {
+            HttpClient client = new HttpClient();
             client.executeMethod(post);
             result = post.getResponseBodyAsString();
-            Protocol.unregisterProtocol("https");
+            Protocol.unregisterProtocol(HTTPS);
             return result;
-        } catch (HttpException e) {
-            log.error(e.getMessage(), e);
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -86,16 +79,14 @@ public class HttpsUtils implements ProtocolSocketFactory {
     }
 
     private SSLContext createSSLContext() {
-        SSLContext sslcontext = null;
+        SSLContext sslContext = null;
         try {
-            sslcontext = SSLContext.getInstance("SSL");
-            sslcontext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
+            sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
             e.printStackTrace();
         }
-        return sslcontext;
+        return sslContext;
     }
 
     private SSLContext getSSLContext() {
@@ -120,7 +111,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
     }
 
     @Override
-    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params) throws IOException, ConnectTimeoutException {
+    public Socket createSocket(String host, int port, InetAddress localAddress, int localPort, HttpConnectionParams params) throws IOException {
         if (params == null) {
             throw new IllegalArgumentException("Parameters may not be null");
         }
@@ -128,14 +119,18 @@ public class HttpsUtils implements ProtocolSocketFactory {
         SocketFactory socketfactory = getSSLContext().getSocketFactory();
         if (timeout == 0) {
             return socketfactory.createSocket(host, port, localAddress, localPort);
-        } else {
-            Socket socket = socketfactory.createSocket();
+        }
+        try (Socket socket = socketfactory.createSocket()) {
             SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
             SocketAddress remoteaddr = new InetSocketAddress(host, port);
             socket.bind(localaddr);
             socket.connect(remoteaddr, timeout);
             return socket;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        return null;
+
     }
 
     private static class TrustAnyTrustManager implements X509TrustManager {
