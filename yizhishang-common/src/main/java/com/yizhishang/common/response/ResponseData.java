@@ -144,84 +144,64 @@ public class ResponseData<T> {
             return true;
         } else if (!(o instanceof ResponseData)) {
             return false;
-        } else {
-            ResponseData<?> other = (ResponseData) o;
-            if (!other.canEqual(this)) {
-                return false;
-            } else {
-                Object success = this.getSuccess();
-                Object otherSuccess = other.getSuccess();
-                if (success == null) {
-                    if (otherSuccess != null) {
-                        return false;
-                    }
-                } else if (!success.equals(otherSuccess)) {
-                    return false;
-                }
-
-                Object code = this.getCode();
-                Object otherCode = other.getCode();
-                if (code == null) {
-                    if (otherCode != null) {
-                        return false;
-                    }
-                } else if (!code.equals(otherCode)) {
-                    return false;
-                }
-
-                Object messageKey = this.getMessageKey();
-                Object otherMessageKey = other.getMessageKey();
-                if (messageKey == null) {
-                    if (otherMessageKey != null) {
-                        return false;
-                    }
-                } else if (!messageKey.equals(otherMessageKey)) {
-                    return false;
-                }
-
-                label62:
-                {
-                    Object zhMessage = this.getZhMessage();
-                    Object otherZhMessage = other.getZhMessage();
-                    if (zhMessage == null) {
-                        if (otherZhMessage == null) {
-                            break label62;
-                        }
-                    } else if (zhMessage.equals(otherZhMessage)) {
-                        break label62;
-                    }
-
-                    return false;
-                }
-
-                label55:
-                {
-                    Object enMessage = this.getEnMessage();
-                    Object otherEnMessage = other.getEnMessage();
-                    if (enMessage == null) {
-                        if (otherEnMessage == null) {
-                            break label55;
-                        }
-                    } else if (enMessage.equals(otherEnMessage)) {
-                        break label55;
-                    }
-
-                    return false;
-                }
-
-                Object data = this.getData();
-                Object otherData = other.getData();
-                if (data == null) {
-                    if (otherData != null) {
-                        return false;
-                    }
-                } else if (!data.equals(otherData)) {
-                    return false;
-                }
-
-                return true;
-            }
         }
+        ResponseData<?> other = (ResponseData) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object otherSuccess = other.getSuccess();
+        if (success == null && otherSuccess != null) {
+            return false;
+        } else if (!success.equals(otherSuccess)) {
+            return false;
+        }
+
+        Object otherCode = other.getCode();
+        if (code == null && otherCode != null) {
+            return false;
+        } else if (!code.equals(otherCode)) {
+            return false;
+        }
+
+        Object otherMessageKey = other.getMessageKey();
+        if (messageKey == null && otherMessageKey != null) {
+            return false;
+        } else if (!messageKey.equals(otherMessageKey)) {
+            return false;
+        }
+
+        label62:
+        {
+            Object otherZhMessage = other.getZhMessage();
+            if (zhMessage == null && otherZhMessage == null) {
+                break label62;
+            } else if (zhMessage.equals(otherZhMessage)) {
+                break label62;
+            }
+
+            return false;
+        }
+
+        label55:
+        {
+            Object otherEnMessage = other.getEnMessage();
+            if (enMessage == null && otherEnMessage == null) {
+                break label55;
+            } else if (enMessage.equals(otherEnMessage)) {
+                break label55;
+            }
+
+            return false;
+        }
+
+        Object otherData = other.getData();
+        if (data == null && otherData != null) {
+            return false;
+        } else if (!data.equals(otherData)) {
+            return false;
+        }
+
+        return true;
     }
 
     protected boolean canEqual(Object other) {

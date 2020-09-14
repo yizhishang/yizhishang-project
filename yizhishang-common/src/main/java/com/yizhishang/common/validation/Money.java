@@ -11,6 +11,9 @@ import java.lang.annotation.Target;
 import java.util.regex.Pattern;
 
 
+/**
+ * @author yizhishang
+ */
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = Money.Validator.class)

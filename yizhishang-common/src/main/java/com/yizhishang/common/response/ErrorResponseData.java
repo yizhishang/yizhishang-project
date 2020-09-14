@@ -26,34 +26,25 @@ public class ErrorResponseData extends ResponseData {
         return this.exceptionClazz;
     }
 
-    public void setExceptionClazz(String exceptionClazz) {
-        this.exceptionClazz = exceptionClazz;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (o == this) {
             return true;
         } else if (!(o instanceof ErrorResponseData)) {
             return false;
-        } else {
-            ErrorResponseData other = (ErrorResponseData) o;
-            if (!other.canEqual(this)) {
-                return false;
-            } else {
-                Object exceptionClazz = this.getExceptionClazz();
-                Object otherExceptionClazz = other.getExceptionClazz();
-                if (exceptionClazz == null) {
-                    if (otherExceptionClazz != null) {
-                        return false;
-                    }
-                } else if (!exceptionClazz.equals(otherExceptionClazz)) {
-                    return false;
-                }
-
-                return true;
-            }
         }
+        ErrorResponseData other = (ErrorResponseData) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object otherExceptionClazz = other.getExceptionClazz();
+        if (exceptionClazz == null && otherExceptionClazz != null) {
+            return false;
+        } else if (!exceptionClazz.equals(otherExceptionClazz)) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override
@@ -63,10 +54,7 @@ public class ErrorResponseData extends ResponseData {
 
     @Override
     public int hashCode() {
-        int result = 1;
-        Object exceptionClazz = this.getExceptionClazz();
-        result = result * 59 + (exceptionClazz == null ? 43 : exceptionClazz.hashCode());
-        return result;
+        return 59 + (exceptionClazz == null ? 43 : exceptionClazz.hashCode());
     }
 
     @Override

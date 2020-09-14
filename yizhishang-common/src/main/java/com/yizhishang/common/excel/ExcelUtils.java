@@ -206,21 +206,16 @@ public class ExcelUtils<T> {
 
         XSSFCellStyle titleStyle = (XSSFCellStyle) wb.createCellStyle();
 
-        /**
-         * titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-         *
-         * 设置前景色
-         *
-         * titleStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(159, 213, 183)));
-         */
+        //titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
+        //设置前景色
+        // titleStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(159, 213, 183)));
         titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
 
         Font font = wb.createFont();
 //        font.setColor(HSSFColor.BROWN.index);
 //        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
-        /**
-         * 设置字体
-         */
+
+        //设置字体
         titleStyle.setFont(font);
 
         cell = row.createCell(0);
