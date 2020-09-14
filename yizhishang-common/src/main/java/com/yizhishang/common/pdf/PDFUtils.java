@@ -113,8 +113,8 @@ public class PDFUtils {
     /**
      * 获取PDF表格
      *
-     * @param cls
-     * @param list
+     * @param cls     javaBean
+     * @param list    列表数据
      * @param pattern
      * @param docFont
      * @return
