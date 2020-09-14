@@ -1,12 +1,14 @@
 package com.yizhishang.common.util;
 
+import com.google.common.collect.Maps;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 /**
@@ -71,7 +73,7 @@ public class CookieUtils {
 
     public static Cookie setCookie(boolean secure, String name, String value, String domain, String path, Integer maxAge) {
         try {
-            Cookie e = new Cookie(name, StringUtil.isNotEmpty(value) ? URLEncoder.encode(value, "UTF-8") : null);
+            Cookie e = new Cookie(name, StringUtil.isNotEmpty(value) ? URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8)) : null);
             e.setSecure(secure);
             e.setPath(StringUtil.isEmpty(domain) ? "/" : path);
             if (StringUtil.isNotEmpty(domain)) {
@@ -87,7 +89,7 @@ public class CookieUtils {
     }
 
     public static Map<String, Cookie> readCookieMap(HttpServletRequest request) {
-        HashMap cookieMap = new HashMap();
+        Map<String, Cookie> cookieMap = Maps.newHashMap();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; ++i) {
@@ -100,14 +102,14 @@ public class CookieUtils {
     }
 
     public static Cookie getCookie(HttpServletRequest request, String name) {
-        Map cookieMap = readCookieMap(request);
-        return cookieMap.containsKey(name) ? (Cookie) cookieMap.get(name) : null;
+        Map<String, Cookie> cookieMap = readCookieMap(request);
+        return cookieMap.containsKey(name) ? cookieMap.get(name) : null;
     }
 
     public static Object getCookieValue(HttpServletRequest request, String name) {
         try {
             Cookie e = getCookie(request, name);
-            return e != null ? (StringUtil.isNotEmpty(e.getValue()) ? URLDecoder.decode(e.getValue(), "UTF-8") : null) : null;
+            return e != null ? (StringUtil.isNotEmpty(e.getValue()) ? URLDecoder.decode(e.getValue(), String.valueOf(StandardCharsets.UTF_8)) : null) : null;
         } catch (UnsupportedEncodingException var3) {
             return null;
         }

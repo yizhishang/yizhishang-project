@@ -15,8 +15,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
 
@@ -35,19 +35,19 @@ public class PDFUtils {
 
     /**
      * @param title 表格标题名
-     * @param cls javaBean
-     * @param list 列表数据
-     * @param path 目标路径
+     * @param cls   javaBean
+     * @param list  列表数据
+     * @param path  目标路径
      */
-    public static void export(String title, Class<?> cls, List<?> list, String path){
+    public static void export(String title, Class<?> cls, List<?> list, String path) {
         export(title, cls, list, path, PATTERN);
     }
 
     /**
-     * @param title 表格标题名
-     * @param cls javaBean
-     * @param list 列表数据
-     * @param path 目标路径
+     * @param title   表格标题名
+     * @param cls     javaBean
+     * @param list    列表数据
+     * @param path    目标路径
      * @param pattern 如果有时间数据，设定输出格式。默认为"yyy-MM-dd"
      */
     public static void export(String title, Class<?> cls, List<?> list, String path, String pattern) {
@@ -110,6 +110,7 @@ public class PDFUtils {
 
     /**
      * 获取PDF表格
+     *
      * @param cls
      * @param list
      * @param pattern

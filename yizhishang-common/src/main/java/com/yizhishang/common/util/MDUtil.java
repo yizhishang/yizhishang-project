@@ -1,11 +1,12 @@
 package com.yizhishang.common.util;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
  * 密码加密
+ *
  * @author yizhishang
  */
 public class MDUtil {
@@ -24,12 +25,10 @@ public class MDUtil {
         String outStr = null;
         try {
             md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(text.getBytes("utf-8"));
+            byte[] digest = md.digest(text.getBytes(StandardCharsets.UTF_8));
             outStr = byteToString(digest);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
         }
         return outStr;
     }
@@ -55,15 +54,14 @@ public class MDUtil {
         if (messageDigest == null) {
             try {
                 messageDigest = MessageDigest.getInstance("MD5");
-                messageDigest.update(data.getBytes("utf-8"));
+                messageDigest.update(data.getBytes(StandardCharsets.UTF_8));
+                return encodeHex(messageDigest.digest());
             } catch (NoSuchAlgorithmException e) {
                 System.err.println("Failed to load the MD5 MessageDigest. We will be unable to function normally.");
                 e.printStackTrace();
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
             }
         }
-        return encodeHex(messageDigest.digest());
+        return null;
     }
 
     private static final String encodeHex(byte[] bytes) {

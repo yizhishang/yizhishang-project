@@ -4,6 +4,7 @@ import lombok.Getter;
 
 /**
  * 公共状态
+ *
  * @author yizhishang
  * @date 2020-01-17 14:00
  */

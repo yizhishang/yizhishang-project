@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -546,7 +547,7 @@ public class NetworkUtil {
      * 通过ip地址 获取所在地理区域
      */
     public static String getAreaInfoByIp(String ip) {
-        return getAreaInfoByIp(ip, "utf-8");
+        return getAreaInfoByIp(ip, String.valueOf(StandardCharsets.UTF_8));
     }
 
     /**
@@ -622,8 +623,8 @@ public class NetworkUtil {
     }
 
     /**
-     * @param urlStr 请求的地址
-     * @param content 请求的参数 格式为：name=xxx&pwd=xxx
+     * @param urlStr   请求的地址
+     * @param content  请求的参数 格式为：name=xxx&pwd=xxx
      * @param encoding 服务器端请求编码。如GBK,UTF-8等
      */
     private static String getResult(String urlStr, String content, String encoding) {
@@ -662,7 +663,8 @@ public class NetworkUtil {
             log.error("向 " + urlStr + " 发送请求，解析参数:" + content + ",所在的地理区域 ，发生异常！");
         } finally {
             if (connection != null) {
-                connection.disconnect();// 关闭连接
+                // 关闭连接
+                connection.disconnect();
             }
         }
         return null;

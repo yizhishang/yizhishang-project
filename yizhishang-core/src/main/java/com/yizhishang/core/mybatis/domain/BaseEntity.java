@@ -21,7 +21,7 @@ public class BaseEntity implements Serializable {
 
     @Length(max = 255, message = "创建人长度不能超过255个字符")
     @ApiModelProperty(value = "创建人")
-    @TableField(value = "CREATE_BY", fill= FieldFill.INSERT)
+    @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
     private String createBy;
 
     @Length(max = 255, message = "修改人长度不能超过255个字符")
@@ -31,12 +31,12 @@ public class BaseEntity implements Serializable {
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
-    @TableField(value = "CREATE_TIME", fill= FieldFill.INSERT)
+    @TableField(value = "CREATE_TIME", fill = FieldFill.INSERT)
     private Date createTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "修改时间")
-    @TableField(value = "UPDATE_TIME", fill= FieldFill.INSERT_UPDATE)
+    @TableField(value = "UPDATE_TIME", fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
     @Version

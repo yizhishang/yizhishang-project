@@ -1,7 +1,6 @@
 package com.yizhishang.common.util;
 
 import javax.crypto.Cipher;
-import java.io.IOException;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
@@ -13,16 +12,21 @@ import java.util.Base64;
  */
 public class RSAUtil {
 
+    private static final String RSA = "RSA";
+
+    private RSAUtil() {
+
+    }
+
     /**
      * 生成RSA
      *
      * @throws Exception
      */
     public static KeyPair getKeyPair(int bit) throws Exception {
-        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance(RSA);
         keyPairGenerator.initialize(bit);
-        KeyPair keyPair = keyPairGenerator.generateKeyPair();
-        return keyPair;
+        return keyPairGenerator.generateKeyPair();
     }
 
     /**
@@ -51,9 +55,8 @@ public class RSAUtil {
     public static PublicKey string2PublicKey(String pubStr) throws Exception {
         byte[] keyBytes = base642Byte(pubStr);
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PublicKey publicKey = keyFactory.generatePublic(keySpec);
-        return publicKey;
+        KeyFactory keyFactory = KeyFactory.getInstance(RSA);
+        return keyFactory.generatePublic(keySpec);
     }
 
     /**
@@ -64,9 +67,8 @@ public class RSAUtil {
     public static PrivateKey string2PrivateKey(String priStr) throws Exception {
         byte[] keyBytes = base642Byte(priStr);
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
-        return privateKey;
+        KeyFactory keyFactory = KeyFactory.getInstance(RSA);
+        return keyFactory.generatePrivate(keySpec);
     }
 
     /**
@@ -75,10 +77,9 @@ public class RSAUtil {
      * @throws Exception
      */
     public static byte[] publicEncrypt(byte[] content, PublicKey publicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        byte[] bytes = cipher.doFinal(content);
-        return bytes;
+        return cipher.doFinal(content);
     }
 
     /**
@@ -87,10 +88,9 @@ public class RSAUtil {
      * @throws Exception
      */
     public static byte[] publicDecrypt(byte[] content, PublicKey publicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
-        byte[] bytes = cipher.doFinal(content);
-        return bytes;
+        return cipher.doFinal(content);
     }
 
     /**
@@ -99,10 +99,9 @@ public class RSAUtil {
      * @throws Exception
      */
     public static byte[] privateEncrypt(byte[] content, PrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-        byte[] bytes = cipher.doFinal(content);
-        return bytes;
+        return cipher.doFinal(content);
     }
 
     /**
@@ -111,10 +110,9 @@ public class RSAUtil {
      * @throws Exception
      */
     public static byte[] privateDecrypt(byte[] content, PrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        byte[] bytes = cipher.doFinal(content);
-        return bytes;
+        return cipher.doFinal(content);
     }
 
     /**
@@ -127,10 +125,8 @@ public class RSAUtil {
 
     /**
      * Base64编码转字节数组
-     *
-     * @throws IOException
      */
-    public static byte[] base642Byte(String base64Key) throws IOException {
+    public static byte[] base642Byte(String base64Key) {
         Base64.Decoder decoder = Base64.getDecoder();
         return decoder.decode(base64Key);
     }

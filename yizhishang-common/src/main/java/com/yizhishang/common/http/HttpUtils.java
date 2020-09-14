@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -250,14 +251,14 @@ public class HttpUtils {
         request.setConfig(REQUEST_CONFIG);
         StringEntity entity;
 //        if (pairs.size() == 1 && (pairs.get(0).getName().equals("json") || pairs.get(0).getName().equals("xml"))) {
-//            entity = new StringEntity(pairs.get(0).getValue(), "UTF-8");
+//            entity = new StringEntity(pairs.get(0).getValue(), StandardCharsets.UTF_8);
 //            if(pairs.get(0).getName().equals("json")){
 //                entity.setContentType("application/json");
 //            } else {
 //                entity.setContentType("application/xml");
 //            }
 //        } else {
-        entity = new UrlEncodedFormEntity(pairs, "UTF-8");
+        entity = new UrlEncodedFormEntity(pairs, StandardCharsets.UTF_8);
 //        }
         request.setEntity(entity);
         return execute(httpClient, request);
@@ -290,7 +291,7 @@ public class HttpUtils {
             try {
                 HttpEntity entity = response.getEntity();
                 if (entity != null) {
-                    result.setResponse(EntityUtils.toString(entity, "UTF-8"));
+                    result.setResponse(EntityUtils.toString(entity, StandardCharsets.UTF_8));
                 }
             } catch (IOException e) {
                 logger.error("获取请求响应结果异常", e);

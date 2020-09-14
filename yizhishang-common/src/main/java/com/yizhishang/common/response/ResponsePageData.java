@@ -25,7 +25,7 @@ public class ResponsePageData<T> extends ResponseData {
     }
 
     public static ResponsePageData successPage(IPage<?> data) {
-        return new ResponsePageData((Page)data);
+        return new ResponsePageData((Page) data);
     }
 
 }

@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -135,14 +136,15 @@ public class StringUtil extends StringUtils {
      * @return Long数组
      */
     public static Long[] stringsToLongs(String[] args) {
+        Long[] result = {};
         if (args == null || args.length < 1) {
-            return null;
+            return result;
         }
-        Long[] arr = new Long[args.length];
+        result = new Long[args.length];
         for (int i = 0; i < args.length; i++) {
-            arr[i] = Long.valueOf(args[i]);
+            result[i] = Long.valueOf(args[i]);
         }
-        return arr;
+        return result;
     }
 
     /**
@@ -152,7 +154,7 @@ public class StringUtil extends StringUtils {
      */
     public static String longListToString(List<Long> list, String regex) {
         StringBuffer result = new StringBuffer();
-        if (list != null && list.size() > 0) {
+        if (list != null && list.isEmpty()) {
             for (Long x : list) {
                 result.append(x).append(regex);
             }
@@ -167,7 +169,7 @@ public class StringUtil extends StringUtils {
      */
     public static String integerListToString(List<Integer> list, String regex) {
         StringBuffer result = new StringBuffer();
-        if (list != null && list.size() > 0) {
+        if (list != null && list.isEmpty()) {
             for (Integer x : list) {
                 result.append(x).append(regex);
             }
@@ -182,7 +184,7 @@ public class StringUtil extends StringUtils {
      */
     public static String stringListToString(List<String> list, String regex) {
         StringBuffer result = new StringBuffer();
-        if (list != null && list.size() > 0) {
+        if (list != null && list.isEmpty()) {
             for (String x : list) {
                 result.append(x).append(regex);
             }
@@ -212,14 +214,15 @@ public class StringUtil extends StringUtils {
      * @return Integer数组
      */
     public static Integer[] stringsToIntegers(String[] args) {
+        Integer[] result = {};
         if (args == null || args.length < 1) {
-            return null;
+            return result;
         }
-        Integer[] arr = new Integer[args.length];
+        result = new Integer[args.length];
         for (int i = 0; i < args.length; i++) {
-            arr[i] = Integer.valueOf(args[i]);
+            result[i] = Integer.valueOf(args[i]);
         }
-        return arr;
+        return result;
     }
 
     /**
@@ -323,15 +326,15 @@ public class StringUtil extends StringUtils {
 
 
     private static List<Object[]> getXssPatternList() {
-        ArrayList ret = new ArrayList();
-        ret.add(new Object[]{"<(no)?script[^>]*>.*?</(no)?script>", Integer.valueOf(2)});
-        ret.add(new Object[]{"eval\\((.*?)\\)", Integer.valueOf(42)});
-        ret.add(new Object[]{"expression\\((.*?)\\)", Integer.valueOf(42)});
-        ret.add(new Object[]{"(javascript:|vbscript:|view-source:)*", Integer.valueOf(2)});
-        ret.add(new Object[]{"<(\"[^\"]*\"|\'[^\']*\'|[^\'\">])*>", Integer.valueOf(42)});
-        ret.add(new Object[]{"(window|location|window\\.location|window\\.|\\.location|document\\.cookie|document\\.|alert\\(.*?\\)|window\\.open\\()*", Integer.valueOf(42)});
-        ret.add(new Object[]{"<+\\s*\\w*\\s*(oncontrolselect|oncopy|oncut|ondataavailable|ondatasetchanged|ondatasetcomplete|ondblclick|ondeactivate|ondrag|ondragend|ondragenter|ondragleave|ondragover|ondragstart|ondrop|onerror=|onerroupdate|onfilterchange|onfinish|onfocus|onfocusin|onfocusout|onhelp|onkeydown|onkeypress|onkeyup|onlayoutcomplete|onload|onlosecapture|onmousedown|onmouseenter|onmouseleave|onmousemove|onmousout|onmouseover|onmouseup|onmousewheel|onmove|onmoveend|onmovestart|onabort|onactivate|onafterprint|onafterupdate|onbefore|onbeforeactivate|onbeforecopy|onbeforecut|onbeforedeactivate|onbeforeeditocus|onbeforepaste|onbeforeprint|onbeforeunload|onbeforeupdate|onblur|onbounce|oncellchange|onchange|onclick|oncontextmenu|onpaste|onpropertychange|onreadystatechange|onreset|onresize|onresizend|onresizestart|onrowenter|onrowexit|onrowsdelete|onrowsinserted|onscroll|onselect|onselectionchange|onselectstart|onstart|onstop|onsubmit|onunload)+\\s*=+", Integer.valueOf(42)});
-        return ret;
+        ArrayList list = new ArrayList();
+        list.add(new Object[]{"<(no)?script[^>]*>.*?</(no)?script>", Integer.valueOf(2)});
+        list.add(new Object[]{"eval\\((.*?)\\)", Integer.valueOf(42)});
+        list.add(new Object[]{"expression\\((.*?)\\)", Integer.valueOf(42)});
+        list.add(new Object[]{"(javascript:|vbscript:|view-source:)*", Integer.valueOf(2)});
+        list.add(new Object[]{"<(\"[^\"]*\"|\'[^\']*\'|[^\'\">])*>", Integer.valueOf(42)});
+        list.add(new Object[]{"(window|location|window\\.location|window\\.|\\.location|document\\.cookie|document\\.|alert\\(.*?\\)|window\\.open\\()*", Integer.valueOf(42)});
+        list.add(new Object[]{"<+\\s*\\w*\\s*(oncontrolselect|oncopy|oncut|ondataavailable|ondatasetchanged|ondatasetcomplete|ondblclick|ondeactivate|ondrag|ondragend|ondragenter|ondragleave|ondragover|ondragstart|ondrop|onerror=|onerroupdate|onfilterchange|onfinish|onfocus|onfocusin|onfocusout|onhelp|onkeydown|onkeypress|onkeyup|onlayoutcomplete|onload|onlosecapture|onmousedown|onmouseenter|onmouseleave|onmousemove|onmousout|onmouseover|onmouseup|onmousewheel|onmove|onmoveend|onmovestart|onabort|onactivate|onafterprint|onafterupdate|onbefore|onbeforeactivate|onbeforecopy|onbeforecut|onbeforedeactivate|onbeforeeditocus|onbeforepaste|onbeforeprint|onbeforeunload|onbeforeupdate|onblur|onbounce|oncellchange|onchange|onclick|oncontextmenu|onpaste|onpropertychange|onreadystatechange|onreset|onresize|onresizend|onresizestart|onrowenter|onrowexit|onrowsdelete|onrowsinserted|onscroll|onselect|onselectionchange|onselectstart|onstart|onstop|onsubmit|onunload)+\\s*=+", Integer.valueOf(42)});
+        return list;
     }
 
     private static List<Pattern> getPatterns() {
@@ -343,9 +346,8 @@ public class StringUtil extends StringUtils {
 
             while (var4.hasNext()) {
                 Object[] arr = (Object[]) var4.next();
-                int var7 = arr.length;
 
-                for (int i = 0; i < var7; ++i) {
+                for (int i = 0; i < arr.length; ++i) {
                     regex = (String) arr[0];
                     flag = (Integer) arr[1];
                     list.add(Pattern.compile(regex, flag.intValue()));
@@ -365,7 +367,7 @@ public class StringUtil extends StringUtils {
 
             if (value.contains("%")) {
                 try {
-                    value = URLDecoder.decode(value, "utf-8");
+                    value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
                 } catch (IllegalArgumentException e) {
                     log.error("value-->{}", value);
                     e.printStackTrace();

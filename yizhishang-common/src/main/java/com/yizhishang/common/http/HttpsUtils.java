@@ -20,6 +20,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
@@ -27,6 +28,7 @@ import java.util.Map;
 
 /**
  * https 请求
+ *
  * @author yizhishang
  */
 @Slf4j
@@ -61,7 +63,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
         Protocol.registerProtocol("https", https);
         PostMethod post = new PostMethod(url);
         if (null != params && !params.isEmpty()) {
-            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "UTF-8");
+            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, StandardCharsets.UTF_8);
             for (Map.Entry<String, String> entry : params.entrySet()) {
                 post.addParameter(entry.getKey(), entry.getValue());
             }
