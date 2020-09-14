@@ -90,11 +90,8 @@ public class CookieUtils {
         HashMap cookieMap = new HashMap();
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            Cookie[] var6 = cookies;
-            int var5 = cookies.length;
-
-            for (int var4 = 0; var4 < var5; ++var4) {
-                Cookie cookie = var6[var4];
+            for (int i = 0; i < cookies.length; ++i) {
+                Cookie cookie = cookies[i];
                 cookieMap.put(cookie.getName(), cookie);
             }
         }

@@ -569,40 +569,45 @@ public class NetworkUtil {
             if (temp.length < 3) {
                 return "0";
             }
+            // 省份
             String region = (temp[5].split(":"))[1].replaceAll("\"", "");
-            region = decodeUnicode(region);// 省份
+            region = decodeUnicode(region);
 
             String country = "";
+            // 地区
             String area = "";
             // String region = "";
+            // 市区
             String city = "";
+            // 国家
             String county = "";
+            // ISP公司
             String isp = "";
             for (int i = 0; i < temp.length; i++) {
                 switch (i) {
                     case 1:
                         country = (temp[i].split(":"))[2].replaceAll("\"", "");
-                        country = decodeUnicode(country);// 国家
+                        country = decodeUnicode(country);
                         break;
                     case 3:
                         area = (temp[i].split(":"))[1].replaceAll("\"", "");
-                        area = decodeUnicode(area);// 地区
+                        area = decodeUnicode(area);
                         break;
                     case 5:
                         region = (temp[i].split(":"))[1].replaceAll("\"", "");
-                        region = decodeUnicode(region);// 省份
+                        region = decodeUnicode(region);
                         break;
                     case 7:
                         city = (temp[i].split(":"))[1].replaceAll("\"", "");
-                        city = decodeUnicode(city);// 市区
+                        city = decodeUnicode(city);
                         break;
                     case 9:
                         county = (temp[i].split(":"))[1].replaceAll("\"", "");
-                        county = decodeUnicode(county);// 地区
+                        county = decodeUnicode(county);
                         break;
                     case 11:
                         isp = (temp[i].split(":"))[1].replaceAll("\"", "");
-                        isp = decodeUnicode(isp); // ISP公司
+                        isp = decodeUnicode(isp);
                         break;
                     default:
                         continue;
@@ -622,10 +627,9 @@ public class NetworkUtil {
      * @param encoding 服务器端请求编码。如GBK,UTF-8等
      */
     private static String getResult(String urlStr, String content, String encoding) {
-        URL url = null;
         HttpURLConnection connection = null;
         try {
-            url = new URL(urlStr);
+            URL url = new URL(urlStr);
             connection = (HttpURLConnection) url.openConnection();// 新建连接实例
             connection.setConnectTimeout(5000);// 设置连接超时时间，单位毫秒
             connection.setReadTimeout(5000);// 设置读取数据超时时间，单位毫秒
@@ -634,11 +638,17 @@ public class NetworkUtil {
             connection.setRequestMethod("POST");// 提交方法POST|GET
             connection.setUseCaches(false);// 是否缓存true|false
             connection.connect();// 打开连接端口
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());// 打开输出流往对端服务器写数据
-            out.writeBytes(content);// 写数据,也就是提交你的表单 name=xxx&pwd=xxx
+
+            // 打开输出流往对端服务器写数据
+            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+
+            // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
+            out.writeBytes(content);
             out.flush();// 刷新
-            out.close();// 关闭输出流
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));// 往对端写完数据对端服务器返回数据
+            out.close();
+
+            // 往对端写完数据对端服务器返回数据
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));
             // ,以BufferedReader流来读取
             StringBuffer buffer = new StringBuffer();
             String line = "";

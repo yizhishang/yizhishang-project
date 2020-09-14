@@ -13,7 +13,6 @@ public class HeadFootInfoPdfPageEvent extends PdfPageEventHelper {
     public PdfTemplate tpl;
     BaseFont bfChinese;
 
-    //无参构造方法
     public HeadFootInfoPdfPageEvent(BaseFont bfChinese) {
         super();
         this.bfChinese = bfChinese;
