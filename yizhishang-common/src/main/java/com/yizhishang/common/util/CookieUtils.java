@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import com.google.common.collect.Maps;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -73,10 +74,10 @@ public class CookieUtils {
 
     public static Cookie setCookie(boolean secure, String name, String value, String domain, String path, Integer maxAge) {
         try {
-            Cookie e = new Cookie(name, StringUtil.isNotEmpty(value) ? URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8)) : null);
+            Cookie e = new Cookie(name, StringUtils.isNotEmpty(value) ? URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8)) : null);
             e.setSecure(secure);
-            e.setPath(StringUtil.isEmpty(domain) ? "/" : path);
-            if (StringUtil.isNotEmpty(domain)) {
+            e.setPath(StringUtils.isEmpty(domain) ? "/" : path);
+            if (StringUtils.isNotEmpty(domain)) {
                 e.setDomain(domain);
             }
 
@@ -109,7 +110,13 @@ public class CookieUtils {
     public static Object getCookieValue(HttpServletRequest request, String name) {
         try {
             Cookie e = getCookie(request, name);
-            return e != null ? (StringUtil.isNotEmpty(e.getValue()) ? URLDecoder.decode(e.getValue(), String.valueOf(StandardCharsets.UTF_8)) : null) : null;
+            if (e == null) {
+                return null;
+            }
+            if (StringUtils.isNotEmpty(e.getValue())) {
+                return URLDecoder.decode(e.getValue(), String.valueOf(StandardCharsets.UTF_8));
+            }
+            return null;
         } catch (UnsupportedEncodingException var3) {
             return null;
         }

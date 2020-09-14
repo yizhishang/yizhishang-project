@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,7 @@ public class RegexUtil {
     }
 
     public static String findMatchContent(String regx, String source) {
-        if (StringUtil.isEmpty(regx) || StringUtil.isEmpty(source)) {
+        if (StringUtils.isEmpty(regx) || StringUtils.isEmpty(source)) {
             return null;
         }
 
@@ -31,10 +32,10 @@ public class RegexUtil {
     }
 
     public static List<String> findMatchContents(String regx, String source) {
-        if (StringUtil.isEmpty(regx) || StringUtil.isEmpty(source)) {
+        if (StringUtils.isEmpty(regx) || StringUtils.isEmpty(source)) {
             return Lists.newArrayList();
         }
-        ArrayList lst = new ArrayList();
+        List<String> lst = new ArrayList<>();
         Matcher m = Pattern.compile(regx).matcher(source);
         while (m.find()) {
             lst.add(m.group());
