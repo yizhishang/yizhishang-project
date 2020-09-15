@@ -167,22 +167,18 @@ public class ResponseData<T> {
         }
 
         Object otherMessageKey = other.getMessageKey();
-        if (messageKey == null) {
-            if (otherMessageKey != null) {
-                return false;
-            }
-        } else if (!messageKey.equals(otherMessageKey)) {
+        if (messageKey == null && otherMessageKey != null) {
+            return false;
+        } else if (messageKey != null && !messageKey.equals(otherMessageKey)) {
             return false;
         }
 
         label62:
         {
             Object otherZhMessage = other.getZhMessage();
-            if (zhMessage == null) {
-                if (otherZhMessage == null) {
-                    break label62;
-                }
-            } else if (zhMessage.equals(otherZhMessage)) {
+            if (zhMessage == null && otherZhMessage == null) {
+                break label62;
+            } else if (zhMessage != null && zhMessage.equals(otherZhMessage)) {
                 break label62;
             }
 
@@ -192,11 +188,9 @@ public class ResponseData<T> {
         label55:
         {
             Object otherEnMessage = other.getEnMessage();
-            if (enMessage == null) {
-                if (otherEnMessage == null) {
-                    break label55;
-                }
-            } else if (enMessage.equals(otherEnMessage)) {
+            if (enMessage == null && otherEnMessage == null) {
+                break label55;
+            } else if (enMessage != null && enMessage.equals(otherEnMessage)) {
                 break label55;
             }
 
@@ -204,11 +198,9 @@ public class ResponseData<T> {
         }
 
         Object otherData = other.getData();
-        if (data == null) {
-            if (otherData != null) {
-                return false;
-            }
-        } else if (!data.equals(otherData)) {
+        if (data == null && otherData != null) {
+            return false;
+        } else if (data != null && !data.equals(otherData)) {
             return false;
         }
 
