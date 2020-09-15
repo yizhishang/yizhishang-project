@@ -212,12 +212,12 @@ public class HttpUtils {
                 Map.Entry<String, String> e = iterator.next();
                 String key = e.getKey();
                 String value = e.getValue();
-                if (value == null || value.equals("null")) {
+                if (value == null || "null".equals(value)) {
                     continue;
                 }
                 param.append(key).append("=").append(value).append("&");
             }
-            if (!param.toString().equals("")) {
+            if (!"".equals(param.toString())) {
                 url += "?" + param.substring(0, param.length() - 1);
             }
         }

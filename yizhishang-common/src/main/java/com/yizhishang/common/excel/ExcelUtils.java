@@ -1,6 +1,7 @@
 package com.yizhishang.common.excel;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -14,7 +15,10 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description Excel导出
@@ -333,7 +337,7 @@ public class ExcelUtils<T> {
      */
     public <T> List<T> readFromFile(Class<T> cls, ExcelDataFormatter edf, File file) throws Exception {
         Field[] fields = cls.getDeclaredFields();
-        Map<String, String> textToKey = new HashMap<>();
+        Map<String, String> textToKey = Maps.newHashMap();
 
         ExcelField excelField;
         for (Field field : fields) {

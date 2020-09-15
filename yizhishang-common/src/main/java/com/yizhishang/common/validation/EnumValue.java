@@ -1,6 +1,7 @@
 package com.yizhishang.common.validation;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.Constraint;
 import javax.validation.ConstraintValidator;
@@ -37,6 +38,7 @@ public @interface EnumValue {
      */
     String enumMethod() default "";
 
+    @Slf4j
     class Validator implements ConstraintValidator<EnumValue, Integer> {
 
         private int[] in;
@@ -74,7 +76,6 @@ public @interface EnumValue {
             }
 
             Class<?> valueClass = value.getClass();
-            Boolean result = false;
             try {
                 Method method = enumClass.getMethod(enumMethod, valueClass);
                 if (!Boolean.TYPE.equals(method.getReturnType())) {
@@ -84,17 +85,15 @@ public @interface EnumValue {
                     throw new RuntimeException(String.format("%s method return is not static method in the %s class", enumMethod, enumClass));
                 }
 
-                result = (Boolean) method.invoke(null, value);
+                Boolean result = (Boolean) method.invoke(null, value);
                 if (result == null) {
                     return false;
                 }
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-                result = null;
-                e.printStackTrace();
-            } finally {
                 return result;
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                log.error("枚举类校验出错", e);
+                return false;
             }
-
         }
     }
 

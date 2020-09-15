@@ -1,5 +1,6 @@
 package com.yizhishang.common.util;
 
+import com.google.common.collect.Maps;
 import com.yizhishang.common.enums.BrowserEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -110,7 +111,7 @@ public class NetworkUtil {
      * 获取浏览器版本信息
      */
     public static Map<String, String> getBrowserInfo(String agent) {
-        if (agent == null || agent.equals("")) {
+        if (StringUtils.isEmpty(agent)) {
             return null;
         }
         String browserSrc = agent.replaceAll(OS_AND_DEVICE_REGEX, "");
@@ -119,7 +120,7 @@ public class NetworkUtil {
         String[] strList = browserSrc.split(" ");
         String[] temp = {};
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = Maps.newHashMap();
         for (String str : strList) {
             if (StringUtils.isEmpty(str)) {
                 continue;
@@ -137,7 +138,7 @@ public class NetworkUtil {
 
         String broswer = "";
         String broswerVersion = "";
-        Map<String, String> resultMap = new HashMap<>();
+        Map<String, String> resultMap = Maps.newHashMap();
         resultMap.put("netType", netType);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -316,7 +317,7 @@ public class NetworkUtil {
      * 获取操作系统信息
      */
     public static Map<String, String> getRequestSystemInfo(String userAgent) {
-        if (userAgent == null || userAgent.equals("")) {
+        if (StringUtils.isEmpty(userAgent)) {
             return null;
         }
 
@@ -539,7 +540,7 @@ public class NetworkUtil {
             }
 
         }
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(3);
         map.put("os", os);
         map.put("userOS", userOS);
         map.put("deviceInfo", deviceInfo);

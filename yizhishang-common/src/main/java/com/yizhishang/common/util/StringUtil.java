@@ -104,7 +104,7 @@ public class StringUtil extends StringUtils {
      */
     public static List<String> splitToStringList(String input, String regex) {
         List<String> result = new ArrayList<>();
-        if (input != null && !input.equals("")) {
+        if (StringUtils.isNotEmpty(input)) {
             String[] strArray = input.split(regex);
 
             for (String x : strArray) {
@@ -119,7 +119,7 @@ public class StringUtil extends StringUtils {
      */
     public static List<Long> splitToLongList(String input, String regex) {
         List<Long> result = new ArrayList<>();
-        if (input != null && !input.equals("")) {
+        if (StringUtils.isNotEmpty(input)) {
             String[] strArray = input.split(regex);
 
             for (String x : strArray) {
