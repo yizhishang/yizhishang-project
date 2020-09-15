@@ -32,8 +32,8 @@ import java.util.Map;
 @Slf4j
 public class HttpsUtils implements ProtocolSocketFactory {
 
-    private SSLContext sslcontext = null;
-    
+    private static volatile SSLContext sslcontext = null;
+
     private static final String HTTPS = "https";
 
     public static String sendGetRequest(String url) {
@@ -65,7 +65,6 @@ public class HttpsUtils implements ProtocolSocketFactory {
             }
         }
 
-
         try {
             HttpClient client = new HttpClient();
             client.executeMethod(post);
@@ -78,7 +77,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
         return "error";
     }
 
-    private SSLContext createSSLContext() {
+    private static SSLContext createSSLContext() {
         SSLContext sslContext = null;
         try {
             sslContext = SSLContext.getInstance("SSL");
@@ -89,11 +88,15 @@ public class HttpsUtils implements ProtocolSocketFactory {
         return sslContext;
     }
 
-    private SSLContext getSSLContext() {
-        if (null == this.sslcontext) {
-            this.sslcontext = createSSLContext();
+    private static SSLContext getSSLContext() {
+        if (sslcontext == null) {
+            synchronized (HttpUtils.class) {
+                if (sslcontext == null) {
+                    sslcontext = createSSLContext();
+                }
+            }
         }
-        return this.sslcontext;
+        return sslcontext;
     }
 
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
@@ -121,10 +124,10 @@ public class HttpsUtils implements ProtocolSocketFactory {
             return socketfactory.createSocket(host, port, localAddress, localPort);
         }
         try (Socket socket = socketfactory.createSocket()) {
-            SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
-            SocketAddress remoteaddr = new InetSocketAddress(host, port);
-            socket.bind(localaddr);
-            socket.connect(remoteaddr, timeout);
+            SocketAddress localAddr = new InetSocketAddress(localAddress, localPort);
+            SocketAddress remoteAddr = new InetSocketAddress(host, port);
+            socket.bind(localAddr);
+            socket.connect(remoteAddr, timeout);
             return socket;
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,7 +150,6 @@ public class HttpsUtils implements ProtocolSocketFactory {
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[]{};
         }
-
 
     }
 }

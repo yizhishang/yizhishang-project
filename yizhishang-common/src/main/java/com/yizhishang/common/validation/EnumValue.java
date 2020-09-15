@@ -1,5 +1,6 @@
 package com.yizhishang.common.validation;
 
+import com.yizhishang.common.exception.ServiceException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,10 +80,10 @@ public @interface EnumValue {
             try {
                 Method method = enumClass.getMethod(enumMethod, valueClass);
                 if (!Boolean.TYPE.equals(method.getReturnType())) {
-                    throw new RuntimeException(String.format("%s method return is not boolean type in the %s class", enumMethod, enumClass));
+                    throw new ServiceException(String.format("%s method return is not boolean type in the %s class", enumMethod, enumClass));
                 }
                 if (!Modifier.isStatic(method.getModifiers())) {
-                    throw new RuntimeException(String.format("%s method return is not static method in the %s class", enumMethod, enumClass));
+                    throw new ServiceException(String.format("%s method return is not static method in the %s class", enumMethod, enumClass));
                 }
 
                 Boolean result = (Boolean) method.invoke(null, value);
