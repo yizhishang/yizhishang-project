@@ -228,15 +228,13 @@ public class HttpUtils {
      *
      * @throws IOException
      */
-    private static HttpResult execute(CloseableHttpClient httpClient, HttpRequestBase request) throws IOException {
-        HttpResult result;
-        CloseableHttpResponse response = httpClient.execute(request);
-        try {
-            result = getResponseResult(response);
-        } finally {
-            response.close();
+    private static HttpResult execute(CloseableHttpClient httpClient, HttpRequestBase request) {
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            return getResponseResult(response);
+        } catch (IOException e) {
+            logger.error("获取请求响应结果异常", e);
         }
-        return result;
+        return null;
     }
 
     /**
