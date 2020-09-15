@@ -51,7 +51,7 @@ public class ValidateUtil<T> {
             return true;
         }
         if (o instanceof String) {
-            if (StringUtil.isBlank(o.toString())) {
+            if (StringUtils.isBlank(o.toString())) {
                 return true;
             }
         } else if (o instanceof List) {

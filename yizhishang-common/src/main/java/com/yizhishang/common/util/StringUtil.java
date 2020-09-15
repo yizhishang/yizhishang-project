@@ -340,10 +340,10 @@ public class StringUtil extends StringUtils {
             ArrayList list = new ArrayList();
             String regex;
             Integer flag;
-            Iterator var4 = getXssPatternList().iterator();
+            Iterator<Object[]> iterator = getXssPatternList().iterator();
 
-            while (var4.hasNext()) {
-                Object[] arr = (Object[]) var4.next();
+            while (iterator.hasNext()) {
+                Object[] arr = iterator.next();
 
                 for (int i = 0; i < arr.length; ++i) {
                     regex = (String) arr[0];
@@ -358,42 +358,40 @@ public class StringUtil extends StringUtils {
     }
 
     public static String cleanXSS(String value) {
-        if (isValid(value)) {
-            if (value.contains("\\x")) {
-                value = value.replace("\\\\x", "%");
-            }
-
-            if (value.contains("%")) {
-                try {
-                    value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
-                } catch (IllegalArgumentException e) {
-                    log.error("value-->{}", value);
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException var4) {
-                    var4.printStackTrace();
-                }
-            }
-
-            Matcher matcher;
-            Iterator<Pattern> iterator = getPatterns().iterator();
-
-            while (iterator.hasNext()) {
-                Pattern pattern = iterator.next();
-                matcher = pattern.matcher(value);
-                if (matcher.find()) {
-                    value = matcher.replaceAll("");
-                }
-            }
-
-            value = value.replace("<", "& lt;").replace(">", "& gt;");
-            value = value.replace("\\(", "& #40;").replace("\\)", "& #41;");
-            value = value.replace("\'", "& #39;");
-            value = value.replace("eval\\((.*)\\)", "");
-            value = value.replace("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-            value = value.replace("script", "");
-            value = StringUtils.replace(value, "'", "''");
+        if (isNotValid(value)) {
+            return value;
+        }
+        if (value.contains("\\x")) {
+            value = value.replace("\\\\x", "%");
         }
 
+        if (value.contains("%")) {
+            try {
+                value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
+            } catch (IllegalArgumentException | UnsupportedEncodingException e) {
+                log.error("value-->{}", value);
+                e.printStackTrace();
+            }
+        }
+
+        Matcher matcher;
+        Iterator<Pattern> iterator = getPatterns().iterator();
+
+        while (iterator.hasNext()) {
+            Pattern pattern = iterator.next();
+            matcher = pattern.matcher(value);
+            if (matcher.find()) {
+                value = matcher.replaceAll("");
+            }
+        }
+
+        value = value.replace("<", "& lt;").replace(">", "& gt;");
+        value = value.replace("\\(", "& #40;").replace("\\)", "& #41;");
+        value = value.replace("\'", "& #39;");
+        value = value.replace("eval\\((.*)\\)", "");
+        value = value.replace("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+        value = value.replace("script", "");
+        value = StringUtils.replace(value, "'", "''");
         return value;
     }
 
@@ -425,34 +423,34 @@ public class StringUtil extends StringUtils {
         return !Pattern.compile(regEx).matcher(source).matches();
     }
 
-    public static Map<String, String> validPasswordWithMsg(String source) {
-        Map<String, String> map = Maps.newHashMap();
+    public static Map<String, Object> validPasswordWithMsg(String source) {
+
         if (isNotValid(source)) {
-            map.put("result", "false");
-            map.put("message", "密码不能为空");
-            return map;
+            return createResultMap("密码不能为空", false);
         }
         if (source.length() < 8 || source.length() > 20) {
-            map.put("result", "false");
-            map.put("message", "密码长度在8-20位之间");
-            return map;
+            return createResultMap("密码长度在8-20位之间", false);
         }
 
         String regEx = "^[A-Za-z]+$";
         if (Pattern.compile(regEx).matcher(source).matches()) {
             //纯字母
-            map.put("result", "false");
-            map.put("message", "密码不能全都是字母");
-            return map;
+            return createResultMap("密码不能全都是字母", false);
         }
         regEx = "^[0-9]+$";
         if (Pattern.compile(regEx).matcher(source).matches()) {
             //纯数字
-            map.put("result", "false");
-            map.put("message", "密码不能全都是数字");
-            return map;
+            return createResultMap("密码不能全都是数字", false);
         }
-        map.put("result", "true");
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("result", true);
+        return map;
+    }
+
+    private static Map<String, Object> createResultMap(String message, boolean result) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("message", message);
+        map.put("result", result);
         return map;
     }
 
@@ -474,12 +472,6 @@ public class StringUtil extends StringUtils {
         Pattern p = Pattern.compile(reg);
         Matcher matcher = p.matcher(ip);
         return matcher.find();
-    }
-
-    public static void main(String[] args) {
-        String phoneNum = "19088840046";
-        System.out.println(phoneNum.replace("8", "s"));
-        System.out.println(phoneNum.replace("8", "s"));
     }
 
 }
