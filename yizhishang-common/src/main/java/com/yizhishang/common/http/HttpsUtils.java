@@ -36,45 +36,15 @@ public class HttpsUtils implements ProtocolSocketFactory {
 
     private static final String HTTPS = "https";
 
-    public static String sendGetRequest(String url) {
-        String result;
-        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
-        Protocol.registerProtocol(HTTPS, https);
-        GetMethod get = new GetMethod(url);
-        HttpClient client = new HttpClient();
-        try {
-            client.executeMethod(get);
-            result = get.getResponseBodyAsString();
-            Protocol.unregisterProtocol(HTTPS);
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return "error";
-    }
-
-    public static String sendPostRequest(String url, Map<String, String> params) {
-        String result = "";
-        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
-        Protocol.registerProtocol(HTTPS, https);
-        PostMethod post = new PostMethod(url);
-        if (null != params && !params.isEmpty()) {
-            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, StandardCharsets.UTF_8);
-            for (Map.Entry<String, String> entry : params.entrySet()) {
-                post.addParameter(entry.getKey(), entry.getValue());
+    private static SSLContext getSSLContext() {
+        if (sslcontext == null) {
+            synchronized (HttpUtils.class) {
+                if (sslcontext == null) {
+                    sslcontext = createSSLContext();
+                }
             }
         }
-
-        try {
-            HttpClient client = new HttpClient();
-            client.executeMethod(post);
-            result = post.getResponseBodyAsString();
-            Protocol.unregisterProtocol(HTTPS);
-            return result;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-        }
-        return "error";
+        return sslcontext;
     }
 
     private static SSLContext createSSLContext() {
@@ -88,15 +58,43 @@ public class HttpsUtils implements ProtocolSocketFactory {
         return sslContext;
     }
 
-    private static SSLContext getSSLContext() {
-        if (sslcontext == null) {
-            synchronized (HttpUtils.class) {
-                if (sslcontext == null) {
-                    sslcontext = createSSLContext();
-                }
+    public static String sendGetRequest(String url) {
+        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
+        Protocol.registerProtocol(HTTPS, https);
+        GetMethod get = new GetMethod(url);
+        HttpClient client = new HttpClient();
+        try {
+            client.executeMethod(get);
+            String result = get.getResponseBodyAsString();
+            Protocol.unregisterProtocol(HTTPS);
+            return result;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return "error";
+    }
+
+    public static String sendPostRequest(String url, Map<String, String> params) {
+        Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
+        Protocol.registerProtocol(HTTPS, https);
+        PostMethod post = new PostMethod(url);
+        if (null != params && !params.isEmpty()) {
+            post.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, StandardCharsets.UTF_8);
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                post.addParameter(entry.getKey(), entry.getValue());
             }
         }
-        return sslcontext;
+
+        try {
+            HttpClient client = new HttpClient();
+            client.executeMethod(post);
+            String result = post.getResponseBodyAsString();
+            Protocol.unregisterProtocol(HTTPS);
+            return result;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+        return "error";
     }
 
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
@@ -129,11 +127,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
             socket.bind(localAddr);
             socket.connect(remoteAddr, timeout);
             return socket;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
-
     }
 
     private static class TrustAnyTrustManager implements X509TrustManager {
