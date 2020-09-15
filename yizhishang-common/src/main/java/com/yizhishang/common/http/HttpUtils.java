@@ -67,24 +67,14 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doGet(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = null;
-        try {
-            httpClient = HttpClients.createDefault();
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             url = contactUrl(url, params);
             HttpGet httpGet = new HttpGet(url);
             return executeRequest(httpClient, httpGet);
         } catch (IOException e) {
-            logger.error("GET请求异常：" + url, e);
-            return null;
-        } finally {
-            try {
-                if (httpClient != null) {
-                    httpClient.close();
-                }
-            } catch (IOException e) {
-                logger.error("GET请求连接关闭异常：" + url, e);
-            }
+            logger.error(String.format("GET请求异常： %s", url), e);
         }
+        return null;
     }
 
     /**
@@ -95,7 +85,6 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doPost(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpPost httpPost = new HttpPost(url);
         List<NameValuePair> pairs = new ArrayList<>();
         Iterator<Map.Entry<String, String>> iterator = params.entrySet().iterator();
@@ -105,19 +94,13 @@ public class HttpUtils {
             String value = e.getValue();
             pairs.add(new BasicNameValuePair(key, value));
         }
-        HttpResult result = null;
-        try {
-            result = executeRequest(httpClient, httpPost, pairs);
+
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            return executeRequest(httpClient, httpPost, pairs);
         } catch (IOException e) {
-            logger.error("POST请求异常：" + url, e);
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                logger.error("POST请求连接关闭异常：" + url, e);
-            }
+            logger.error(String.format("POST请求异常： %s", url), e);
         }
-        return result;
+        return null;
     }
 
     /**
@@ -128,22 +111,14 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doPost2(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        url = contactUrl(url, params);
-        HttpPost httpPost = new HttpPost(url);
-        HttpResult result = null;
-        try {
-            result = executeRequest(httpClient, httpPost);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            url = contactUrl(url, params);
+            HttpPost httpPost = new HttpPost(url);
+            return executeRequest(httpClient, httpPost);
         } catch (IOException e) {
-            logger.error("POST请求异常：" + url, e);
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                logger.error("POST请求连接关闭异常：" + url, e);
-            }
+            logger.error(String.format("POST请求连接异常： %s", url), e);
         }
-        return result;
+        return null;
     }
 
     /**
@@ -154,22 +129,14 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doPut(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        url = contactUrl(url, params);
-        HttpPut httpPut = new HttpPut(url);
-        HttpResult result = null;
-        try {
-            result = executeRequest(httpClient, httpPut);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            url = contactUrl(url, params);
+            HttpPut httpPut = new HttpPut(url);
+            return executeRequest(httpClient, httpPut);
         } catch (IOException e) {
-            logger.error("PUT请求异常：" + url, e);
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                logger.error("PUT请求连接关闭异常：" + url, e);
-            }
+            logger.error(String.format("PUT请求异常： %s", url), e);
         }
-        return result;
+        return null;
     }
 
     /**
@@ -180,22 +147,14 @@ public class HttpUtils {
      * @return http响应状态及json结果
      */
     public static HttpResult doDelete(String url, Map<String, String> params) {
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        url = contactUrl(url, params);
-        HttpDelete httpDelete = new HttpDelete(url);
-        HttpResult result = null;
-        try {
-            result = executeRequest(httpClient, httpDelete);
+        try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
+            url = contactUrl(url, params);
+            HttpDelete httpDelete = new HttpDelete(url);
+            return executeRequest(httpClient, httpDelete);
         } catch (IOException e) {
-            logger.error("DELETE请求异常：" + url, e);
-        } finally {
-            try {
-                httpClient.close();
-            } catch (IOException e) {
-                logger.error("DELETE请求连接关闭异常：" + url, e);
-            }
+            logger.error(String.format("DELETE请求异常： %s", url), e);
         }
-        return result;
+        return null;
     }
 
     /**
