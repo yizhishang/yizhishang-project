@@ -578,14 +578,13 @@ public class NetworkUtil {
             // 省份
             String region = (temp[5].split(":"))[1].replaceAll("\"", "");
             region = decodeUnicode(region);
-
+            // 国家
             String country = "";
             // 地区
             String area = "";
-            // String region = "";
             // 市区
             String city = "";
-            // 国家
+            // 县
             String county = "";
             // ISP公司
             String isp = "";
@@ -646,22 +645,23 @@ public class NetworkUtil {
             connection.connect();// 打开连接端口
 
             // 打开输出流往对端服务器写数据
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            try(DataOutputStream out = new DataOutputStream(connection.getOutputStream())){
+                // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
+                out.writeBytes(content);
+                out.flush();// 刷新
+            }
 
-            // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
-            out.writeBytes(content);
-            out.flush();// 刷新
-            out.close();
-
-            // 往对端写完数据对端服务器返回数据
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));
             // ,以BufferedReader流来读取
             StringBuffer buffer = new StringBuffer();
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
+
+            // 往对端写完数据对端服务器返回数据
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding))){
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
             }
-            reader.close();
+
             return buffer.toString();
         } catch (IOException e) {
             e.printStackTrace();
