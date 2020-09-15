@@ -107,10 +107,7 @@ public class StringUtil extends StringUtils {
         List<String> result = new ArrayList<>();
         if (StringUtils.isNotEmpty(input)) {
             String[] strArray = input.split(regex);
-
-            for (String x : strArray) {
-                result.add(x);
-            }
+            result.addAll(Arrays.asList(strArray));
         }
         return result;
     }
@@ -363,7 +360,7 @@ public class StringUtil extends StringUtils {
     public static String cleanXSS(String value) {
         if (isValid(value)) {
             if (value.contains("\\x")) {
-                value = value.replaceAll("\\\\x", "%");
+                value = value.replace("\\\\x", "%");
             }
 
             if (value.contains("%")) {
@@ -378,22 +375,22 @@ public class StringUtil extends StringUtils {
             }
 
             Matcher matcher;
-            Iterator var2 = getPatterns().iterator();
+            Iterator<Pattern> iterator = getPatterns().iterator();
 
-            while (var2.hasNext()) {
-                Pattern pattern = (Pattern) var2.next();
+            while (iterator.hasNext()) {
+                Pattern pattern = iterator.next();
                 matcher = pattern.matcher(value);
                 if (matcher.find()) {
                     value = matcher.replaceAll("");
                 }
             }
 
-            value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
-            value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
-            value = value.replaceAll("\'", "& #39;");
-            value = value.replaceAll("eval\\((.*)\\)", "");
-            value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-            value = value.replaceAll("script", "");
+            value = value.replace("<", "& lt;").replace(">", "& gt;");
+            value = value.replace("\\(", "& #40;").replace("\\)", "& #41;");
+            value = value.replace("\'", "& #39;");
+            value = value.replace("eval\\((.*)\\)", "");
+            value = value.replace("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+            value = value.replace("script", "");
             value = StringUtils.replace(value, "'", "''");
         }
 
@@ -481,7 +478,8 @@ public class StringUtil extends StringUtils {
 
     public static void main(String[] args) {
         String phoneNum = "19088840046";
-        System.out.println(phoneNum.matches(RegexpEnum.MOBILE_PHONE.getRegexp()));
+        System.out.println(phoneNum.replace("8", "s"));
+        System.out.println(phoneNum.replace("8", "s"));
     }
 
 }
