@@ -33,6 +33,8 @@ public class NetworkUtil {
      */
     private static final String IOS_REGEX = "(?=iPhone)(?=\\s*)(?=[0-9_]*)[\\w_\\s]+";
 
+    private static final String ANDROID = "Android";
+
     /**
      * 匹配安卓系统及其版本的正则表达式
      */
@@ -152,27 +154,21 @@ public class NetworkUtil {
             }
 
             // 微信浏览器
-            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage())) {
-
-                if (null != temp && temp.length == 2) {
-                    broswer = entry.getKey();
-                    broswerVersion = entry.getValue();
-                    break;
-                }
+            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage()) && null != temp && temp.length == 2) {
+                broswer = entry.getKey();
+                broswerVersion = entry.getValue();
+                break;
             }
 
             // qq浏览器
-            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage())) {
+            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage()) && null != temp && temp.length == 2) {
 
-                if (null != temp && temp.length == 2) {
                     broswer = entry.getKey();
                     broswerVersion = entry.getValue();
                     break;
-                }
             }
 
-            // 易信APP浏览器
-            if (agent.contains("YiXin")) {
+            if (agent.contains(BrowserEnum.YIXIN.getMessage())) {
                 broswer = entry.getKey();
                 broswerVersion = entry.getValue();
                 break;
@@ -396,12 +392,13 @@ public class NetworkUtil {
 
             if (osAndDeviceStr.contains("Linux")) {
                 os = "Linux";
-                if (osAndDeviceStr.contains("Android")) {
+
+                if (osAndDeviceStr.contains(ANDROID)) {
                     String matchResult = RegexUtil.findMatchContent(ANDROID_REGEX, osAndDeviceStr);
-                    if (!StringUtils.isEmpty(matchResult) && matchResult.contains("Android")) {
+                    if (!StringUtils.isEmpty(matchResult) && matchResult.contains(ANDROID)) {
                         userOS = matchResult;
                     } else {
-                        userOS = "Android";
+                        userOS = ANDROID;
                     }
                 }
 
@@ -645,7 +642,7 @@ public class NetworkUtil {
             connection.connect();// 打开连接端口
 
             // 打开输出流往对端服务器写数据
-            try(DataOutputStream out = new DataOutputStream(connection.getOutputStream())){
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
                 // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
                 out.writeBytes(content);
                 out.flush();// 刷新
@@ -655,7 +652,7 @@ public class NetworkUtil {
             StringBuffer buffer = new StringBuffer();
 
             // 往对端写完数据对端服务器返回数据
-            try(BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding))){
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding))) {
                 String line = "";
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);

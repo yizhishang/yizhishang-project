@@ -198,7 +198,7 @@ public class HttpUtils {
     /**
      * 执行GET/PUT/DELETE请求
      */
-    private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpRequestBase request) throws IOException {
+    private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpRequestBase request) {
         request.setConfig(REQUEST_CONFIG);
         return execute(httpClient, request);
     }
@@ -206,7 +206,7 @@ public class HttpUtils {
     /**
      * 执行POST请求
      */
-    private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpEntityEnclosingRequestBase request, List<NameValuePair> pairs) throws IOException {
+    private static HttpResult executeRequest(CloseableHttpClient httpClient, HttpEntityEnclosingRequestBase request, List<NameValuePair> pairs) {
         request.setConfig(REQUEST_CONFIG);
         StringEntity entity;
 //        if (pairs.size() == 1 && (pairs.get(0).getName().equals("json") || pairs.get(0).getName().equals("xml"))) {

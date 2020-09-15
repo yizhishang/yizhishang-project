@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import com.google.common.collect.Maps;
+import com.yizhishang.common.enums.RegexpEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -462,8 +463,7 @@ public class StringUtil extends StringUtils {
         if (isNotValid(phoneNum)) {
             return false;
         }
-        String regexp = "^1[3|4|5|7|8][0-9]\\d{8}$";
-        return phoneNum.matches(regexp);
+        return phoneNum.matches(RegexpEnum.MOBILE_PHONE.getRegexp());
     }
 
     /**
@@ -478,4 +478,10 @@ public class StringUtil extends StringUtils {
         Matcher matcher = p.matcher(ip);
         return matcher.find();
     }
+
+    public static void main(String[] args) {
+        String phoneNum = "19088840046";
+        System.out.println(phoneNum.matches(RegexpEnum.MOBILE_PHONE.getRegexp()));
+    }
+
 }

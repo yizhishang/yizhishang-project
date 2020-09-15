@@ -14,6 +14,8 @@ import java.util.ArrayList;
  */
 public class JacksonUtil {
 
+    private static final String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+
     private JacksonUtil(){
 
     }
@@ -25,7 +27,7 @@ public class JacksonUtil {
         //设置字段可以不用双引号包括
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //设置时间格式
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat(DATE_TIME));
         try {
             return mapper.writeValueAsString(obj);
         } catch (IOException e) {
