@@ -1,5 +1,7 @@
 package com.yizhishang.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author yizhishang
  */
+@Slf4j
 public class MDUtil {
 
     private static MessageDigest messageDigest = null;
@@ -57,7 +60,7 @@ public class MDUtil {
                 messageDigest.update(data.getBytes(StandardCharsets.UTF_8));
                 return encodeHex(messageDigest.digest());
             } catch (NoSuchAlgorithmException e) {
-                System.err.println("Failed to load the MD5 MessageDigest. We will be unable to function normally.");
+                log.error("Failed to load the MD5 MessageDigest. We will be unable to function normally.");
                 e.printStackTrace();
             }
         }

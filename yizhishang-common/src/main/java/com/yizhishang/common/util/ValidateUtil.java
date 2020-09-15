@@ -1,5 +1,7 @@
 package com.yizhishang.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
@@ -27,7 +29,9 @@ public class ValidateUtil<T> {
             return null;
         }
         for (ConstraintViolation<T> violation : violations) {
-            return violation.getMessage();
+            if (StringUtils.isNotEmpty(violation.getMessage())) {
+                return violation.getMessage();
+            }
         }
         return null;
     }

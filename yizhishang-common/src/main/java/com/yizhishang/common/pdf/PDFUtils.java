@@ -213,7 +213,7 @@ public class PDFUtils {
                     }
 
                 } else if (value instanceof Boolean) {
-                    textValue = (Boolean) value ? "是" : "否";
+                    textValue = (boolean) value ? "是" : "否";
                 } else if (value instanceof Date) {
                     Date date = (Date) value;
                     FastDateFormat fastDateFormat = FastDateFormat.getInstance(pattern);

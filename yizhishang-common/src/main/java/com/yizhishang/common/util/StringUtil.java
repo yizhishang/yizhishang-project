@@ -376,7 +376,7 @@ public class StringUtil extends StringUtils {
                 }
             }
 
-            Matcher matcher = null;
+            Matcher matcher;
             Iterator var2 = getPatterns().iterator();
 
             while (var2.hasNext()) {

@@ -37,6 +37,10 @@ public class NetworkUtil {
      */
     private static final String ANDROID_REGEX = "(?=Android)(?=[0-9]*)(?=\\s*)(?=\\.*)[A-Za-z0-9_\\s\\.]+";
 
+    private NetworkUtil() {
+
+    }
+
     /**
      * 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址;
      *

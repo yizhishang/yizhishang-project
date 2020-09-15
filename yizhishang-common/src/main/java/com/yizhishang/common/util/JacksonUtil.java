@@ -14,6 +14,10 @@ import java.util.ArrayList;
  */
 public class JacksonUtil {
 
+    private JacksonUtil(){
+
+    }
+
     public static String objectToJson(Object obj) {
         ObjectMapper mapper = new ObjectMapper();
         //设置可用单引号

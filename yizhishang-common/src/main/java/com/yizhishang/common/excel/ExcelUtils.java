@@ -1,13 +1,11 @@
 package com.yizhishang.common.excel;
 
+import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import javax.servlet.ServletOutputStream;
@@ -39,7 +37,7 @@ public class ExcelUtils<T> {
      * @throws FileNotFoundException 文件不存在异常
      * @throws IOException           IO异常
      */
-    public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws FileNotFoundException, IOException {
+    public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws IOException {
         // 创建并获取工作簿对象
         Workbook wb = getWorkBook(sheetName, title, data);
         // 写入到文件
@@ -63,7 +61,7 @@ public class ExcelUtils<T> {
      * @return Workbook工作簿
      * @throws IOException IO异常
      */
-    private static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws IOException {
+    private static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) {
 
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();
@@ -79,7 +77,7 @@ public class ExcelUtils<T> {
         // 字体样式
         Font font = wb.createFont();
         // 粗体
-        font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         titleStyle.setFont(font);
         // 水平居中
         titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
@@ -189,7 +187,7 @@ public class ExcelUtils<T> {
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return wb;
         }
 
@@ -358,7 +356,7 @@ public class ExcelUtils<T> {
             titles[i] = title.getCell(i).getStringCellValue();
         }
 
-        List<T> list = new ArrayList<T>();
+        List<T> list = Lists.newArrayList();
 
         int rowIndex = 0;
         int columnCount = titles.length;
@@ -405,25 +403,25 @@ public class ExcelUtils<T> {
         Object o;
 
         switch (cell.getCellType()) {
-            case XSSFCell.CELL_TYPE_BOOLEAN:
+            case Cell.CELL_TYPE_BOOLEAN:
                 o = cell.getBooleanCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_NUMERIC:
+            case Cell.CELL_TYPE_NUMERIC:
                 o = cell.getNumericCellValue();
-                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                if (DateUtil.isCellDateFormatted(cell)) {
                     o = DateUtil.getJavaDate(cell.getNumericCellValue());
                 }
                 break;
-            case XSSFCell.CELL_TYPE_STRING:
+            case Cell.CELL_TYPE_STRING:
                 o = cell.getStringCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_ERROR:
+            case Cell.CELL_TYPE_ERROR:
                 o = cell.getErrorCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_BLANK:
+            case Cell.CELL_TYPE_BLANK:
                 o = null;
                 break;
-            case XSSFCell.CELL_TYPE_FORMULA:
+            case Cell.CELL_TYPE_FORMULA:
                 o = cell.getCellFormula();
                 break;
             default:
@@ -439,7 +437,7 @@ public class ExcelUtils<T> {
             for (Field field : fields) {
                 field.setAccessible(true);
                 if (field.getName().equals(key)) {
-                    Boolean bool = true;
+                    boolean bool = true;
                     Map<String, String> map = null;
                     if (edf == null) {
                         bool = false;
