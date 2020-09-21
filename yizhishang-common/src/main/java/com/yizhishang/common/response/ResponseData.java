@@ -1,9 +1,12 @@
 package com.yizhishang.common.response;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -51,7 +54,18 @@ public class ResponseData<T> {
         }
     }
 
-    public ResponseData() {
+    protected ResponseData() {
+        this(true, DEFAULT_SUCCESS_CODE, "default.success.message");
+    }
+
+    public ResponseData(T data) {
+        this(true, DEFAULT_SUCCESS_CODE, "default.success.message");
+        this.data = data;
+    }
+
+    public ResponseData(Boolean success, Integer code, String messageKey, T data) {
+        this(success, code, messageKey);
+        this.data = data;
     }
 
     public ResponseData(Boolean success, Integer code, String messageKey) {
@@ -68,11 +82,6 @@ public class ResponseData<T> {
                 this.enMessage = messageKey;
             }
         }
-    }
-
-    public ResponseData(Boolean success, Integer code, String messageKey, T data) {
-        this(success, code, messageKey);
-        this.data = data;
     }
 
     public static SuccessResponseData success() {
@@ -101,6 +110,14 @@ public class ResponseData<T> {
 
     public static ErrorResponseData error(Integer code, String messageKey, String exceptionClass) {
         return new ErrorResponseData(code, messageKey, exceptionClass);
+    }
+
+    public static ResponseListData successList(List<?> data) {
+        return new ResponseListData(data);
+    }
+
+    public static ResponsePageData successPage(IPage<?> data) {
+        return new ResponsePageData((Page) data);
     }
 
     public Boolean getSuccess() {

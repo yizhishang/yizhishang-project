@@ -51,33 +51,52 @@ public class ValidateUtil<T> {
             return true;
         }
         if (o instanceof String) {
-            if (StringUtils.isBlank(o.toString())) {
+            if ("".equals(o.toString().trim())) {
                 return true;
             }
-        } else if (o instanceof List) {
-            if (((List) o).isEmpty()) {
+            return false;
+        }
+
+        if (o instanceof List) {
+            if (((List) o).size() == 0) {
                 return true;
             }
-        } else if (o instanceof Map) {
+            return false;
+        }
+
+        if (o instanceof Map) {
             if (((Map) o).size() == 0) {
                 return true;
             }
-        } else if (o instanceof Set) {
-            if (((Set) o).isEmpty()) {
+            return false;
+        }
+
+        if (o instanceof Set) {
+            if (((Set) o).size() == 0) {
                 return true;
             }
-        } else if (o instanceof Object[]) {
+            return false;
+        }
+
+        if (o instanceof Object[]) {
             if (((Object[]) o).length == 0) {
                 return true;
             }
-        } else if (o instanceof int[]) {
+            return false;
+        }
+
+        if (o instanceof int[]) {
             if (((int[]) o).length == 0) {
                 return true;
             }
-        } else if (o instanceof long[]) {
+            return false;
+        }
+
+        if (o instanceof long[]) {
             if (((long[]) o).length == 0) {
                 return true;
             }
+            return false;
         }
         return false;
     }

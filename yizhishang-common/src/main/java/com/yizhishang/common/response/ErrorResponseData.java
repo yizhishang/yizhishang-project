@@ -4,7 +4,7 @@ package com.yizhishang.common.response;
  * @author yizhishang
  */
 public class ErrorResponseData extends ResponseData {
-    private String exceptionClazz;
+    private String exceptionClass;
 
     public ErrorResponseData(String messageKey) {
         super(false, ResponseData.DEFAULT_ERROR_CODE, messageKey, (Object) null);
@@ -18,12 +18,12 @@ public class ErrorResponseData extends ResponseData {
         super(false, code, messageKey, object);
     }
 
-    public ErrorResponseData(Integer code, String messageKey, String exceptionClazz) {
-        super(false, code, messageKey, exceptionClazz);
+    public ErrorResponseData(Integer code, String messageKey, String exceptionClass) {
+        super(false, code, messageKey, exceptionClass);
     }
 
-    public String getExceptionClazz() {
-        return this.exceptionClazz;
+    public String getExceptionClass() {
+        return this.exceptionClass;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class ErrorResponseData extends ResponseData {
         if (!other.canEqual(this)) {
             return false;
         }
-        Object otherExceptionClazz = other.getExceptionClazz();
-        if (exceptionClazz == null) {
+        Object otherExceptionClazz = other.getExceptionClass();
+        if (exceptionClass == null) {
             if (otherExceptionClazz != null) {
                 return false;
             }
-        } else if (!exceptionClazz.equals(otherExceptionClazz)) {
+        } else if (!exceptionClass.equals(otherExceptionClazz)) {
             return false;
         }
 
@@ -56,11 +56,11 @@ public class ErrorResponseData extends ResponseData {
 
     @Override
     public int hashCode() {
-        return 59 + (exceptionClazz == null ? 43 : exceptionClazz.hashCode());
+        return 59 + (exceptionClass == null ? 43 : exceptionClass.hashCode());
     }
 
     @Override
     public String toString() {
-        return "ErrorResponseData(exceptionClazz=" + this.getExceptionClazz() + ")";
+        return "ErrorResponseData(exceptionClazz=" + this.getExceptionClass() + ")";
     }
 }

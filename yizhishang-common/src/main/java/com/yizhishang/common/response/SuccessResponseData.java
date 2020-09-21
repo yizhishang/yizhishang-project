@@ -5,11 +5,11 @@ package com.yizhishang.common.response;
  */
 public class SuccessResponseData extends ResponseData {
     public SuccessResponseData() {
-        super(true, DEFAULT_SUCCESS_CODE, "default.success.message", (Object) null);
+        super();
     }
 
     public SuccessResponseData(Object object) {
-        super(true, DEFAULT_SUCCESS_CODE, "default.success.message", object);
+        super(object);
     }
 
     public SuccessResponseData(Integer code, String messageKey, Object object) {
