@@ -2,6 +2,7 @@ package com.yizhishang.common.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -10,6 +11,7 @@ import java.util.ResourceBundle;
 /**
  * @author yizhishang
  */
+@Slf4j
 @ApiModel("通用Response对象")
 public class ResponseData<T> {
 
@@ -36,6 +38,19 @@ public class ResponseData<T> {
     @ApiModelProperty("响应对象")
     private T data;
 
+    private static ResourceBundle zh;
+
+    private static ResourceBundle en;
+
+    static {
+        try {
+            zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
+            en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
+        } catch (MissingResourceException e) {
+            log.error("ResponseData初始化失败", e);
+        }
+    }
+
     public ResponseData() {
     }
 
@@ -45,11 +60,10 @@ public class ResponseData<T> {
         this.messageKey = messageKey;
         if (messageKey != null) {
             try {
-                ResourceBundle zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
-                ResourceBundle en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
                 this.zhMessage = zh.getString(messageKey);
                 this.enMessage = en.getString(messageKey);
-            } catch (MissingResourceException var8) {
+            } catch (Exception e) {
+                log.error("ResponseData构造方法失败", e);
                 this.zhMessage = messageKey;
                 this.enMessage = messageKey;
             }
