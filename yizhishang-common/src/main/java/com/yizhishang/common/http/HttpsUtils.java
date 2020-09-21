@@ -53,7 +53,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
             sslContext = SSLContext.getInstance("SSL");
             sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
+            log.error("createSSLContext方法报错", e);
         }
         return sslContext;
     }
@@ -69,7 +69,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
             Protocol.unregisterProtocol(HTTPS);
             return result;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("sendGetRequest方法报错", e);
         }
         return "error";
     }

@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -10,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 
 /**
@@ -18,13 +20,13 @@ import java.util.Map;
  * @version 1.0
  * @Date 2018年01月12日 09时23分
  */
+@Slf4j
 public class CookieUtils {
 
     public static final String SPLIT = "|";
     public static final String SAFE_COOKIE_NAME = "gspKey";
     private static String privateEncryptKey = "*scxn%iz53F0Z$87rky6&gnuecH%mzv7Jsglt0sK2S2tOa4pQ$0*x@i6Q5VYhwWoJK2LC#U%4Kwau^kbBCIC188EyYY!*KEvP^a";
     private static String domainSign = "_gsp_gr158_";
-
 
     private CookieUtils() {
 
@@ -33,7 +35,7 @@ public class CookieUtils {
     /**
      * 加密(对源字符串加密)
      */
-    public static String encrypt(String cookieValue) {
+    public static String encrypt(String cookieValue) throws NoSuchAlgorithmException {
         if (!StringUtil.isValid(cookieValue)) {
             return "";
         }
@@ -48,14 +50,14 @@ public class CookieUtils {
      * @version v 1.0
      * @Date 2017-11-16 15:50:31
      */
-    public static boolean validate(String cookieValue, String encryptCookieValue) {
+    public static boolean validate(String cookieValue, String encryptCookieValue) throws NoSuchAlgorithmException {
         if (!StringUtil.isValid(cookieValue) || !StringUtil.isValid(encryptCookieValue)) {
             return false;
         }
         return encryptCookieValue.equals(md5Encrypt(cookieValue));
     }
 
-    private static String md5Encrypt(String src) {
+    private static String md5Encrypt(String src) throws NoSuchAlgorithmException {
         String result = MDUtil.md5Encrypt(src + domainSign + privateEncryptKey);
         return MDUtil.md5Encrypt(result);
     }
@@ -74,19 +76,20 @@ public class CookieUtils {
 
     public static Cookie setCookie(boolean secure, String name, String value, String domain, String path, Integer maxAge) {
         try {
-            Cookie e = new Cookie(name, StringUtils.isNotEmpty(value) ? URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8)) : null);
-            e.setSecure(secure);
-            e.setPath(StringUtils.isEmpty(domain) ? "/" : path);
-            if (StringUtils.isNotEmpty(domain)) {
-                e.setDomain(domain);
-            }
-
-            e.setMaxAge(maxAge == null ? -1 : maxAge.intValue());
-            return e;
-        } catch (UnsupportedEncodingException var7) {
-            var7.printStackTrace();
+            value = StringUtils.isNotEmpty(value) ? URLEncoder.encode(value, String.valueOf(StandardCharsets.UTF_8)) : null;
+        } catch (UnsupportedEncodingException e) {
+            log.error("方法报错", e);
             return null;
         }
+        Cookie e = new Cookie(name, value);
+        e.setSecure(secure);
+        e.setPath(StringUtils.isEmpty(domain) ? "/" : path);
+        if (StringUtils.isNotEmpty(domain)) {
+            e.setDomain(domain);
+        }
+
+        e.setMaxAge(maxAge == null ? -1 : maxAge.intValue());
+        return e;
     }
 
     public static Map<String, Cookie> readCookieMap(HttpServletRequest request) {
@@ -108,18 +111,18 @@ public class CookieUtils {
     }
 
     public static Object getCookieValue(HttpServletRequest request, String name) {
-        try {
-            Cookie e = getCookie(request, name);
-            if (e == null) {
-                return null;
-            }
-            if (StringUtils.isNotEmpty(e.getValue())) {
-                return URLDecoder.decode(e.getValue(), String.valueOf(StandardCharsets.UTF_8));
-            }
-            return null;
-        } catch (UnsupportedEncodingException var3) {
+        Cookie cookie = getCookie(request, name);
+        if (cookie == null) {
             return null;
         }
+        try {
+            if (StringUtils.isNotEmpty(cookie.getValue())) {
+                return URLDecoder.decode(cookie.getValue(), String.valueOf(StandardCharsets.UTF_8));
+            }
+        } catch (UnsupportedEncodingException e) {
+            log.error("解码失败", e);
+        }
+        return null;
     }
 
     public static void remove(HttpServletResponse response, String name) {

@@ -163,9 +163,9 @@ public class NetworkUtil {
             // qq浏览器
             if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage()) && null != temp && temp.length == 2) {
 
-                    broswer = entry.getKey();
-                    broswerVersion = entry.getValue();
-                    break;
+                broswer = entry.getKey();
+                broswerVersion = entry.getValue();
+                break;
             }
 
             if (agent.contains(BrowserEnum.YIXIN.getMessage())) {
@@ -618,7 +618,7 @@ public class NetworkUtil {
             return country + "_" + area + "_" + region + "_" + city + "_" + county + "_" + isp;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
             return "";
         }
     }
@@ -661,8 +661,8 @@ public class NetworkUtil {
 
             return buffer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("向 " + urlStr + " 发送请求，解析参数:" + content + ",所在的地理区域 ，发生异常！");
+            log.error("方法报错", e);
+            log.error("向 {} 发送请求，解析参数:{},所在的地理区域 ，发生异常！", urlStr, content);
         } finally {
             if (connection != null) {
                 // 关闭连接

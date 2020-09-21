@@ -357,7 +357,7 @@ public class StringUtil extends StringUtils {
         return patterns;
     }
 
-    public static String cleanXSS(String value) {
+    public static String cleanXSS(String value) throws UnsupportedEncodingException {
         if (isNotValid(value)) {
             return value;
         }
@@ -366,12 +366,7 @@ public class StringUtil extends StringUtils {
         }
 
         if (value.contains("%")) {
-            try {
-                value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
-            } catch (IllegalArgumentException | UnsupportedEncodingException e) {
-                log.error("value-->{}", value);
-                e.printStackTrace();
-            }
+            value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
         }
 
         Matcher matcher;

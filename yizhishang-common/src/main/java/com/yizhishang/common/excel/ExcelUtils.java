@@ -2,6 +2,7 @@ package com.yizhishang.common.excel;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @Date 2018/5/10 11:57
  * @Version 1.0
  **/
+@Slf4j
 public class ExcelUtils<T> {
 
     private ThreadLocal<SimpleDateFormat> local = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
@@ -126,7 +128,8 @@ public class ExcelUtils<T> {
             try {
                 sheetData = data.get(sheetNumber);
             } catch (Exception e) {
-                continue;
+                log.error("方法报错", e);
+                return null;
             }
             // 写入行数据
             for (int rowNumber = 0; rowNumber < sheetData.size(); rowNumber++) {
@@ -517,11 +520,11 @@ public class ExcelUtils<T> {
                 }
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("readCellContent方法报错", e);
             // 如果还是读到的数据格式还是不对，只能放弃了
             if (readCount > 7) {
-                throw ex;
+                throw e;
             }
             readCount++;
             t = readCellContent(key, fields, cell, t, edf);
