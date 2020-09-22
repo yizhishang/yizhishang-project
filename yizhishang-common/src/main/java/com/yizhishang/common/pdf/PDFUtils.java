@@ -136,9 +136,6 @@ public class PDFUtils {
         }
         for (Field field : fieldList) {
             PDFField pdfField = field.getAnnotation(PDFField.class);
-            if (pdfField == null) {
-                continue;
-            }
             addAnnotation(annotationList, pdfField, field);
         }
 

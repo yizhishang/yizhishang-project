@@ -23,4 +23,5 @@ public class ResponsePageData<T> extends ResponseData<Page<T>> {
         this.data = data;
     }
 
+
 }

@@ -24,4 +24,27 @@ public class ResponseListData<T> extends ResponseData<List<T>> {
         this.data = data;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof ResponseListData)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        ResponseListData<?> that = (ResponseListData<?>) o;
+
+        return getData() != null ? getData().equals(that.getData()) : that.getData() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (getData() != null ? getData().hashCode() : 0);
+        return result;
+    }
 }

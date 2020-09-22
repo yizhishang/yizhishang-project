@@ -9,6 +9,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -46,10 +47,13 @@ public class ExcelUtils<T> {
     public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws IOException {
         // 创建并获取工作簿对象
         Workbook wb = getWorkBook(sheetName, title, data);
+        if (wb == null) {
+            throw new NullPointerException("Workbook对象为空");
+        }
         // 写入到文件
-        FileOutputStream out = new FileOutputStream(filePath);
-        wb.write(out);
-        out.close();
+        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            wb.write(out);
+        }
     }
 
     /**
@@ -68,6 +72,10 @@ public class ExcelUtils<T> {
      * @throws IOException IO异常
      */
     private static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) {
+
+        if (CollectionUtils.isEmpty(data)) {
+            return null;
+        }
 
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();

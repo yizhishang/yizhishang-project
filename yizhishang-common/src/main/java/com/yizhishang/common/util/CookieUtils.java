@@ -81,15 +81,16 @@ public class CookieUtils {
             log.error("方法报错", e);
             return null;
         }
-        Cookie e = new Cookie(name, value);
-        e.setSecure(secure);
-        e.setPath(StringUtils.isEmpty(domain) ? "/" : path);
+        Cookie cookie = new Cookie(name, value);
+        cookie.setSecure(secure);
+        cookie.setHttpOnly(false);
+        cookie.setPath(StringUtils.isEmpty(domain) ? "/" : path);
         if (StringUtils.isNotEmpty(domain)) {
-            e.setDomain(domain);
+            cookie.setDomain(domain);
         }
 
-        e.setMaxAge(maxAge == null ? -1 : maxAge.intValue());
-        return e;
+        cookie.setMaxAge(maxAge == null ? -1 : maxAge.intValue());
+        return cookie;
     }
 
     public static Map<String, Cookie> readCookieMap(HttpServletRequest request) {
