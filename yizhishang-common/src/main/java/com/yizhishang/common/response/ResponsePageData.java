@@ -3,10 +3,12 @@ package com.yizhishang.common.response;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author yizhishang
  */
+@EqualsAndHashCode(callSuper = true)
 @ApiModel("通用ResponsePageData对象")
 public class ResponsePageData<T> extends ResponseData<Page<T>> {
 
@@ -22,6 +24,5 @@ public class ResponsePageData<T> extends ResponseData<Page<T>> {
         super();
         this.data = data;
     }
-
 
 }

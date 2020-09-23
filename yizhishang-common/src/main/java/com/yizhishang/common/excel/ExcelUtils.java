@@ -80,11 +80,11 @@ public class ExcelUtils<T> {
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();
         // 创建一个工作表sheet
-        Sheet sheet = null;
+        Sheet sheet;
         // 申明行
-        Row row = null;
+        Row row;
         // 申明单元格
-        Cell cell = null;
+        Cell cell;
         // 单元格样式
         CellStyle titleStyle = wb.createCellStyle();
         CellStyle cellStyle = wb.createCellStyle();
@@ -133,12 +133,7 @@ public class ExcelUtils<T> {
                 cell.setCellValue(titleTemp[i].toString());
             }
 
-            try {
-                sheetData = data.get(sheetNumber);
-            } catch (Exception e) {
-                log.error("方法报错", e);
-                return null;
-            }
+            sheetData = data.get(sheetNumber);
             // 写入行数据
             for (int rowNumber = 0; rowNumber < sheetData.size(); rowNumber++) {
                 // 如果没有标题栏，起始行就是0，如果有标题栏，行号就应该为1
@@ -165,10 +160,11 @@ public class ExcelUtils<T> {
     public static <T> void writeToFile(List<T> list, ExcelDataFormatter edf, String filePath) throws Exception {
         // 创建并获取工作簿对象
         Workbook wb = getWorkBook(list, edf);
+
         // 写入到文件
-        FileOutputStream out = new FileOutputStream(filePath);
-        wb.write(out);
-        out.close();
+        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            wb.write(out);
+        }
     }
 
     /**
@@ -211,7 +207,7 @@ public class ExcelUtils<T> {
         // 申明行
         Row row = sheet.createRow(0);
         // 申明单元格
-        Cell cell = null;
+        Cell cell;
 
         CreationHelper createHelper = wb.getCreationHelper();
 

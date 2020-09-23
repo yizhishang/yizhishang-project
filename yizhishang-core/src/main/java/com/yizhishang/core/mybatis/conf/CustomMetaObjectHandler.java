@@ -18,6 +18,8 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     private static final String UPDATE_TIME = "updateTime";
     private static final String VERSION = "version";
 
+    private static final String ERROR_LOG = "没有{}此字段，则不处理";
+    
     @Override
     public void insertFill(MetaObject metaObject) {
         try {
@@ -27,7 +29,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
-            log.warn("没有{}此字段，则不处理", CREATE_TIME, e);
+            log.warn(ERROR_LOG, CREATE_TIME, e);
         }
 
         try {
@@ -37,7 +39,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
-            log.warn("没有{}此字段，则不处理", UPDATE_TIME, e);
+            log.warn(ERROR_LOG, UPDATE_TIME, e);
         }
 
         try {
@@ -47,7 +49,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
-            log.warn("没有{}此字段，则不处理", VERSION, e);
+            log.warn(ERROR_LOG, VERSION, e);
         }
     }
 
@@ -57,6 +59,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             this.setFieldValByName(UPDATE_TIME, new Date(), metaObject);
         } catch (ReflectionException e) {
             //没有此字段，则不处理
+            log.warn(ERROR_LOG, VERSION, e);
         }
 
         Object version = this.getFieldValByName(VERSION, metaObject);
