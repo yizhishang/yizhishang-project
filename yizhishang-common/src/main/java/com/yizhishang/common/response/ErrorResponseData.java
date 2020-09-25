@@ -27,40 +27,7 @@ public class ErrorResponseData extends ResponseData {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (!(o instanceof ErrorResponseData)) {
-            return false;
-        }
-        ErrorResponseData other = (ErrorResponseData) o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        Object otherExceptionClazz = other.getExceptionClass();
-        if (exceptionClass == null) {
-            if (otherExceptionClazz != null) {
-                return false;
-            }
-        } else if (!exceptionClass.equals(otherExceptionClazz)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    @Override
-    protected boolean canEqual(Object other) {
-        return other instanceof ErrorResponseData;
-    }
-
-    @Override
-    public int hashCode() {
-        return 59 + (exceptionClass == null ? 43 : exceptionClass.hashCode());
-    }
-
-    @Override
     public String toString() {
-        return "ErrorResponseData(exceptionClazz=" + this.getExceptionClass() + ")";
+        return "ErrorResponseData(exceptionClazz=" + getExceptionClass() + ")";
     }
 }

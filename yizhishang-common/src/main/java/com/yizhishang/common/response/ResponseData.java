@@ -145,49 +145,6 @@ public class ResponseData<T> {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof ResponseData)) {
-            return false;
-        }
-
-        ResponseData<?> that = (ResponseData<?>) o;
-
-        if (getSuccess() != null ? !getSuccess().equals(that.getSuccess()) : that.getSuccess() != null) {
-            return false;
-        }
-        if (getCode() != null ? !getCode().equals(that.getCode()) : that.getCode() != null) {
-            return false;
-        }
-        if (getMessageKey() != null ? !getMessageKey().equals(that.getMessageKey()) : that.getMessageKey() != null) {
-            return false;
-        }
-        if (getZhMessage() != null ? !getZhMessage().equals(that.getZhMessage()) : that.getZhMessage() != null) {
-            return false;
-        }
-        if (getEnMessage() != null ? !getEnMessage().equals(that.getEnMessage()) : that.getEnMessage() != null) {
-            return false;
-        }
-        return getData() != null ? getData().equals(that.getData()) : that.getData() == null;
-    }
-
-    protected boolean canEqual(Object other) {
-        return other instanceof ResponseData;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 59 + (success == null ? 43 : success.hashCode());
-        result = result * 59 + (code == null ? 43 : code.hashCode());
-        result = result * 59 + (messageKey == null ? 43 : messageKey.hashCode());
-        result = result * 59 + (zhMessage == null ? 43 : zhMessage.hashCode());
-        result = result * 59 + (enMessage == null ? 43 : enMessage.hashCode());
-        return result * 59 + (data == null ? 43 : data.hashCode());
-    }
-
-    @Override
     public String toString() {
         return "ResponseData(success=" + this.getSuccess() + ", code=" + this.getCode() + ", messageKey=" + this.getMessageKey() + ", zhMessage=" + this.getZhMessage() + ", enMessage=" + this.getEnMessage() + ", data=" + this.getData() + ")";
     }
