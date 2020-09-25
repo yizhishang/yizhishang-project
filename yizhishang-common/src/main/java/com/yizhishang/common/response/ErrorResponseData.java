@@ -7,11 +7,11 @@ public class ErrorResponseData extends ResponseData {
     private String exceptionClass;
 
     public ErrorResponseData(String messageKey) {
-        super(false, ResponseData.DEFAULT_ERROR_CODE, messageKey, (Object) null);
+        super(false, ResponseData.DEFAULT_ERROR_CODE, messageKey, null);
     }
 
     public ErrorResponseData(Integer code, String messageKey) {
-        super(false, code, messageKey, (Object) null);
+        super(false, code, messageKey, null);
     }
 
     public ErrorResponseData(Integer code, String messageKey, Object object) {

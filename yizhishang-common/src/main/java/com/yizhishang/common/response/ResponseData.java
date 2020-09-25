@@ -77,23 +77,23 @@ public class ResponseData<T> {
                 this.zhMessage = zh.getString(messageKey);
                 this.enMessage = en.getString(messageKey);
             } catch (Exception e) {
-                log.error("ResponseData构造方法失败", e);
+                log.error("ResponseData构造方法失败: {}", messageKey, e);
                 this.zhMessage = messageKey;
                 this.enMessage = messageKey;
             }
         }
     }
 
-    public static SuccessResponseData success() {
-        return new SuccessResponseData();
+    public static ResponseData success() {
+        return new ResponseData();
     }
 
-    public static SuccessResponseData success(Object object) {
-        return new SuccessResponseData(object);
+    public static ResponseData success(Object object) {
+        return new ResponseData(object);
     }
 
-    public static SuccessResponseData success(Integer code, String messageKey, Object object) {
-        return new SuccessResponseData(code, messageKey, object);
+    public static ResponseData success(Integer code, String messageKey, Object object) {
+        return new ResponseData(true, code, messageKey, object);
     }
 
     public static ErrorResponseData error(String messageKey) {
@@ -142,30 +142,6 @@ public class ResponseData<T> {
 
     public T getData() {
         return this.data;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
-    public void setZhMessage(String zhMessage) {
-        this.zhMessage = zhMessage;
-    }
-
-    public void setEnMessage(String enMessage) {
-        this.enMessage = enMessage;
-    }
-
-    public void setData(T data) {
-        this.data = data;
     }
 
     @Override
