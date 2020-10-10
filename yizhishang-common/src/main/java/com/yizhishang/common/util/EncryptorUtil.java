@@ -35,10 +35,10 @@ public class EncryptorUtil {
         }
         String[] emailArr = email.split(A);
         String befor = "";
-        int beforLen = emailArr[0].length();
-        if (beforLen > 3) {
+        int beforeLength = emailArr[0].length();
+        if (beforeLength > 3) {
             befor = emailArr[0].substring(0, 3) + XXX;
-        } else if (beforLen >= 1) {
+        } else if (beforeLength >= 1) {
             String sub1 = emailArr[0].substring(0, 1);
             befor = sub1 + XXX;
         } else {
