@@ -34,28 +34,27 @@ public class EncryptorUtil {
             return email;
         }
         String[] emailArr = email.split(A);
-        String befor = "";
+        String before = "";
         int beforeLength = emailArr[0].length();
         if (beforeLength > 3) {
-            befor = emailArr[0].substring(0, 3) + XXX;
+            before = emailArr[0].substring(0, 3) + XXX;
         } else if (beforeLength >= 1) {
-            String sub1 = emailArr[0].substring(0, 1);
-            befor = sub1 + XXX;
+            before = emailArr[0].substring(0, 1) + XXX;
         } else {
-            befor = emailArr[0];
+            before = emailArr[0];
         }
 
         String after = "";
-        int afterLen = emailArr[1].length();
-        int lastI = emailArr[1].lastIndexOf(D);
-        if (afterLen < 1 || emailArr[1].lastIndexOf(D) == -1) {
+        int afterLength = emailArr[1].length();
+        int lastIndex = emailArr[1].lastIndexOf(D);
+        if (afterLength < 1 || emailArr[1].lastIndexOf(D) == -1) {
             after = emailArr[1];
         } else {
-            String substring = emailArr[1].substring(lastI, afterLen);
+            String substring = emailArr[1].substring(lastIndex, afterLength);
             after = emailArr[1].substring(0, 1) + XXX + substring;
 
         }
-        return befor + A + after;
+        return before + A + after;
     }
 
     /**
@@ -73,16 +72,15 @@ public class EncryptorUtil {
         }
         int length = number.length();
         if (length > 10) {
-            String befor = number.substring(0, 3);
+            String before = number.substring(0, 3);
             String after = number.substring(length - 4);
-            return befor + StrUtil.fillBefore(after, X, length - 3);
-        } else if (number.length() > 4) {
+            return before + StrUtil.fillBefore(after, X, length - 3);
+        }
+        if (length > 4) {
             String after = number.substring(length - 4);
             return StrUtil.fillBefore(after, X, length);
-        } else {
-            return number;
         }
-
+        return number;
     }
 
 
