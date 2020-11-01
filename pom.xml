@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yizhishang</groupId>
+    <groupId>com.github.yizhishang</groupId>
     <artifactId>yizhishang-parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0</version>
@@ -86,23 +86,118 @@
         </dependency>
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>maven-public</id>
-            <url>http://nexus.yizhishang.com/repository/maven-public/</url>
-        </repository>
-    </repositories>
+    <!-- 许可证信息 -->
+    <licenses>
+        <!-- Apache许可证 -->
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+        <!-- MIT许可证 -->
+        <!--	<license>
+                <name>MIT License</name>
+                <url>http://www.opensource.org/licenses/mit-license.php</url>
+            </license>-->
+    </licenses>
+    <!-- SCM信息 -> git在github上托管 -->
+    <scm>
+        <connection>scm:git:git://github.com/yizhishang/OSSRH-61716.git</connection>
+        <developerConnection>scm:git:ssh://github.com/yizhishang/OSSRH-61716.git</developerConnection>
+        <url>https://github.com/yizhishang/OSSRH-61716/tree/master</url>
+    </scm>
+    <!-- 开发者信息 -->
+    <developers>
+        <developer>
+            <name>yizhishang</name>
+            <email>285206405@qq.com</email>
+            <url>https://github.com/yizhishang</url>
+        </developer>
+    </developers>
 
-    <distributionManagement>
-        <repository>
-            <id>maven-releases</id>
-            <url>http://nexus.yizhishang.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <url>http://nexus.yizhishang.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>maven-public</id>-->
+<!--            <url>http://nexus.yizhishang.com/repository/maven-public/</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
+<!--    <distributionManagement>-->
+<!--        <repository>-->
+<!--            <id>maven-releases</id>-->
+<!--            <url>http://nexus.yizhishang.com/repository/maven-releases/</url>-->
+<!--        </repository>-->
+<!--        <snapshotRepository>-->
+<!--            <id>maven-snapshots</id>-->
+<!--            <url>http://nexus.yizhishang.com/repository/maven-snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+
+    <!-- 使用个人资料：由于生成javadoc和源jar以及使用GPG签署组件是一个相当耗时的过程，因此这些执行通常与正常的构建配置隔离并移动到配置文件中。然后，在通过激活配置文件执行部署时，将使用此配置文件。 -->
+    <profiles>
+        <profile>
+            <id>oss</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <!-- 要生成Javadoc和Source jar文件，您必须配置javadoc和源Maven插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
     <build>
         <plugins>
