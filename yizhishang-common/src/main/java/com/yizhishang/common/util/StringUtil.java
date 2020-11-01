@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
 import com.google.common.collect.Maps;
+import com.yizhishang.common.enums.RegexpEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -104,12 +105,9 @@ public class StringUtil extends StringUtils {
      */
     public static List<String> splitToStringList(String input, String regex) {
         List<String> result = new ArrayList<>();
-        if (input != null && !input.equals("")) {
+        if (StringUtils.isNotEmpty(input)) {
             String[] strArray = input.split(regex);
-
-            for (String x : strArray) {
-                result.add(x);
-            }
+            result.addAll(Arrays.asList(strArray));
         }
         return result;
     }
@@ -119,7 +117,7 @@ public class StringUtil extends StringUtils {
      */
     public static List<Long> splitToLongList(String input, String regex) {
         List<Long> result = new ArrayList<>();
-        if (input != null && !input.equals("")) {
+        if (StringUtils.isNotEmpty(input)) {
             String[] strArray = input.split(regex);
 
             for (String x : strArray) {
@@ -342,10 +340,10 @@ public class StringUtil extends StringUtils {
             ArrayList list = new ArrayList();
             String regex;
             Integer flag;
-            Iterator var4 = getXssPatternList().iterator();
+            Iterator<Object[]> iterator = getXssPatternList().iterator();
 
-            while (var4.hasNext()) {
-                Object[] arr = (Object[]) var4.next();
+            while (iterator.hasNext()) {
+                Object[] arr = iterator.next();
 
                 for (int i = 0; i < arr.length; ++i) {
                     regex = (String) arr[0];
@@ -359,43 +357,36 @@ public class StringUtil extends StringUtils {
         return patterns;
     }
 
-    public static String cleanXSS(String value) {
-        if (isValid(value)) {
-            if (value.contains("\\x")) {
-                value = value.replaceAll("\\\\x", "%");
-            }
-
-            if (value.contains("%")) {
-                try {
-                    value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
-                } catch (IllegalArgumentException e) {
-                    log.error("value-->{}", value);
-                    e.printStackTrace();
-                } catch (UnsupportedEncodingException var4) {
-                    var4.printStackTrace();
-                }
-            }
-
-            Matcher matcher = null;
-            Iterator var2 = getPatterns().iterator();
-
-            while (var2.hasNext()) {
-                Pattern pattern = (Pattern) var2.next();
-                matcher = pattern.matcher(value);
-                if (matcher.find()) {
-                    value = matcher.replaceAll("");
-                }
-            }
-
-            value = value.replaceAll("<", "& lt;").replaceAll(">", "& gt;");
-            value = value.replaceAll("\\(", "& #40;").replaceAll("\\)", "& #41;");
-            value = value.replaceAll("\'", "& #39;");
-            value = value.replaceAll("eval\\((.*)\\)", "");
-            value = value.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-            value = value.replaceAll("script", "");
-            value = StringUtils.replace(value, "'", "''");
+    public static String cleanXSS(String value) throws UnsupportedEncodingException {
+        if (isNotValid(value)) {
+            return value;
+        }
+        if (value.contains("\\x")) {
+            value = value.replace("\\\\x", "%");
         }
 
+        if (value.contains("%")) {
+            value = URLDecoder.decode(value, String.valueOf(StandardCharsets.UTF_8));
+        }
+
+        Matcher matcher;
+        Iterator<Pattern> iterator = getPatterns().iterator();
+
+        while (iterator.hasNext()) {
+            Pattern pattern = iterator.next();
+            matcher = pattern.matcher(value);
+            if (matcher.find()) {
+                value = matcher.replaceAll("");
+            }
+        }
+
+        value = value.replace("<", "& lt;").replace(">", "& gt;");
+        value = value.replace("\\(", "& #40;").replace("\\)", "& #41;");
+        value = value.replace("\'", "& #39;");
+        value = value.replace("eval\\((.*)\\)", "");
+        value = value.replace("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
+        value = value.replace("script", "");
+        value = StringUtils.replace(value, "'", "''");
         return value;
     }
 
@@ -427,34 +418,34 @@ public class StringUtil extends StringUtils {
         return !Pattern.compile(regEx).matcher(source).matches();
     }
 
-    public static Map<String, String> validPasswordWithMsg(String source) {
-        Map<String, String> map = Maps.newHashMap();
+    public static Map<String, Object> validPasswordWithMsg(String source) {
+
         if (isNotValid(source)) {
-            map.put("result", "false");
-            map.put("message", "密码不能为空");
-            return map;
+            return createResultMap("密码不能为空", false);
         }
         if (source.length() < 8 || source.length() > 20) {
-            map.put("result", "false");
-            map.put("message", "密码长度在8-20位之间");
-            return map;
+            return createResultMap("密码长度在8-20位之间", false);
         }
 
         String regEx = "^[A-Za-z]+$";
         if (Pattern.compile(regEx).matcher(source).matches()) {
             //纯字母
-            map.put("result", "false");
-            map.put("message", "密码不能全都是字母");
-            return map;
+            return createResultMap("密码不能全都是字母", false);
         }
         regEx = "^[0-9]+$";
         if (Pattern.compile(regEx).matcher(source).matches()) {
             //纯数字
-            map.put("result", "false");
-            map.put("message", "密码不能全都是数字");
-            return map;
+            return createResultMap("密码不能全都是数字", false);
         }
-        map.put("result", "true");
+        Map<String, Object> map = Maps.newHashMap();
+        map.put("result", true);
+        return map;
+    }
+
+    private static Map<String, Object> createResultMap(String message, boolean result) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("message", message);
+        map.put("result", result);
         return map;
     }
 
@@ -462,8 +453,7 @@ public class StringUtil extends StringUtils {
         if (isNotValid(phoneNum)) {
             return false;
         }
-        String regexp = "^1[3|4|5|7|8][0-9]\\d{8}$";
-        return phoneNum.matches(regexp);
+        return phoneNum.matches(RegexpEnum.MOBILE_PHONE.getRegexp());
     }
 
     /**
@@ -478,4 +468,5 @@ public class StringUtil extends StringUtils {
         Matcher matcher = p.matcher(ip);
         return matcher.find();
     }
+
 }

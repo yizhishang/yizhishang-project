@@ -14,7 +14,14 @@ public enum BrowserEnum {
     /**
      * 微信浏览器
      */
-    MICRO_MESSENGER("MicroMessenger");
+    MICRO_MESSENGER("MicroMessenger"),
+
+    /**
+     * 易信APP浏览器
+     */
+    YIXIN("YiXin")
+
+        ;
 
     private String message;
 

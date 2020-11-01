@@ -1,8 +1,12 @@
 package com.yizhishang.common.response;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -10,6 +14,7 @@ import java.util.ResourceBundle;
 /**
  * @author yizhishang
  */
+@Slf4j
 @ApiModel("通用Response对象")
 public class ResponseData<T> {
 
@@ -36,7 +41,31 @@ public class ResponseData<T> {
     @ApiModelProperty("响应对象")
     private T data;
 
-    public ResponseData() {
+    private static ResourceBundle zh;
+
+    private static ResourceBundle en;
+
+    static {
+        try {
+            zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
+            en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
+        } catch (MissingResourceException e) {
+            log.error("ResponseData初始化失败", e);
+        }
+    }
+
+    protected ResponseData() {
+        this(true, DEFAULT_SUCCESS_CODE, "default.success.message");
+    }
+
+    public ResponseData(T data) {
+        this(true, DEFAULT_SUCCESS_CODE, "default.success.message");
+        this.data = data;
+    }
+
+    public ResponseData(Boolean success, Integer code, String messageKey, T data) {
+        this(success, code, messageKey);
+        this.data = data;
     }
 
     public ResponseData(Boolean success, Integer code, String messageKey) {
@@ -45,32 +74,26 @@ public class ResponseData<T> {
         this.messageKey = messageKey;
         if (messageKey != null) {
             try {
-                ResourceBundle zh = ResourceBundle.getBundle("i18n.message", new Locale("zh", "CN"));
-                ResourceBundle en = ResourceBundle.getBundle("i18n.message", new Locale("en", "US"));
                 this.zhMessage = zh.getString(messageKey);
                 this.enMessage = en.getString(messageKey);
-            } catch (MissingResourceException var8) {
+            } catch (Exception e) {
+                log.error("ResponseData构造方法失败: {}", messageKey, e);
                 this.zhMessage = messageKey;
                 this.enMessage = messageKey;
             }
         }
     }
 
-    public ResponseData(Boolean success, Integer code, String messageKey, T data) {
-        this(success, code, messageKey);
-        this.data = data;
+    public static ResponseData success() {
+        return new ResponseData();
     }
 
-    public static SuccessResponseData success() {
-        return new SuccessResponseData();
+    public static ResponseData success(Object object) {
+        return new ResponseData(object);
     }
 
-    public static SuccessResponseData success(Object object) {
-        return new SuccessResponseData(object);
-    }
-
-    public static SuccessResponseData success(Integer code, String messageKey, Object object) {
-        return new SuccessResponseData(code, messageKey, object);
+    public static ResponseData success(Integer code, String messageKey, Object object) {
+        return new ResponseData(true, code, messageKey, object);
     }
 
     public static ErrorResponseData error(String messageKey) {
@@ -87,6 +110,14 @@ public class ResponseData<T> {
 
     public static ErrorResponseData error(Integer code, String messageKey, String exceptionClass) {
         return new ErrorResponseData(code, messageKey, exceptionClass);
+    }
+
+    public static ResponseListData successList(List<?> data) {
+        return new ResponseListData(data);
+    }
+
+    public static ResponsePageData successPage(IPage<?> data) {
+        return new ResponsePageData((Page) data);
     }
 
     public Boolean getSuccess() {
@@ -111,122 +142,6 @@ public class ResponseData<T> {
 
     public T getData() {
         return this.data;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
-    public void setMessageKey(String messageKey) {
-        this.messageKey = messageKey;
-    }
-
-    public void setZhMessage(String zhMessage) {
-        this.zhMessage = zhMessage;
-    }
-
-    public void setEnMessage(String enMessage) {
-        this.enMessage = enMessage;
-    }
-
-    public void setData(T data) {
-        this.data = data;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == this) {
-            return true;
-        } else if (!(o instanceof ResponseData)) {
-            return false;
-        }
-        ResponseData<?> other = (ResponseData) o;
-        if (!other.canEqual(this)) {
-            return false;
-        }
-        Object otherSuccess = other.getSuccess();
-        if (success == null) {
-            if (otherSuccess != null) {
-                return false;
-            }
-        } else if (!success.equals(otherSuccess)) {
-            return false;
-        }
-
-        Object otherCode = other.getCode();
-        if (code == null) {
-            if (otherCode != null) {
-                return false;
-            }
-        } else if (!code.equals(otherCode)) {
-            return false;
-        }
-
-        Object otherMessageKey = other.getMessageKey();
-        if (messageKey == null) {
-            if (otherMessageKey != null) {
-                return false;
-            }
-        } else if (!messageKey.equals(otherMessageKey)) {
-            return false;
-        }
-
-        label62:
-        {
-            Object otherZhMessage = other.getZhMessage();
-            if (zhMessage == null) {
-                if (otherZhMessage == null) {
-                    break label62;
-                }
-            } else if (zhMessage.equals(otherZhMessage)) {
-                break label62;
-            }
-
-            return false;
-        }
-
-        label55:
-        {
-            Object otherEnMessage = other.getEnMessage();
-            if (enMessage == null) {
-                if (otherEnMessage == null) {
-                    break label55;
-                }
-            } else if (enMessage.equals(otherEnMessage)) {
-                break label55;
-            }
-
-            return false;
-        }
-
-        Object otherData = other.getData();
-        if (data == null) {
-            if (otherData != null) {
-                return false;
-            }
-        } else if (!data.equals(otherData)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected boolean canEqual(Object other) {
-        return other instanceof ResponseData;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = 59 + (success == null ? 43 : success.hashCode());
-        result = result * 59 + (code == null ? 43 : code.hashCode());
-        result = result * 59 + (messageKey == null ? 43 : messageKey.hashCode());
-        result = result * 59 + (zhMessage == null ? 43 : zhMessage.hashCode());
-        result = result * 59 + (enMessage == null ? 43 : enMessage.hashCode());
-        return result * 59 + (data == null ? 43 : data.hashCode());
     }
 
     @Override

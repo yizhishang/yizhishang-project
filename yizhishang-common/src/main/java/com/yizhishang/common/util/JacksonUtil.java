@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -12,7 +13,14 @@ import java.util.ArrayList;
 /**
  * @author yizhishang
  */
+@Slf4j
 public class JacksonUtil {
+
+    private static final String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+
+    private JacksonUtil(){
+
+    }
 
     public static String objectToJson(Object obj) {
         ObjectMapper mapper = new ObjectMapper();
@@ -21,11 +29,11 @@ public class JacksonUtil {
         //设置字段可以不用双引号包括
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         //设置时间格式
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat(DATE_TIME));
         try {
             return mapper.writeValueAsString(obj);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
         }
         return null;
     }
@@ -44,7 +52,7 @@ public class JacksonUtil {
         try {
             return mapper.readValue(json, clazz);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
         }
         return null;
     }
@@ -60,7 +68,7 @@ public class JacksonUtil {
             JavaType javaType = mapper.getTypeFactory().constructParametricType(ArrayList.class, clazz);
             return mapper.readValue(json, javaType);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
         }
         return null;
     }
@@ -75,7 +83,7 @@ public class JacksonUtil {
         try {
             return mapper.readValue(json, typeReference);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
         }
         return null;
     }
@@ -83,14 +91,16 @@ public class JacksonUtil {
 
     public static String console(Object t) {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);//设置可用单引号
-        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);//设置字段可以不用双引号包括
+        //设置可用单引号
+        mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        //设置字段可以不用双引号包括
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         String json = "";
         try {
             json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(t);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
         }
         return json;
     }

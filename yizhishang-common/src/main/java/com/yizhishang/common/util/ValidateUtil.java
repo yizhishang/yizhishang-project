@@ -1,10 +1,12 @@
 package com.yizhishang.common.util;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,8 +15,18 @@ import java.util.Set;
  */
 public class ValidateUtil<T> {
 
-    private static ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-    private static Validator validator = validatorFactory.getValidator();
+    private static volatile Validator validator;
+
+    private static void initialize() {
+        if (validator == null) {
+            synchronized (ValidateUtil.class) {
+                if (validator == null) {
+                    ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+                    validator = validatorFactory.getValidator();
+                }
+            }
+        }
+    }
 
     /**
      * 验证请求参数(单个错误)
@@ -22,12 +34,15 @@ public class ValidateUtil<T> {
      * @return null 则说明验证成功，如果非null 则说明验证失败
      */
     public String validateOne(T model) {
+        initialize();
         Set<ConstraintViolation<T>> violations = validator.validate(model);
         if (null == violations || violations.isEmpty()) {
             return null;
         }
         for (ConstraintViolation<T> violation : violations) {
-            return violation.getMessage();
+            if (StringUtils.isNotEmpty(violation.getMessage())) {
+                return violation.getMessage();
+            }
         }
         return null;
     }
@@ -47,33 +62,22 @@ public class ValidateUtil<T> {
             return true;
         }
         if (o instanceof String) {
-            if (StringUtil.isBlank(o.toString())) {
-                return true;
-            }
-        } else if (o instanceof List) {
-            if (((List) o).isEmpty()) {
-                return true;
-            }
-        } else if (o instanceof Map) {
-            if (((Map) o).size() == 0) {
-                return true;
-            }
-        } else if (o instanceof Set) {
-            if (((Set) o).isEmpty()) {
-                return true;
-            }
-        } else if (o instanceof Object[]) {
-            if (((Object[]) o).length == 0) {
-                return true;
-            }
-        } else if (o instanceof int[]) {
-            if (((int[]) o).length == 0) {
-                return true;
-            }
-        } else if (o instanceof long[]) {
-            if (((long[]) o).length == 0) {
-                return true;
-            }
+            return "".equals(o.toString().trim());
+        }
+        if (o instanceof Collection) {
+            return ((Collection) o).isEmpty();
+        }
+        if (o instanceof Map) {
+            return ((Map) o).size() == 0;
+        }
+        if (o instanceof Object[]) {
+            return ((Object[]) o).length == 0;
+        }
+        if (o instanceof int[]) {
+            return ((int[]) o).length == 0;
+        }
+        if (o instanceof long[]) {
+            return ((long[]) o).length == 0;
         }
         return false;
     }
@@ -101,4 +105,5 @@ public class ValidateUtil<T> {
         }
         return true;
     }
+
 }

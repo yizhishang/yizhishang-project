@@ -14,7 +14,7 @@ public enum BizExceptionEnum implements CommonEnum {
     EXIST_UNKNOWN_ROLE(410, "exist.unknown.role"),
     DATABASE_HAS_TENANT(410, "database.has.tenant"),
     MENU_HAS_CHILD(410, "menu.has.child"),
-    ROlE_IS_IN_USE(410, "role.is.in.use"),
+    ROLE_IS_IN_USE(410, "role.is.in.use"),
     MENU_IS_IN_USE(410, "menu.is.in.use"),
     NO_DATA(411, "no.data"),
     CURRENT_USER_NOT_EXIST(411, "current.user.not.exist"),

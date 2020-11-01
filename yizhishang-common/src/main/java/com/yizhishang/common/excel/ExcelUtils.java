@@ -1,14 +1,15 @@
 package com.yizhishang.common.excel;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,10 @@ import java.io.*;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description Excel导出
@@ -24,6 +28,7 @@ import java.util.*;
  * @Date 2018/5/10 11:57
  * @Version 1.0
  **/
+@Slf4j
 public class ExcelUtils<T> {
 
     private ThreadLocal<SimpleDateFormat> local = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
@@ -39,13 +44,16 @@ public class ExcelUtils<T> {
      * @throws FileNotFoundException 文件不存在异常
      * @throws IOException           IO异常
      */
-    public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws FileNotFoundException, IOException {
+    public static void writeToFile(String filePath, String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws IOException {
         // 创建并获取工作簿对象
         Workbook wb = getWorkBook(sheetName, title, data);
+        if (wb == null) {
+            throw new NullPointerException("Workbook对象为空");
+        }
         // 写入到文件
-        FileOutputStream out = new FileOutputStream(filePath);
-        wb.write(out);
-        out.close();
+        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            wb.write(out);
+        }
     }
 
     /**
@@ -63,23 +71,27 @@ public class ExcelUtils<T> {
      * @return Workbook工作簿
      * @throws IOException IO异常
      */
-    private static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) throws IOException {
+    private static Workbook getWorkBook(String[] sheetName, List<? extends Object[]> title, List<? extends List<? extends Object[]>> data) {
+
+        if (CollectionUtils.isEmpty(data)) {
+            return null;
+        }
 
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();
         // 创建一个工作表sheet
-        Sheet sheet = null;
+        Sheet sheet;
         // 申明行
-        Row row = null;
+        Row row;
         // 申明单元格
-        Cell cell = null;
+        Cell cell;
         // 单元格样式
         CellStyle titleStyle = wb.createCellStyle();
         CellStyle cellStyle = wb.createCellStyle();
         // 字体样式
         Font font = wb.createFont();
         // 粗体
-        font.setBoldweight(XSSFFont.BOLDWEIGHT_BOLD);
+        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         titleStyle.setFont(font);
         // 水平居中
         titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
@@ -121,11 +133,7 @@ public class ExcelUtils<T> {
                 cell.setCellValue(titleTemp[i].toString());
             }
 
-            try {
-                sheetData = data.get(sheetNumber);
-            } catch (Exception e) {
-                continue;
-            }
+            sheetData = data.get(sheetNumber);
             // 写入行数据
             for (int rowNumber = 0; rowNumber < sheetData.size(); rowNumber++) {
                 // 如果没有标题栏，起始行就是0，如果有标题栏，行号就应该为1
@@ -152,10 +160,11 @@ public class ExcelUtils<T> {
     public static <T> void writeToFile(List<T> list, ExcelDataFormatter edf, String filePath) throws Exception {
         // 创建并获取工作簿对象
         Workbook wb = getWorkBook(list, edf);
+
         // 写入到文件
-        FileOutputStream out = new FileOutputStream(filePath);
-        wb.write(out);
-        out.close();
+        try (FileOutputStream out = new FileOutputStream(filePath)) {
+            wb.write(out);
+        }
     }
 
     /**
@@ -189,7 +198,7 @@ public class ExcelUtils<T> {
         // 创建工作簿
         Workbook wb = new SXSSFWorkbook();
 
-        if (list == null || list.size() == 0) {
+        if (list == null || list.isEmpty()) {
             return wb;
         }
 
@@ -198,7 +207,7 @@ public class ExcelUtils<T> {
         // 申明行
         Row row = sheet.createRow(0);
         // 申明单元格
-        Cell cell = null;
+        Cell cell;
 
         CreationHelper createHelper = wb.getCreationHelper();
 
@@ -335,7 +344,7 @@ public class ExcelUtils<T> {
      */
     public <T> List<T> readFromFile(Class<T> cls, ExcelDataFormatter edf, File file) throws Exception {
         Field[] fields = cls.getDeclaredFields();
-        Map<String, String> textToKey = new HashMap<>();
+        Map<String, String> textToKey = Maps.newHashMap();
 
         ExcelField excelField;
         for (Field field : fields) {
@@ -358,7 +367,7 @@ public class ExcelUtils<T> {
             titles[i] = title.getCell(i).getStringCellValue();
         }
 
-        List<T> list = new ArrayList<T>();
+        List<T> list = Lists.newArrayList();
 
         int rowIndex = 0;
         int columnCount = titles.length;
@@ -405,25 +414,25 @@ public class ExcelUtils<T> {
         Object o;
 
         switch (cell.getCellType()) {
-            case XSSFCell.CELL_TYPE_BOOLEAN:
+            case Cell.CELL_TYPE_BOOLEAN:
                 o = cell.getBooleanCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_NUMERIC:
+            case Cell.CELL_TYPE_NUMERIC:
                 o = cell.getNumericCellValue();
-                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                if (DateUtil.isCellDateFormatted(cell)) {
                     o = DateUtil.getJavaDate(cell.getNumericCellValue());
                 }
                 break;
-            case XSSFCell.CELL_TYPE_STRING:
+            case Cell.CELL_TYPE_STRING:
                 o = cell.getStringCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_ERROR:
+            case Cell.CELL_TYPE_ERROR:
                 o = cell.getErrorCellValue();
                 break;
-            case XSSFCell.CELL_TYPE_BLANK:
+            case Cell.CELL_TYPE_BLANK:
                 o = null;
                 break;
-            case XSSFCell.CELL_TYPE_FORMULA:
+            case Cell.CELL_TYPE_FORMULA:
                 o = cell.getCellFormula();
                 break;
             default:
@@ -439,7 +448,7 @@ public class ExcelUtils<T> {
             for (Field field : fields) {
                 field.setAccessible(true);
                 if (field.getName().equals(key)) {
-                    Boolean bool = true;
+                    boolean bool = true;
                     Map<String, String> map = null;
                     if (edf == null) {
                         bool = false;
@@ -515,11 +524,11 @@ public class ExcelUtils<T> {
                 }
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception e) {
+            log.error("readCellContent方法报错", e);
             // 如果还是读到的数据格式还是不对，只能放弃了
             if (readCount > 7) {
-                throw ex;
+                throw e;
             }
             readCount++;
             t = readCellContent(key, fields, cell, t, edf);

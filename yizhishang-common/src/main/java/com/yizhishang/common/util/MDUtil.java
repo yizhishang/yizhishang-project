@@ -1,5 +1,7 @@
 package com.yizhishang.common.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -9,28 +11,33 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author yizhishang
  */
+@Slf4j
 public class MDUtil {
 
-    private static MessageDigest messageDigest = null;
+    private static volatile MessageDigest md5MessageDigest = null;
+    private static volatile MessageDigest sha1MessageDigest = null;
 
     private MDUtil() {
 
     }
 
-    public static String sha1(String text) {
+    private static void initSha1MessageDigest() throws NoSuchAlgorithmException {
+        if (sha1MessageDigest == null) {
+            synchronized (MDUtil.class) {
+                if (sha1MessageDigest == null) {
+                    sha1MessageDigest = MessageDigest.getInstance("SHA-1");
+                }
+            }
+        }
+    }
+
+    public static String sha1(String text) throws NoSuchAlgorithmException {
         if (text == null) {
             return null;
         }
-        MessageDigest md;
-        String outStr = null;
-        try {
-            md = MessageDigest.getInstance("SHA-1");
-            byte[] digest = md.digest(text.getBytes(StandardCharsets.UTF_8));
-            outStr = byteToString(digest);
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        return outStr;
+        initSha1MessageDigest();
+        byte[] digest = sha1MessageDigest.digest(text.getBytes(StandardCharsets.UTF_8));
+        return byteToString(digest);
     }
 
     private static String byteToString(byte[] digest) {
@@ -50,18 +57,20 @@ public class MDUtil {
     /**
      * MD5加密
      */
-    public static final synchronized String md5Encrypt(String data) {
-        if (messageDigest == null) {
-            try {
-                messageDigest = MessageDigest.getInstance("MD5");
-                messageDigest.update(data.getBytes(StandardCharsets.UTF_8));
-                return encodeHex(messageDigest.digest());
-            } catch (NoSuchAlgorithmException e) {
-                System.err.println("Failed to load the MD5 MessageDigest. We will be unable to function normally.");
-                e.printStackTrace();
+    public static final String md5Encrypt(String data) throws NoSuchAlgorithmException {
+        initMd5MessageDigest();
+        md5MessageDigest.update(data.getBytes(StandardCharsets.UTF_8));
+        return encodeHex(md5MessageDigest.digest());
+    }
+
+    private static void initMd5MessageDigest() throws NoSuchAlgorithmException {
+        if (md5MessageDigest == null) {
+            synchronized (MDUtil.class) {
+                if (md5MessageDigest == null) {
+                    md5MessageDigest = MessageDigest.getInstance("MD5");
+                }
             }
         }
-        return null;
     }
 
     private static final String encodeHex(byte[] bytes) {

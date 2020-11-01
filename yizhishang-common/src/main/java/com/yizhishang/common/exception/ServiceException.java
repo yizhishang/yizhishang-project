@@ -1,16 +1,18 @@
 package com.yizhishang.common.exception;
 
+import com.yizhishang.common.enums.BizExceptionEnum;
 import com.yizhishang.common.enums.CommonEnum;
 
 /**
  * @author yizhishang
  */
 public class ServiceException extends RuntimeException {
-    private Integer code;
-    private String errorMessage;
+    private final Integer code;
+    private final String errorMessage;
 
     public ServiceException(String errorMessage) {
         super(errorMessage);
+        this.code = BizExceptionEnum.SERVER_ERROR.getCode();
         this.errorMessage = errorMessage;
     }
 
@@ -30,15 +32,8 @@ public class ServiceException extends RuntimeException {
         return this.code;
     }
 
-    public void setCode(Integer code) {
-        this.code = code;
-    }
-
     public String getErrorMessage() {
         return this.errorMessage;
     }
 
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 }

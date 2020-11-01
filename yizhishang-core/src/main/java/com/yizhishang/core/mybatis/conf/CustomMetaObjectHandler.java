@@ -18,36 +18,38 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     private static final String UPDATE_TIME = "updateTime";
     private static final String VERSION = "version";
 
+    private static final String ERROR_LOG = "没有{}此字段，则不处理";
+    
     @Override
     public void insertFill(MetaObject metaObject) {
-        Object createTime;
         try {
-            createTime = getFieldValByName(CREATE_TIME, metaObject);
+            Object createTime = getFieldValByName(CREATE_TIME, metaObject);
             if (createTime == null) {
                 this.setInsertFieldValByName(CREATE_TIME, new Date(), metaObject);
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
+            log.warn(ERROR_LOG, CREATE_TIME, e);
         }
 
-        Object modifyTime;
         try {
-            modifyTime = getFieldValByName(UPDATE_TIME, metaObject);
+            Object modifyTime = getFieldValByName(UPDATE_TIME, metaObject);
             if (modifyTime == null) {
                 this.setInsertFieldValByName(UPDATE_TIME, new Date(), metaObject);
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
+            log.warn(ERROR_LOG, UPDATE_TIME, e);
         }
 
-        Object version;
         try {
-            version = this.getFieldValByName(VERSION, metaObject);
+            Object version = this.getFieldValByName(VERSION, metaObject);
             if (version == null) {
                 this.setInsertFieldValByName(VERSION, 1, metaObject);
             }
         } catch (ReflectionException e) {
             //没有此字段，则不处理
+            log.warn(ERROR_LOG, VERSION, e);
         }
     }
 
@@ -57,6 +59,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
             this.setFieldValByName(UPDATE_TIME, new Date(), metaObject);
         } catch (ReflectionException e) {
             //没有此字段，则不处理
+            log.warn(ERROR_LOG, VERSION, e);
         }
 
         Object version = this.getFieldValByName(VERSION, metaObject);

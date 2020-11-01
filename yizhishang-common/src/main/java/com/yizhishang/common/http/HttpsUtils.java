@@ -32,29 +32,49 @@ import java.util.Map;
 @Slf4j
 public class HttpsUtils implements ProtocolSocketFactory {
 
-    private SSLContext sslcontext = null;
-    
+    private static volatile SSLContext sslcontext = null;
+
     private static final String HTTPS = "https";
 
+    private static SSLContext getSSLContext() {
+        if (sslcontext == null) {
+            synchronized (HttpUtils.class) {
+                if (sslcontext == null) {
+                    sslcontext = createSSLContext();
+                }
+            }
+        }
+        return sslcontext;
+    }
+
+    private static SSLContext createSSLContext() {
+        SSLContext sslContext = null;
+        try {
+            sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            log.error("createSSLContext方法报错", e);
+        }
+        return sslContext;
+    }
+
     public static String sendGetRequest(String url) {
-        String result;
         Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
         Protocol.registerProtocol(HTTPS, https);
         GetMethod get = new GetMethod(url);
         HttpClient client = new HttpClient();
         try {
             client.executeMethod(get);
-            result = get.getResponseBodyAsString();
+            String result = get.getResponseBodyAsString();
             Protocol.unregisterProtocol(HTTPS);
             return result;
         } catch (Exception e) {
-            log.error(e.getMessage(), e);
+            log.error("sendGetRequest方法报错", e);
         }
         return "error";
     }
 
     public static String sendPostRequest(String url, Map<String, String> params) {
-        String result = "";
         Protocol https = new Protocol(HTTPS, new HttpsUtils(), 443);
         Protocol.registerProtocol(HTTPS, https);
         PostMethod post = new PostMethod(url);
@@ -65,35 +85,16 @@ public class HttpsUtils implements ProtocolSocketFactory {
             }
         }
 
-
         try {
             HttpClient client = new HttpClient();
             client.executeMethod(post);
-            result = post.getResponseBodyAsString();
+            String result = post.getResponseBodyAsString();
             Protocol.unregisterProtocol(HTTPS);
             return result;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return "error";
-    }
-
-    private SSLContext createSSLContext() {
-        SSLContext sslContext = null;
-        try {
-            sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
-        } catch (NoSuchAlgorithmException | KeyManagementException e) {
-            e.printStackTrace();
-        }
-        return sslContext;
-    }
-
-    private SSLContext getSSLContext() {
-        if (null == this.sslcontext) {
-            this.sslcontext = createSSLContext();
-        }
-        return this.sslcontext;
     }
 
     public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
@@ -121,16 +122,12 @@ public class HttpsUtils implements ProtocolSocketFactory {
             return socketfactory.createSocket(host, port, localAddress, localPort);
         }
         try (Socket socket = socketfactory.createSocket()) {
-            SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
-            SocketAddress remoteaddr = new InetSocketAddress(host, port);
-            socket.bind(localaddr);
-            socket.connect(remoteaddr, timeout);
+            SocketAddress localAddr = new InetSocketAddress(localAddress, localPort);
+            SocketAddress remoteAddr = new InetSocketAddress(host, port);
+            socket.bind(localAddr);
+            socket.connect(remoteAddr, timeout);
             return socket;
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return null;
-
     }
 
     private static class TrustAnyTrustManager implements X509TrustManager {
@@ -147,7 +144,6 @@ public class HttpsUtils implements ProtocolSocketFactory {
         public X509Certificate[] getAcceptedIssuers() {
             return new X509Certificate[]{};
         }
-
 
     }
 }

@@ -28,6 +28,8 @@
         <spring.version>5.1.16.RELEASE</spring.version>
         <poi.version>3.9</poi.version>
         <guava.version>21.0</guava.version>
+
+        <sonar.scm.disabled>true</sonar.scm.disabled>
     </properties>
 
     <parent>
@@ -215,6 +217,11 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>3.6.0.1398</version>
             </plugin>
         </plugins>
     </build>

@@ -1,5 +1,6 @@
 package com.yizhishang.common.util;
 
+import com.google.common.collect.Maps;
 import com.yizhishang.common.enums.BrowserEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,10 +33,16 @@ public class NetworkUtil {
      */
     private static final String IOS_REGEX = "(?=iPhone)(?=\\s*)(?=[0-9_]*)[\\w_\\s]+";
 
+    private static final String ANDROID = "Android";
+
     /**
      * 匹配安卓系统及其版本的正则表达式
      */
     private static final String ANDROID_REGEX = "(?=Android)(?=[0-9]*)(?=\\s*)(?=\\.*)[A-Za-z0-9_\\s\\.]+";
+
+    private NetworkUtil() {
+
+    }
 
     /**
      * 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址;
@@ -106,7 +113,7 @@ public class NetworkUtil {
      * 获取浏览器版本信息
      */
     public static Map<String, String> getBrowserInfo(String agent) {
-        if (agent == null || agent.equals("")) {
+        if (StringUtils.isEmpty(agent)) {
             return null;
         }
         String browserSrc = agent.replaceAll(OS_AND_DEVICE_REGEX, "");
@@ -115,7 +122,7 @@ public class NetworkUtil {
         String[] strList = browserSrc.split(" ");
         String[] temp = {};
 
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = Maps.newHashMap();
         for (String str : strList) {
             if (StringUtils.isEmpty(str)) {
                 continue;
@@ -133,7 +140,7 @@ public class NetworkUtil {
 
         String broswer = "";
         String broswerVersion = "";
-        Map<String, String> resultMap = new HashMap<>();
+        Map<String, String> resultMap = Maps.newHashMap();
         resultMap.put("netType", netType);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
@@ -147,27 +154,21 @@ public class NetworkUtil {
             }
 
             // 微信浏览器
-            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage())) {
-
-                if (null != temp && temp.length == 2) {
-                    broswer = entry.getKey();
-                    broswerVersion = entry.getValue();
-                    break;
-                }
+            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage()) && null != temp && temp.length == 2) {
+                broswer = entry.getKey();
+                broswerVersion = entry.getValue();
+                break;
             }
 
             // qq浏览器
-            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage())) {
+            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage()) && null != temp && temp.length == 2) {
 
-                if (null != temp && temp.length == 2) {
-                    broswer = entry.getKey();
-                    broswerVersion = entry.getValue();
-                    break;
-                }
+                broswer = entry.getKey();
+                broswerVersion = entry.getValue();
+                break;
             }
 
-            // 易信APP浏览器
-            if (agent.contains("YiXin")) {
+            if (agent.contains(BrowserEnum.YIXIN.getMessage())) {
                 broswer = entry.getKey();
                 broswerVersion = entry.getValue();
                 break;
@@ -312,7 +313,7 @@ public class NetworkUtil {
      * 获取操作系统信息
      */
     public static Map<String, String> getRequestSystemInfo(String userAgent) {
-        if (userAgent == null || userAgent.equals("")) {
+        if (StringUtils.isEmpty(userAgent)) {
             return null;
         }
 
@@ -391,12 +392,13 @@ public class NetworkUtil {
 
             if (osAndDeviceStr.contains("Linux")) {
                 os = "Linux";
-                if (osAndDeviceStr.contains("Android")) {
+
+                if (osAndDeviceStr.contains(ANDROID)) {
                     String matchResult = RegexUtil.findMatchContent(ANDROID_REGEX, osAndDeviceStr);
-                    if (!StringUtils.isEmpty(matchResult) && matchResult.contains("Android")) {
+                    if (!StringUtils.isEmpty(matchResult) && matchResult.contains(ANDROID)) {
                         userOS = matchResult;
                     } else {
-                        userOS = "Android";
+                        userOS = ANDROID;
                     }
                 }
 
@@ -535,7 +537,7 @@ public class NetworkUtil {
             }
 
         }
-        Map<String, String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>(3);
         map.put("os", os);
         map.put("userOS", userOS);
         map.put("deviceInfo", deviceInfo);
@@ -573,14 +575,13 @@ public class NetworkUtil {
             // 省份
             String region = (temp[5].split(":"))[1].replaceAll("\"", "");
             region = decodeUnicode(region);
-
+            // 国家
             String country = "";
             // 地区
             String area = "";
-            // String region = "";
             // 市区
             String city = "";
-            // 国家
+            // 县
             String county = "";
             // ISP公司
             String isp = "";
@@ -617,7 +618,7 @@ public class NetworkUtil {
             return country + "_" + area + "_" + region + "_" + city + "_" + county + "_" + isp;
 
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("方法报错", e);
             return "";
         }
     }
@@ -641,26 +642,27 @@ public class NetworkUtil {
             connection.connect();// 打开连接端口
 
             // 打开输出流往对端服务器写数据
-            DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
+                out.writeBytes(content);
+                out.flush();// 刷新
+            }
 
-            // 写数据,也就是提交你的表单 name=xxx&pwd=xxx
-            out.writeBytes(content);
-            out.flush();// 刷新
-            out.close();
-
-            // 往对端写完数据对端服务器返回数据
-            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding));
             // ,以BufferedReader流来读取
             StringBuffer buffer = new StringBuffer();
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
+
+            // 往对端写完数据对端服务器返回数据
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding))) {
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
             }
-            reader.close();
+
             return buffer.toString();
         } catch (IOException e) {
-            e.printStackTrace();
-            log.error("向 " + urlStr + " 发送请求，解析参数:" + content + ",所在的地理区域 ，发生异常！");
+            log.error("方法报错", e);
+            log.error("向 {} 发送请求，解析参数:{},所在的地理区域 ，发生异常！", urlStr, content);
         } finally {
             if (connection != null) {
                 // 关闭连接

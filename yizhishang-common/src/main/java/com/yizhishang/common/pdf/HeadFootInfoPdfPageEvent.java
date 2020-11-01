@@ -2,12 +2,14 @@ package com.yizhishang.common.pdf;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.*;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author yizhishang
  * @emial 285206405@qq.com
  * @time 2018/12/26 0026 下午 2:21
  */
+@Slf4j
 public class HeadFootInfoPdfPageEvent extends PdfPageEventHelper {
 
     public PdfTemplate tpl;
@@ -68,8 +70,8 @@ public class HeadFootInfoPdfPageEvent extends PdfPageEventHelper {
             headAndFootPdfContent.addTemplate(tpl, (document.right() + document.left()) / 2 + 15, y1);
             headAndFootPdfContent.endText();
             headAndFootPdfContent.restoreState();
-        } catch (Exception de) {
-            de.printStackTrace();
+        } catch (Exception e) {
+            log.error("方法报错", e);
         }
     }
 

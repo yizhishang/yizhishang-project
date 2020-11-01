@@ -1,6 +1,5 @@
 package com.yizhishang.core.spring;
 
-import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
@@ -16,9 +15,13 @@ public class SpringContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+    private static void setContext(ApplicationContext applicationContext) {
         SpringContextHolder.applicationContext = applicationContext;
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) {
+        setContext(applicationContext);
     }
 
     public static ApplicationContext getApplicationContext() {

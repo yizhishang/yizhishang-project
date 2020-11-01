@@ -19,14 +19,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SnowflakeIdWorker {
 
+    //节点 ID
     private long workerId;
+    //数据中心ID
     private long dataCenterId;
+    //序列编号
     private long sequence = 0L;
+    //节点标识位数
     private long workerIdBits = 5L;
     private long dataCenterIdBits = 5L;
+    //节点ID最大值
     private long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    //数据中心ID最大值
     private long maxDataCenterId = -1L ^ (-1L << dataCenterIdBits);
+    //序列编号标识位数
     private long sequenceBits = 12L;
+
     private long workerIdShift = sequenceBits;
     private long dataCenterIdShift = sequenceBits + workerIdBits;
     private long timestampLeftShift = sequenceBits + workerIdBits + dataCenterIdBits;
@@ -46,12 +54,19 @@ public class SnowflakeIdWorker {
         log.info(String.format("worker starting. timestamp left shift %d, dataCenter id bits %d, worker id bits %d, sequence bits %d, workerid %d", timestampLeftShift, dataCenterIdBits, workerIdBits, sequenceBits, workerId));
     }
 
+    /**
+     * 生成唯一ID
+     *
+     * @return
+     */
     public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
             log.error("clock is moving backwards. Rejecting requests until {}.", lastTimestamp);
             throw new RuntimeException(String.format("Clock moved backwards. Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
+
+        // 如果上一个timestamp与新产生的相等，则sequence加一(0-4095循环); 对新的timestamp，sequence从0开始
         if (lastTimestamp == timestamp) {
             sequence = (sequence + 1) & sequenceMask;
             if (sequence == 0) {
