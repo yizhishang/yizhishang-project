@@ -19,9 +19,7 @@ public enum BrowserEnum {
     /**
      * 易信APP浏览器
      */
-    YIXIN("YiXin")
-
-        ;
+    YIXIN("YiXin");
 
     private String message;
 

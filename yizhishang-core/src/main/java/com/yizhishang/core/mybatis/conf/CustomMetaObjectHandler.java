@@ -19,7 +19,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     private static final String VERSION = "version";
 
     private static final String ERROR_LOG = "没有{}此字段，则不处理";
-    
+
     @Override
     public void insertFill(MetaObject metaObject) {
         try {

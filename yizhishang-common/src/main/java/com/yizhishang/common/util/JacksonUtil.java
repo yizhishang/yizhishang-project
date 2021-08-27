@@ -18,7 +18,7 @@ public class JacksonUtil {
 
     private static final String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 
-    private JacksonUtil(){
+    private JacksonUtil() {
 
     }
 
