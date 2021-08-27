@@ -101,7 +101,9 @@ public class StringUtil extends StringUtils {
     }
 
     /**
+     * @param input 输入字符串
      * @param regex 分隔符
+     * @return
      */
     public static List<String> splitToStringList(String input, String regex) {
         List<String> result = new ArrayList<>();
@@ -113,7 +115,9 @@ public class StringUtil extends StringUtils {
     }
 
     /**
+     * @param input 输入字符串
      * @param regex 分隔符
+     * @return
      */
     public static List<Long> splitToLongList(String input, String regex) {
         List<Long> result = new ArrayList<>();
@@ -148,7 +152,9 @@ public class StringUtil extends StringUtils {
     /**
      * 将long数组组合成分隔符分隔的字符串
      *
+     * @param list  输入
      * @param regex 分隔符
+     * @return
      */
     public static String longListToString(List<Long> list, String regex) {
         StringBuffer result = new StringBuffer();
@@ -163,7 +169,9 @@ public class StringUtil extends StringUtils {
     /**
      * 将int数组组合成分隔符分隔的字符串
      *
+     * @param list 输入
      * @param regex 分隔符
+     * @return
      */
     public static String integerListToString(List<Integer> list, String regex) {
         StringBuffer result = new StringBuffer();
@@ -178,7 +186,9 @@ public class StringUtil extends StringUtils {
     /**
      * 将String数组组合成分隔符分隔的字符串
      *
+     * @param list 输入
      * @param regex 分隔符
+     * @return
      */
     public static String stringListToString(List<String> list, String regex) {
         StringBuffer result = new StringBuffer();

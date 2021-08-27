@@ -17,8 +17,9 @@ import java.util.Map;
 /**
  * cookie工具类 功能：主要用于 在用户登陆后，校验cookie中的数据是否被篡改 实现： 1、登陆之后对当前域中的 JSESSIONID的值，进行加密,增加一个cookie进行保存 2、登陆之后的操作，在过滤器中进行处理：在coookie中 获取保存的这个cookie的值，验证JSESSIONID是否被篡改
  *
+ * @author yizhishang
  * @version 1.0
- * @Date 2018年01月12日 09时23分
+ * @since 2018年01月12日 09时23分
  */
 @Slf4j
 public class CookieUtils {

@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 /**
  * @author yizhishang
  * @version 1.0
- * @Date 2018年05月10日 14时47分
+ * @since 2018年05月10日 14时47分
  */
 public class RegexUtil {
 

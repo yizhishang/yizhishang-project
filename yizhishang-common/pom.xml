@@ -12,12 +12,22 @@
     <artifactId>yizhishang-common</artifactId>
 
     <name>yizhishang-common</name>
-    <url>http://www.example.com</url>
+    <url> https://gitee.com/yizhishang/yizhishang-project.git</url>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
             <version>${spring.version}</version>
         </dependency>
         <dependency>

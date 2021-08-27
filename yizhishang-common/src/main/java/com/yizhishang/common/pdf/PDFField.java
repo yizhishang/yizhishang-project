@@ -8,8 +8,8 @@ import java.lang.annotation.Target;
 /**
  * @Description 自定义PDF注解
  * @Author 袁永君
- * @Date 2018/5/10 11:56
- * @Version 1.0
+ * @since 2018/5/10 11:56
+ * @version 1.0
  **/
 @Target({ElementType.FIELD, ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

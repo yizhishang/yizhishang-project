@@ -50,7 +50,7 @@ public class HttpsUtils implements ProtocolSocketFactory {
     private static SSLContext createSSLContext() {
         SSLContext sslContext = null;
         try {
-            sslContext = SSLContext.getInstance("SSL");
+            sslContext = SSLContext.getInstance("TLSv1.2");
             sslContext.init(null, new TrustManager[]{new TrustAnyTrustManager()}, new java.security.SecureRandom());
         } catch (NoSuchAlgorithmException | KeyManagementException e) {
             log.error("createSSLContext方法报错", e);

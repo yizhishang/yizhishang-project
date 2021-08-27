@@ -4,7 +4,7 @@ package com.yizhishang.common.enums;
  * 正则式枚举
  *
  * @author yizhishang
- * @date 2020/9/15 11:28
+ * @date: 2020/9/15 11:28
  */
 public enum RegexpEnum {
 

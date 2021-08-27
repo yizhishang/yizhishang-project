@@ -1,6 +1,7 @@
 package com.yizhishang.common.util;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Twitter_Snowflake<br>
@@ -16,23 +17,38 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author yizhishang引用
  */
-@Slf4j
 public class SnowflakeIdWorker {
 
-    //节点 ID
+    private static final Logger logger = LoggerFactory.getLogger(SnowflakeIdWorker.class);
+
+    /**
+     * 节点 ID
+     */
     private long workerId;
-    //数据中心ID
+    /**
+     * 数据中心ID
+     */
     private long dataCenterId;
-    //序列编号
+    /**
+     * 序列编号
+     */
     private long sequence = 0L;
-    //节点标识位数
+    /**
+     * 节点标识位数
+     */
     private long workerIdBits = 5L;
     private long dataCenterIdBits = 5L;
-    //节点ID最大值
+    /**
+     * 节点ID最大值
+     */
     private long maxWorkerId = -1L ^ (-1L << workerIdBits);
-    //数据中心ID最大值
+    /**
+     * 数据中心ID最大值
+     */
     private long maxDataCenterId = -1L ^ (-1L << dataCenterIdBits);
-    //序列编号标识位数
+    /**
+     * 序列编号标识位数
+     */
     private long sequenceBits = 12L;
 
     private long workerIdShift = sequenceBits;
@@ -51,7 +67,7 @@ public class SnowflakeIdWorker {
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
-        log.info(String.format("worker starting. timestamp left shift %d, dataCenter id bits %d, worker id bits %d, sequence bits %d, workerid %d", timestampLeftShift, dataCenterIdBits, workerIdBits, sequenceBits, workerId));
+        logger.debug(String.format("worker starting. timestamp left shift %d, dataCenter id bits %d, worker id bits %d, sequence bits %d, workerid %d", timestampLeftShift, dataCenterIdBits, workerIdBits, sequenceBits, workerId));
     }
 
     /**
@@ -62,7 +78,7 @@ public class SnowflakeIdWorker {
     public synchronized long nextId() {
         long timestamp = timeGen();
         if (timestamp < lastTimestamp) {
-            log.error("clock is moving backwards. Rejecting requests until {}.", lastTimestamp);
+            logger.error("clock is moving backwards. Rejecting requests until {}.", lastTimestamp);
             throw new RuntimeException(String.format("Clock moved backwards. Refusing to generate id for %d milliseconds", lastTimestamp - timestamp));
         }
 

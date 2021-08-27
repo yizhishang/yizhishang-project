@@ -25,8 +25,8 @@ import java.util.Map;
 /**
  * @Description Excel导出
  * @Author 袁永君
- * @Date 2018/5/10 11:57
- * @Version 1.0
+ * @since 2018/5/10 11:57
+ * @version 1.0
  **/
 @Slf4j
 public class ExcelUtils<T> {

@@ -2,6 +2,7 @@ package com.yizhishang.common.response;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yizhishang.common.enums.CommonEnum;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.extern.slf4j.Slf4j;
@@ -94,6 +95,16 @@ public class ResponseData<T> {
 
     public static ResponseData success(Integer code, String messageKey, Object object) {
         return new ResponseData(true, code, messageKey, object);
+    }
+
+    /**
+     * 异常枚举返回
+     *
+     * @param commonEnum
+     * @return
+     */
+    public static ResponseData error(CommonEnum commonEnum) {
+        return new ResponseData(false, commonEnum.getCode(), commonEnum.getMessage());
     }
 
     public static ErrorResponseData error(String messageKey) {

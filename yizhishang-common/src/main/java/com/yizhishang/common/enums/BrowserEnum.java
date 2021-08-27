@@ -19,7 +19,19 @@ public enum BrowserEnum {
     /**
      * 易信APP浏览器
      */
-    YIXIN("YiXin");
+    YIXIN("YiXin"),
+
+    /**
+     * 欧普拉浏览器
+     */
+    OPERA("Opera"),
+
+    /**
+     * 淘宝浏览器
+     */
+    TAO("TaoBrowser"),
+
+    ;
 
     private final String message;
 

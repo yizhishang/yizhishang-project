@@ -4,8 +4,9 @@ import cn.hutool.core.util.StrUtil;
 import org.apache.commons.lang3.StringUtils;
 
 /**
+ * @author yizhishang
  * @Description : 加密字符串 替换* 号
- * @Date: 2020-07-03 15:31
+ * @since: 2020-07-03 15:31
  */
 public class EncryptorUtil {
 

@@ -24,7 +24,7 @@ import java.util.Map;
 @Slf4j
 public class NetworkUtil {
 
-    private static final String OS_AND_DEVICE_REGEX = "\\([A-Za-z0-9_\\s;\\.\\-\\/:]+\\)";
+    private static final String OS_AND_DEVICE_REGEX = "\\([A-Za-z0-9_\\s;.\\-/:]+\\)";
     private static final String OTHER_REGEX = "\\([A-Za-z0-9_\\s,]+\\)";
     private static final String UNKNOWN = "UNKNOWN";
 
@@ -138,165 +138,164 @@ public class NetworkUtil {
         }
         String netType = map.containsKey("NetType") ? map.get("NetType") : "";
 
-        String broswer = "";
-        String broswerVersion = "";
+        String browser = "";
+        String browserVersion = "";
         Map<String, String> resultMap = Maps.newHashMap();
         resultMap.put("netType", netType);
 
         for (Map.Entry<String, String> entry : map.entrySet()) {
             //            浏览器信息
-            if (entry.getKey().equals("MicroMessenger") && agent.contains("WindowsWechat")) {
+            if (BrowserEnum.MICRO_MESSENGER.getMessage().equals(entry.getKey()) && agent.contains("WindowsWechat")) {
 
                 // PC版微信浏览器
-                broswer = "MicroMessenger WindowsWechat";
-                broswerVersion = entry.getValue();
+                browser = "MicroMessenger WindowsWechat";
+                browserVersion = entry.getValue();
                 break;
             }
 
             // 微信浏览器
-            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage()) && null != temp && temp.length == 2) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+            if (entry.getKey().equals(BrowserEnum.MICRO_MESSENGER.getMessage()) && temp.length == 2) {
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
             // qq浏览器
-            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage()) && null != temp && temp.length == 2) {
+            if (entry.getKey().equals(BrowserEnum.TENCENT_TRAVELER.getMessage()) && temp.length == 2) {
 
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
             if (agent.contains(BrowserEnum.YIXIN.getMessage())) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (agent.contains("360SE")) {
-                broswer = "360SE";
+                browser = "360SE";
                 break;
             }
             if (agent.contains("360EE")) {
-                broswer = "360EE";
+                browser = "360EE";
                 break;
             }
 
             // 搜狗浏览器
             if (agent.contains("MetaSr") || agent.contains("SE")) {
-                broswer = "SouGou Explorer";
+                browser = "SouGou Explorer";
                 break;
             }
 
             // 世界之窗浏览器
             if (agent.contains("TheWorld") || entry.getKey().equals("The world")) {
-                broswer = "TheWorld";
+                browser = "TheWorld";
                 break;
             }
 
             // 傲游浏览器
             if (agent.contains("Maxthon")) {
-                broswer = "Maxthon";
+                browser = "Maxthon";
                 break;
             }
-            if (entry.getKey().equals("Opera")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+            if (BrowserEnum.OPERA.getMessage().equals(entry.getKey())) {
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (entry.getKey().equals("Operamobi")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
-            // 淘宝浏览器
-            if (entry.getKey().equals("TaoBrowser")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+            if (BrowserEnum.TAO.getMessage().equals(entry.getKey())) {
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
             // 百度浏览器
             if (entry.getKey().equals("BIDUBrowser")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
             // 猎豹浏览器
             if (entry.getKey().equals("LBBROWSER")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (agent.contains("UCBrowser") || agent.contains("UCWEB")) {
-                broswer = "UCBrowser";
+                browser = "UCBrowser";
                 break;
             }
 
             // 小米浏览器
             if (entry.getKey().equals("XiaoMi") || entry.getKey().equals("MiuiBrowser")) {
-                broswer = "XiaoMi";
+                browser = "XiaoMi";
                 break;
             }
 
             if (entry.getKey().equals("MQQBrowser") || entry.getKey().equals("QQBrowser") || entry.getKey().equals("QQ")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
 
             if (entry.getKey().equals("Navigator")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (entry.getKey().equals("Firefox")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (entry.getKey().equals("Chrome")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
             if (entry.getKey().equals("Safari")) {
-                broswer = entry.getKey();
-                broswerVersion = entry.getValue();
+                browser = entry.getKey();
+                browserVersion = entry.getValue();
                 break;
             }
         }
-        if (!StringUtils.isEmpty(broswer) && !StringUtils.isEmpty(broswerVersion)) {
-            resultMap.put("broswer", broswer);
-            resultMap.put("broswerVersion", broswerVersion);
+        if (!StringUtils.isEmpty(browser) && !StringUtils.isEmpty(browserVersion)) {
+            resultMap.put("browser", browser);
+            resultMap.put("broswerVersion", browserVersion);
             return resultMap;
         }
 
         // 所有主流的浏览器都判断完了，现在开始判断IE浏览器了
         if (agent.contains("MSIE")) {
-            broswer = "IE";
+            browser = "IE";
             if (agent.contains("MSIE 5")) {
-                broswerVersion = "5";
+                browserVersion = "5";
             } else if (agent.contains("MSIE 6")) {
-                broswerVersion = "6";
+                browserVersion = "6";
             } else if (agent.contains("MSIE 7")) {
-                broswerVersion = "7";
+                browserVersion = "7";
             } else if (agent.contains("MSIE 8")) {
-                broswerVersion = "8";
+                browserVersion = "8";
             } else if (agent.contains("MSIE 9")) {
-                broswerVersion = "9";
+                browserVersion = "9";
             } else if (agent.contains("MSIE 10")) {
-                broswerVersion = "10";
+                browserVersion = "10";
             }
         } else if (agent.contains("rv:11") && agent.contains("like Gecko")) {
-            broswer = "IE";
-            broswerVersion = "11";
+            browser = "IE";
+            browserVersion = "11";
         }
 
-        resultMap.put("broswer", broswer);
-        resultMap.put("broswerVersion", broswerVersion);
+        resultMap.put("browser", browser);
+        resultMap.put("broswerVersion", browserVersion);
         return resultMap;
     }
 
@@ -612,7 +611,6 @@ public class NetworkUtil {
                         isp = decodeUnicode(isp);
                         break;
                     default:
-                        continue;
                 }
             }
             return country + "_" + area + "_" + region + "_" + city + "_" + county + "_" + isp;
@@ -653,7 +651,7 @@ public class NetworkUtil {
 
             // 往对端写完数据对端服务器返回数据
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), encoding))) {
-                String line = "";
+                String line;
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);
                 }
