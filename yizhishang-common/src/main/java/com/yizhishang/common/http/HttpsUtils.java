@@ -97,10 +97,6 @@ public class HttpsUtils implements ProtocolSocketFactory {
         return "error";
     }
 
-    public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException {
-        return getSSLContext().getSocketFactory().createSocket(socket, host, port, autoClose);
-    }
-
     @Override
     public Socket createSocket(String host, int port) throws IOException {
         return getSSLContext().getSocketFactory().createSocket(host, port);

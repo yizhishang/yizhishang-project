@@ -49,7 +49,7 @@ public class CookieUtils {
      * @param cookieValue 加密后的cookie值
      * @return false 表示 cookieValue被篡改，true表示验证成功
      * @version v 1.0
-     * @Date 2017-11-16 15:50:31
+     * @since 2017-11-16 15:50:31
      */
     public static boolean validate(String cookieValue, String encryptCookieValue) throws NoSuchAlgorithmException {
         if (!StringUtil.isValid(cookieValue) || !StringUtil.isValid(encryptCookieValue)) {
