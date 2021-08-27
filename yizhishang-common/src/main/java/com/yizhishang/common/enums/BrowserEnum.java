@@ -1,8 +1,8 @@
 package com.yizhishang.common.enums;
 
 /**
- * @author: yuanyj
- * @date: 2020/9/14 19:26
+ * @author yizhishang
+ * @date 2020/9/14 19:26
  */
 public enum BrowserEnum {
 
@@ -21,7 +21,7 @@ public enum BrowserEnum {
      */
     YIXIN("YiXin");
 
-    private String message;
+    private final String message;
 
     BrowserEnum(String message) {
         this.message = message;
