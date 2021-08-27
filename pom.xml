@@ -11,6 +11,7 @@
     <modules>
         <module>yizhishang-core</module>
         <module>yizhishang-common</module>
+        <module>yizhishang-extensions</module>
     </modules>
 
     <name>yizhishang-parent</name>
@@ -23,11 +24,17 @@
 
         <poi.version>3.9</poi.version>
         <swagger.version>2.9.2</swagger.version>
+        <swagger-bootstrap-ui.version>1.9.6</swagger-bootstrap-ui.version>
 
         <hutool.version>4.6.1</hutool.version>
         <spring.version>5.1.16.RELEASE</spring.version>
         <poi.version>3.9</poi.version>
         <guava.version>21.0</guava.version>
+
+        <security-jwt.version>1.0.9.RELEASE</security-jwt.version>
+        <jjwt.version>0.9.0</jjwt.version>
+
+        <spring.release.version>5.1.16.RELEASE</spring.release.version>
 
         <sonar.scm.disabled>true</sonar.scm.disabled>
     </properties>
@@ -53,12 +60,30 @@
                     <artifactId>guava</artifactId>
                     <groupId>com.google.guava</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>swagger-models</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>swagger-annotations</artifactId>
+                    <groupId>io.swagger</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>swagger-models</artifactId>
+            <groupId>io.swagger</groupId>
+            <version>1.5.21</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>swagger-bootstrap-ui</artifactId>
+            <version>${swagger-bootstrap-ui.version}</version>
         </dependency>
 
         <dependency>
@@ -103,9 +128,10 @@
     </licenses>
     <!-- SCM信息 -> git在github上托管 -->
     <scm>
-        <connection>scm:git:git://github.com/yizhishang/OSSRH-61716.git</connection>
-        <developerConnection>scm:git:ssh://github.com/yizhishang/OSSRH-61716.git</developerConnection>
-        <url>https://github.com/yizhishang/OSSRH-61716/tree/master</url>
+        <connection>scm:git:git://github.com/yizhishang/yizhishang-parent.git</connection>
+        <developerConnection>scm:git:ssh://github.com/yizhishang/yizhishang-parent.git</developerConnection>
+        <url>https://github.com/yizhishang/yizhishang-parent/tree/master</url>
+        <tag>yizhishang-parent</tag>
     </scm>
     <!-- 开发者信息 -->
     <developers>
@@ -139,7 +165,7 @@
         <profile>
             <id>oss</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <activeByDefault>false</activeByDefault>
             </activation>
             <build>
                 <plugins>
@@ -161,6 +187,14 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
                         <version>2.9.1</version>
+                        <configuration>
+                            <aggregate>true</aggregate>
+                            <charset>UTF-8</charset>
+                            <encoding>UTF-8</encoding>
+                            <docencoding>UTF-8</docencoding>
+                            <!-- 让maven忽视javadoc过程中警告和错误 -->
+                            <additionalparam>-Xdoclint:none</additionalparam>
+                        </configuration>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -219,9 +253,12 @@
                 </executions>
             </plugin>
             <plugin>
-                <groupId>org.sonarsource.scanner.maven</groupId>
-                <artifactId>sonar-maven-plugin</artifactId>
-                <version>3.6.0.1398</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <generateBackupPoms>false</generateBackupPoms>
+                </configuration>
             </plugin>
         </plugins>
     </build>

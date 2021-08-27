@@ -1,0 +1,5 @@
+#-------starter 配置---------
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.yizhishang.redis.RedisConfig,\
+  com.yizhishang.redis.limit.aspect.LimitAspect,\
+  com.yizhishang.redis.limit.ratelimit.RateLimitService,\
+  com.yizhishang.redis.bloom.RedisBloomService
