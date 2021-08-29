@@ -63,7 +63,7 @@ public class RedisLock {
     private final RedisScript<Long> redisLockScript;
     private final RedisScript<Long> releaseScript;
 
-    private ThreadLocal<String> local = new ThreadLocal<>();
+    private static ThreadLocal<String> local = new ThreadLocal<>();
 
     @Autowired
     public RedisLock(RedisTemplate<String, Object> redisTemplate) {
