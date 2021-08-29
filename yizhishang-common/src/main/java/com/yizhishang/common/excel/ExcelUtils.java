@@ -91,17 +91,17 @@ public class ExcelUtils<T> {
         // 字体样式
         Font font = wb.createFont();
         // 粗体
-        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
+//        font.setBoldweight(Font.BOLDWEIGHT_BOLD);
         titleStyle.setFont(font);
         // 水平居中
-        titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
         // 垂直居中
-        titleStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        titleStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
         // 水平居中
-        cellStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        cellStyle.setAlignment(HorizontalAlignment.CENTER);
         // 垂直居中
-        cellStyle.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);
 
         cellStyle.setFillBackgroundColor(HSSFColor.BLUE.index);
 
@@ -218,7 +218,7 @@ public class ExcelUtils<T> {
         //titleStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
         //设置前景色
         // titleStyle.setFillForegroundColor(new XSSFColor(new java.awt.Color(159, 213, 183)));
-        titleStyle.setAlignment(CellStyle.ALIGN_CENTER);
+        titleStyle.setAlignment(HorizontalAlignment.CENTER);
 
         Font font = wb.createFont();
 //        font.setColor(HSSFColor.BROWN.index);
