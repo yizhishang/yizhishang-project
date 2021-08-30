@@ -1,1 +1,1 @@
-mvn clean deploy -DskipTests -DperformRelease=true -Dgpg.passphrase=Yuanyj@16yx0812
+mvn clean install deploy -P oss -DskipTests
