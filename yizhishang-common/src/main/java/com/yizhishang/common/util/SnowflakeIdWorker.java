@@ -41,11 +41,11 @@ public class SnowflakeIdWorker {
     /**
      * 节点ID最大值
      */
-    private long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    private long maxWorkerId = ~(-1L << workerIdBits);
     /**
      * 数据中心ID最大值
      */
-    private long maxDataCenterId = -1L ^ (-1L << dataCenterIdBits);
+    private long maxDataCenterId = ~(-1L << dataCenterIdBits);
     /**
      * 序列编号标识位数
      */
@@ -54,7 +54,7 @@ public class SnowflakeIdWorker {
     private long workerIdShift = sequenceBits;
     private long dataCenterIdShift = sequenceBits + workerIdBits;
     private long timestampLeftShift = sequenceBits + workerIdBits + dataCenterIdBits;
-    private long sequenceMask = -1L ^ (-1L << sequenceBits);
+    private long sequenceMask = ~(-1L << sequenceBits);
     private long lastTimestamp = -1L;
 
     public SnowflakeIdWorker(long workerId, long dataCenterId) {
@@ -67,7 +67,7 @@ public class SnowflakeIdWorker {
         }
         this.workerId = workerId;
         this.dataCenterId = dataCenterId;
-        logger.debug(String.format("worker starting. timestamp left shift %d, dataCenter id bits %d, worker id bits %d, sequence bits %d, workerid %d", timestampLeftShift, dataCenterIdBits, workerIdBits, sequenceBits, workerId));
+        logger.debug(String.format("worker starting. timestamp left shift %d, dataCenter id bits %d, worker id bits %d, sequence bits %d, workerId %d", timestampLeftShift, dataCenterIdBits, workerIdBits, sequenceBits, workerId));
     }
 
     /**
