@@ -2,7 +2,7 @@ package com.yizhishang.common.http;
 
 /**
  * @author yizhishang
- * @date 2016/7/14
+ * @since 2016/7/14
  */
 public class HttpResult {
 

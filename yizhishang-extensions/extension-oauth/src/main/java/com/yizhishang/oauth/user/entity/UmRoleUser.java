@@ -12,7 +12,7 @@ import java.io.Serializable;
  * 实体类
  *
  * @author yizhishang
- * @date 2020-11-10 13:48
+ * @since 2020-11-10 13:48
  */
 @Data
 @TableName("um_role_user")

@@ -2,7 +2,7 @@ package com.yizhishang.common.enums;
 
 /**
  * @author yizhishang
- * @date 2020/9/14 19:26
+ * @since 2020/9/14 19:26
  */
 public enum BrowserEnum {
 

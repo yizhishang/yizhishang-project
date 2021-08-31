@@ -16,7 +16,7 @@ import java.io.Serializable;
  * 角色信息实体类
  *
  * @author yizhishang
- * @date 2020-11-10 13:45
+ * @since 2020-11-10 13:45
  */
 @Data
 @TableName("um_role")

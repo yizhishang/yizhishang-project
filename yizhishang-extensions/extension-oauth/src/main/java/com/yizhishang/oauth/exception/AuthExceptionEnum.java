@@ -4,7 +4,7 @@ import com.yizhishang.common.enums.CommonEnum;
 
 /**
  * @author yizhishang
- * @since: 2020/11/10 14:12
+ * @since 2020/11/10 14:12
  */
 public enum AuthExceptionEnum implements CommonEnum {
 

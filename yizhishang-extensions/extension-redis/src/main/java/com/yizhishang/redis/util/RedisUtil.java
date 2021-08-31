@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * redis工具类
  *
  * @author 袁永君
- * @date 2019/11/19 13:46
+ * @since 2019/11/19 13:46
  */
 @Slf4j
 @Component

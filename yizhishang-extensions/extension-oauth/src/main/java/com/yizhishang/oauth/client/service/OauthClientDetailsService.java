@@ -7,7 +7,7 @@ import com.yizhishang.oauth.client.entity.OauthClientDetails;
  *  服务类
  *
  * @author yizhishang
- * @date 2020-11-05 15:33
+ * @since 2020-11-05 15:33
  */
 public interface OauthClientDetailsService extends IService<OauthClientDetails> {
 

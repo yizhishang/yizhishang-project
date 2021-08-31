@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * 角色信息 Mapper 接口
  *
  * @author yizhishang
- * @date 2020-11-10 13:45
+ * @since 2020-11-10 13:45
  */
 @Mapper
 @Repository

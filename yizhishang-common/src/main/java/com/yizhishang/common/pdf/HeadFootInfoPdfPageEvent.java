@@ -6,8 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author yizhishang
- * @emial 285206405@qq.com
- * @time 2018/12/26 0026 下午 2:21
+ * @since 2018/12/26 0026 下午 2:21
  */
 @Slf4j
 public class HeadFootInfoPdfPageEvent extends PdfPageEventHelper {

@@ -7,7 +7,7 @@ import lombok.Getter;
  * 时间维度
  *
  * @author yizhishang
- * @date 2021/6/30 15:00
+ * @since 2021/6/30 15:00
  */
 @Getter
 @AllArgsConstructor

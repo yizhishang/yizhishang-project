@@ -19,7 +19,7 @@ import java.util.stream.Stream;
 /**
  * @author 袁永君
  * @description : 用于解析 #user.username:#orderCode:test
- * @date :  2020-04-22 19:16
+ * @since :  2020-04-22 19:16
  */
 public class ExplainUtil {
 

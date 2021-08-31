@@ -7,7 +7,7 @@ import com.yizhishang.oauth.user.entity.UmUser;
  * 服务类
  *
  * @author yizhishang
- * @date 2020-11-10 13:46
+ * @since 2020-11-10 13:46
  */
 public interface UmUserService extends IService<UmUser> {
 

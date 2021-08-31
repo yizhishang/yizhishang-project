@@ -14,7 +14,7 @@ import java.io.Serializable;
  * 实体类
  *
  * @author yizhishang
- * @date 2020-11-10 13:46
+ * @since 2020-11-10 13:46
  */
 @Data
 @TableName("um_user")

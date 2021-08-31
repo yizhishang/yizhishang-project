@@ -10,7 +10,7 @@ import lombok.Data;
  * 实体类
  *
  * @author yizhishang
- * @date 2020-11-05 15:33
+ * @since 2020-11-05 15:33
  */
 @Data
 @TableName("oauth_client_details")
