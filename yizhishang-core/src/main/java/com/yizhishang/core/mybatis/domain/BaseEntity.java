@@ -21,13 +21,13 @@ public class BaseEntity implements Serializable {
 
     @Length(max = 255, message = "创建人长度不能超过255个字符")
     @ApiModelProperty(value = "创建人")
-    @TableField(value = "CREATE_BY", fill = FieldFill.INSERT)
-    private String createBy;
+    @TableField(value = "CREATE_CODE", fill = FieldFill.INSERT)
+    private String createCode;
 
     @Length(max = 255, message = "修改人长度不能超过255个字符")
     @ApiModelProperty(value = "修改人")
-    @TableField(value = "UPDATE_BY")
-    private String updateBy;
+    @TableField(value = "UPDATE_CODE")
+    private String updateCode;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")

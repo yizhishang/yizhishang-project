@@ -2,6 +2,7 @@ package com.yizhishang.core.spring;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,13 +16,9 @@ public class SpringContextHolder implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext;
 
-    private static void setContext(ApplicationContext applicationContext) {
-        SpringContextHolder.applicationContext = applicationContext;
-    }
-
     @Override
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        setContext(applicationContext);
+    public void setApplicationContext(@NonNull ApplicationContext applicationContext) {
+        SpringContextHolder.applicationContext = applicationContext;
     }
 
     public static ApplicationContext getApplicationContext() {
@@ -41,7 +38,7 @@ public class SpringContextHolder implements ApplicationContextAware {
     }
 
     private static void assertApplicationContext() {
-        if (SpringContextHolder.applicationContext == null) {
+        if (applicationContext == null) {
             throw new RuntimeException("applicationContext属性为null,请检查是否注入了SpringContextHolder!");
         }
     }
