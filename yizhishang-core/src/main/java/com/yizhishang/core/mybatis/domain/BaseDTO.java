@@ -22,11 +22,11 @@ public class BaseDTO implements Serializable {
 
     @Length(max = 255, message = "创建人长度不能超过255个字符")
     @ApiModelProperty(value = "创建人")
-    private String createBy;
+    private String createCode;
 
     @Length(max = 255, message = "修改人长度不能超过255个字符")
     @ApiModelProperty(value = "修改人")
-    private String updateBy;
+    private String updateCode;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     @ApiModelProperty(value = "创建时间")
