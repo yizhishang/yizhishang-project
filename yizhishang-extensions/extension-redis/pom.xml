@@ -12,7 +12,7 @@
     <artifactId>extension-redis</artifactId>
 
     <name>extension-redis</name>
-    <url> https://gitee.com/yizhishang/yizhishang-project.git</url>
+    <url>https://gitee.com/yizhishang/yizhishang-project.git</url>
 
     <dependencies>
         <dependency>

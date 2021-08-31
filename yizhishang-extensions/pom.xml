@@ -17,7 +17,7 @@
     <modules>
         <module>extension-oauth</module>
         <module>extension-redis</module>
-<!--        <module>extension-cas</module>-->
+        <module>extension-cas</module>
     </modules>
 
 
