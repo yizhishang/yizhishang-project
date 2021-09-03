@@ -20,10 +20,10 @@ public class RSADemo {
             String message = "yizhishang";
             System.out.println("加密+解密---------------------------------------------------- 明文：" + message);
 
-            String byte2Base64 = RSAUtil.publicEncrypt(message);
+            String byte2Base64 = RSAUtil.encrypt(message);
             System.out.println("客户端公钥加密并Base64编码的结果：" + byte2Base64);
 
-            String content = RSAUtil.privateDecrypt(byte2Base64);
+            String content = RSAUtil.decrypt(byte2Base64);
             System.out.println("服务端私钥解密: " + content);
             System.out.println();
         } catch (Exception e) {
@@ -39,10 +39,10 @@ public class RSADemo {
             String message = "50.36";
             System.out.println("签名+验签---------------------------------------------------- 明文：" + message);
 
-            String byte2Base64 = RSAUtil.privateEncrypt(message);
+            String byte2Base64 = RSAUtil.sign(message);
             System.out.println("服务端私钥签名：" + byte2Base64);
 
-            String content = RSAUtil.publicDecrypt(byte2Base64);
+            String content = RSAUtil.verifySignature(byte2Base64);
             System.out.println("客户端公钥验签：" + content);
         } catch (Exception e) {
             e.printStackTrace();

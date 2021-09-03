@@ -113,7 +113,7 @@ public class RSAUtil {
      * @return String 密文
      * @throws Exception 异常
      */
-    public static String publicEncrypt(String content) throws Exception {
+    public static String encrypt(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的公钥转换成PublicKey对象
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(PUBLIC_KEY));
@@ -129,7 +129,7 @@ public class RSAUtil {
      * @return String 密文
      * @throws Exception 异常
      */
-    public static String publicEncrypt(String content, String publicKey) throws Exception {
+    public static String encrypt(String content, String publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的公钥转换成PublicKey对象
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
@@ -142,7 +142,7 @@ public class RSAUtil {
      *
      * @throws Exception 异常
      */
-    public static byte[] publicEncrypt(byte[] content, PublicKey publicKey) throws Exception {
+    public static byte[] encrypt(byte[] content, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         return cipher.doFinal(content);
@@ -153,7 +153,7 @@ public class RSAUtil {
      *
      * @throws Exception 异常
      */
-    public static byte[] publicDecrypt(byte[] content, PublicKey publicKey) throws Exception {
+    public static byte[] verifySignature(byte[] content, PublicKey publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, publicKey);
         return cipher.doFinal(content);
@@ -166,7 +166,7 @@ public class RSAUtil {
      * @return 明文
      * @throws Exception 异常
      */
-    public static String publicDecrypt(String content) throws Exception {
+    public static String verifySignature(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, getPublicKey(PUBLIC_KEY));
         byte[] result = cipher.doFinal(DECODER.decode(content));
@@ -181,7 +181,7 @@ public class RSAUtil {
      * @return 明文
      * @throws Exception 异常
      */
-    public static String publicDecrypt(String content, String publicKey) throws Exception {
+    public static String verifySignature(String content, String publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicKey));
         byte[] result = cipher.doFinal(DECODER.decode(content));
@@ -193,7 +193,7 @@ public class RSAUtil {
      *
      * @throws Exception 异常
      */
-    public static byte[] privateEncrypt(byte[] content, PrivateKey privateKey) throws Exception {
+    public static byte[] sign(byte[] content, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, privateKey);
         return cipher.doFinal(content);
@@ -206,7 +206,7 @@ public class RSAUtil {
      * @return 加密后的内容Base64编码
      * @throws Exception 异常
      */
-    public static String privateEncrypt(String content) throws Exception {
+    public static String sign(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(PRIVATE_KEY));
         byte[] result = cipher.doFinal(content.getBytes());
@@ -221,7 +221,7 @@ public class RSAUtil {
      * @return 加密后的内容Base64编码
      * @throws Exception 异常
      */
-    public static String privateEncrypt(String content, String privateKey) throws Exception {
+    public static String sign(String content, String privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
         byte[] result = cipher.doFinal(content.getBytes());
@@ -235,7 +235,7 @@ public class RSAUtil {
      * @return 明文
      * @throws Exception 异常
      */
-    public static String privateDecrypt(String content) throws Exception {
+    public static String decrypt(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的私钥转换成PrivateKey对象
         cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(PRIVATE_KEY));
@@ -251,7 +251,7 @@ public class RSAUtil {
      * @return 明文
      * @throws Exception 异常
      */
-    public static String privateDecrypt(String content, String privateKey) throws Exception {
+    public static String decrypt(String content, String privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的私钥转换成PrivateKey对象
         cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
@@ -267,7 +267,7 @@ public class RSAUtil {
      * @return 明文字节数组
      * @throws Exception 异常
      */
-    public static byte[] privateDecrypt(byte[] content, PrivateKey privateKey) throws Exception {
+    public static byte[] decrypt(byte[] content, PrivateKey privateKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         return cipher.doFinal(content);
