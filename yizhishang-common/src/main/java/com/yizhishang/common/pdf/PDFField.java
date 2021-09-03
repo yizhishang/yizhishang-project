@@ -6,10 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @Description 自定义PDF注解
- * @Author 袁永君
+ * @author 袁永君
+ * @description 自定义PDF注解
  * @since 2018/5/10 11:56
- * @version 1.0
  **/
 @Target({ElementType.FIELD, ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

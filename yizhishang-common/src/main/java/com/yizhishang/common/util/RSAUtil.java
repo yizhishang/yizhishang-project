@@ -1,10 +1,11 @@
 package com.yizhishang.common.util;
 
+import org.springframework.util.Base64Utils;
+
 import javax.crypto.Cipher;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.Base64;
 
 /**
  * 公钥加密-私钥解密
@@ -26,16 +27,6 @@ public class RSAUtil {
     public static final String PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCxLNznOHjkccOKPSjga8j9Xbr1nY4TLPlPykW9UHTqG85LKJIo+7mb0ZheXu2cLYpcBbJ8MyozEjHZYoFKgnKppqylCLBx687oxQW6KcDAKqTJLyOjoaLjdIZpSoNVbQFha6mJTK9XAgAI/gs1EvNYeCaDYsuIixlZ7HvbJMiy5Tipk5eK71o5D9sYsWQRXnFlo+d+51FU+b6755qZLJsiGSigD82LR8wBWatJVocqRpGWCu71e/FhAESraAFtb/qM3grDvNyFjGjDqzB4fb1z4xtdrq6cb6d8APbUt5Z/OMK5VVpKuI4meN1GKSXGRRp0w4dzMUxAguai7HPSZpPhAgMBAAECggEAZJTYb3dSwjWHUbI4w3bNKnEMkyU3o9EzU8W746aKSOEyMt68YwHMtBW/z0tKzw/XbThaxEFzonygyg0u4vK9T2xstGADcxjwZJp9DttnLnDHDeNx8xHu2/up1ppThqqUTw8EtwpOvDFJfdFi4WV5um6zRoFOlJyK7s7e3WC7gzrGHTN8EAOR+SbMVo11okWdeAabD/2XF8K3EWaYU/SaIu7unJq5fMigUM9G9KX+L+LsjhyFQfpbZSGdk2IXfpl0bvboS/hidqBrpnr6UYCNPUNtwDyel9zhkLUI4bQVtnnrIMU6IpmcZS7/KkfBO+WSY9OvgFxRnXExmOptQlNGVQKBgQDZVWs5LQLcElU2bLCnszJ/7Jr4SX9YTlr7a8BPXZ2MwmX3qemx4hnyD7Hzr1ruPa7NQ5A/W7HAGCmt++zOndvYOiPoWHzQ43WUTRSQRV8Mzhr1mjbg8VYwWnZ6OA9WN52kacicNOSIpAkHXP6J1u4Ar7NVVcD6FCBVlGTwU4g9lwKBgQDQsmgeDHUsSRYiQfwm5CxmL/QVwfLjeQkNQNpZCeMHW84SHjvrZv+zf3pf1mPAytd+Z/swa2i1sDVW1OpBX2wKGZDjoCpqhrDOdPza6sat9yD+A/dMf62q+UjAHwjnG4z8654W87G/kVE7+ob5L5Snf2bNVOf1IgYb7lyI9exZRwKBgQC3/86ImKgMI+VK75hcUqWVkn7daHRNEgGLTP2C9BIYAtmLZao59N/chRc25aZJf6WHmQT97ya9KHfZGimyAAoJtaeC5a++tmRsixm2z1SapcBDYS3HIevDgkM+VEn/x5RKh1jVjx5Q5PfT6RKDJplXsWlV/QUldHavnbQbl80HvwKBgDdiIR9YTwAhpS4SNMhdZSr5Lt1XSw3y4OQTgd5/MTCSvG0yeNRP0SvheKhWTMKtEeMJ1S9UUcVlrcINXt1aZWGIx1qg9qCufd1MTo4KIA+qtaazhr1WZNAqt5PEqKgsN44nORz+Lv2Xouc35PncFqccuDtlfOkgzl47M3NlUAOhAoGBAIiGK0nCxxI8IKnkLIqTlRNYApilHfSwQJBrbOY3OMEFE9HhZOYFzcc37lAruV9VM5MGdbRQaEp/GNGxlMEnfQr6I3JVN4gyt/nP21rVBmQ9YqRDxifPkZbSt29k71h/50BmaF5IgnLB/XuPjsdI4BWLBBbarvs6qAsBCtlEH7FH";
 
     private static final String RSA = "RSA";
-
-    /**
-     * 字节数组转Base64编码
-     */
-    private static final Base64.Encoder ENCODER = Base64.getEncoder();
-
-    /**
-     * Base64编码转字节数组
-     */
-    private static final Base64.Decoder DECODER = Base64.getDecoder();
 
     private RSAUtil() {
 
@@ -63,7 +54,7 @@ public class RSAUtil {
     public static String getPublicKey(KeyPair keyPair) {
         PublicKey publicKey = keyPair.getPublic();
         byte[] bytes = publicKey.getEncoded();
-        return ENCODER.encodeToString(bytes);
+        return Base64Utils.encodeToString(bytes);
     }
 
     /**
@@ -75,7 +66,7 @@ public class RSAUtil {
     public static String getPrivateKey(KeyPair keyPair) {
         PrivateKey privateKey = keyPair.getPrivate();
         byte[] bytes = privateKey.getEncoded();
-        return ENCODER.encodeToString(bytes);
+        return Base64Utils.encodeToString(bytes);
     }
 
     /**
@@ -86,7 +77,7 @@ public class RSAUtil {
      * @throws Exception 异常
      */
     public static PublicKey getPublicKey(String publicKey) throws Exception {
-        byte[] keyBytes = DECODER.decode(publicKey);
+        byte[] keyBytes = Base64Utils.decode(publicKey.getBytes());
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(RSA);
         return keyFactory.generatePublic(keySpec);
@@ -100,7 +91,7 @@ public class RSAUtil {
      * @throws Exception 异常
      */
     public static PrivateKey getPrivateKey(String privateKey) throws Exception {
-        byte[] keyBytes = DECODER.decode(privateKey);
+        byte[] keyBytes = Base64Utils.decode(privateKey.getBytes());
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
         KeyFactory keyFactory = KeyFactory.getInstance(RSA);
         return keyFactory.generatePrivate(keySpec);
@@ -118,7 +109,7 @@ public class RSAUtil {
         // 将Base64编码后的公钥转换成PublicKey对象
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(PUBLIC_KEY));
         byte[] publicEncrypt = cipher.doFinal(content.getBytes());
-        return ENCODER.encodeToString(publicEncrypt);
+        return Base64Utils.encodeToString(publicEncrypt);
     }
 
     /**
@@ -134,7 +125,7 @@ public class RSAUtil {
         // 将Base64编码后的公钥转换成PublicKey对象
         cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
         byte[] publicEncrypt = cipher.doFinal(content.getBytes());
-        return ENCODER.encodeToString(publicEncrypt);
+        return Base64Utils.encodeToString(publicEncrypt);
     }
 
     /**
@@ -169,7 +160,7 @@ public class RSAUtil {
     public static String verifySignature(String content) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, getPublicKey(PUBLIC_KEY));
-        byte[] result = cipher.doFinal(DECODER.decode(content));
+        byte[] result = cipher.doFinal(Base64Utils.decode(content.getBytes()));
         return new String(result);
     }
 
@@ -184,13 +175,16 @@ public class RSAUtil {
     public static String verifySignature(String content, String publicKey) throws Exception {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicKey));
-        byte[] result = cipher.doFinal(DECODER.decode(content));
+        byte[] result = cipher.doFinal(Base64Utils.decode(content.getBytes()));
         return new String(result);
     }
 
     /**
      * 私钥签名
      *
+     * @param content    明文
+     * @param privateKey 私钥
+     * @return 加密后的内容Base64编码
      * @throws Exception 异常
      */
     public static byte[] sign(byte[] content, PrivateKey privateKey) throws Exception {
@@ -210,7 +204,7 @@ public class RSAUtil {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(PRIVATE_KEY));
         byte[] result = cipher.doFinal(content.getBytes());
-        return ENCODER.encodeToString(result);
+        return Base64Utils.encodeToString(result);
     }
 
     /**
@@ -225,7 +219,7 @@ public class RSAUtil {
         Cipher cipher = Cipher.getInstance(RSA);
         cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
         byte[] result = cipher.doFinal(content.getBytes());
-        return ENCODER.encodeToString(result);
+        return Base64Utils.encodeToString(result);
     }
 
     /**
@@ -239,7 +233,7 @@ public class RSAUtil {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的私钥转换成PrivateKey对象
         cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(PRIVATE_KEY));
-        byte[] result = cipher.doFinal(DECODER.decode(content));
+        byte[] result = cipher.doFinal(Base64Utils.decode(content.getBytes()));
         return new String(result);
     }
 
@@ -255,7 +249,7 @@ public class RSAUtil {
         Cipher cipher = Cipher.getInstance(RSA);
         // 将Base64编码后的私钥转换成PrivateKey对象
         cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
-        byte[] result = cipher.doFinal(DECODER.decode(content));
+        byte[] result = cipher.doFinal(Base64Utils.decode(content.getBytes()));
         return new String(result);
     }
 
