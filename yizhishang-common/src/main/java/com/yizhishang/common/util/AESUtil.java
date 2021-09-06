@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  */
 public class AESUtil {
 
-    private static final int LENGTH = 128;
+    private static final int LENGTH = 256;
 
     private static final String KEY_ALGORITHM = "AES";
     /**
@@ -89,16 +89,6 @@ public class AESUtil {
             Logger.getLogger(AESUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
-    }
-
-    public static void main(String[] args) {
-        String content = "hello,您好";
-        String key = "今天是个好日子";
-        System.out.println("content:" + content);
-        String s1 = AESUtil.encrypt(content, key);
-        System.out.println("s1:" + s1);
-        System.out.println("s2:" + AESUtil.decrypt(s1, key));
-
     }
 
 }
