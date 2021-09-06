@@ -1,11 +1,10 @@
 import com.yizhishang.common.util.AESUtil;
 
 /**
- * @author 袁永君
- * @date 2019/7/18 13:56
+ * @author: yizhishang
+ * @date: 2021/9/6 9:56
  */
 public class AESDemo {
-
     public static void main(String[] args) {
         String content = "hello,您好";
         String key = "今天是个好日子";
