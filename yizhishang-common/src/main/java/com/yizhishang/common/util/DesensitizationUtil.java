@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * @author yizhishang
- * @Description : 加密字符串 替换* 号
  * @since 2020-07-03 15:31
  */
 public class DesensitizationUtil {
@@ -30,34 +29,22 @@ public class DesensitizationUtil {
     /**
      * 邮箱，@前使用星号*隐藏后几位（大于3位保留3位，小于3位保留1位），
      *
-     * @param email
-     * @return
-     * @后使用星号*隐藏后几位（保留1位），点号后直接显示， 如：Qio***@s***.com，637***@q***.com。
+     * @param email 邮箱
+     * @return 邮箱密文
      */
     public static String hideMailbox(String email) {
-        if (StringUtils.isBlank(email) || email.indexOf(A) == -1 || email.indexOf(D) == -1) {
+        if (StringUtils.isBlank(email) || !email.contains(A) || !email.contains(D)) {
             return email;
         }
         String[] emailArr = email.split(A);
-        String before = "";
+        String before;
         int beforeLength = emailArr[0].length();
         if (beforeLength > 3) {
             before = emailArr[0].substring(0, 3) + XXX;
         } else if (beforeLength >= 1) {
-            before = emailArr[0].substring(0, 1) + XXX;
+            before = emailArr[0].charAt(0) + XXX;
         } else {
             before = emailArr[0];
-        }
-
-        String after = "";
-        int afterLength = emailArr[1].length();
-        int lastIndex = emailArr[1].lastIndexOf(D);
-        if (afterLength < 1 || emailArr[1].lastIndexOf(D) == -1) {
-            after = emailArr[1];
-        } else {
-            String substring = emailArr[1].substring(lastIndex, afterLength);
-            after = emailArr[1].substring(0, 1) + XXX + substring;
-
         }
         return before + A + XXX;
     }
@@ -68,8 +55,8 @@ public class DesensitizationUtil {
      * 10位及10位以下，保留后四位
      * ，如：137****1234，441***********0021，******6666。
      *
-     * @param number
-     * @return
+     * @param number 数字
+     * @return 数字密文
      */
     public static String hideNumber(String number) {
         if (StringUtils.isBlank(number)) {
@@ -92,32 +79,32 @@ public class DesensitizationUtil {
      * 姓名脱敏
      *
      * @param username 姓名
-     * @return
+     * @return 姓名密文
      */
     public static String hideUserName(String username) {
         if (StringUtils.isBlank(username)) {
             return username;
         }
-        return username.substring(0, 1) + XXX;
+        return username.charAt(0) + XXX;
     }
 
     /**
-     * 姓名脱敏
+     * 地址脱敏
      *
-     * @param address 姓名
-     * @return
+     * @param address 地址
+     * @return 地址密文
      */
     public static String hideAddress(String address) {
         if (StringUtils.isBlank(address)) {
             return address;
         }
-        boolean hasProvince = address.indexOf(PROVINCE) > -1;
+        boolean hasProvince = address.contains(PROVINCE);
         if (hasProvince) {
             String[] addressArray = address.split(PROVINCE);
             return addressArray[0] + PROVINCE + XXX;
         }
 
-        boolean hasCity = address.indexOf(CITY) > -1;
+        boolean hasCity = address.contains(CITY);
         if (hasCity) {
             String[] addressArray = address.split(CITY);
             return addressArray[0] + CITY + XXX;
@@ -129,19 +116,19 @@ public class DesensitizationUtil {
      * 公司名称脱敏
      *
      * @param companyName 公司名称
-     * @return
+     * @return 公司密文
      */
     public static String hideCompanyName(String companyName) {
         if (StringUtils.isBlank(companyName)) {
             return companyName;
         }
-        boolean hasProvince = companyName.indexOf(PROVINCE) > -1;
+        boolean hasProvince = companyName.contains(PROVINCE);
         if (hasProvince) {
             String[] companyArray = companyName.split(PROVINCE);
             return XXX + companyArray[1].substring(0, 2) + XXX;
         }
 
-        boolean hasCity = companyName.indexOf(CITY) > -1;
+        boolean hasCity = companyName.contains(CITY);
         if (hasCity) {
             String[] companyArray = companyName.split(CITY);
             return XXX + companyArray[1].substring(0, 2) + XXX;
