@@ -8,10 +8,10 @@ import org.apache.commons.lang3.StringUtils;
  * @Description : 加密字符串 替换* 号
  * @since 2020-07-03 15:31
  */
-public class EncryptorUtil {
+public class DesensitizationUtil {
 
 
-    private EncryptorUtil() {
+    private DesensitizationUtil() {
         super();
     }
 
@@ -22,6 +22,10 @@ public class EncryptorUtil {
     private static final char X = '*';
 
     private static final String XXX = "***";
+
+    private static final String PROVINCE = "省";
+
+    private static final String CITY = "市";
 
     /**
      * 邮箱，@前使用星号*隐藏后几位（大于3位保留3位，小于3位保留1位），
@@ -55,7 +59,7 @@ public class EncryptorUtil {
             after = emailArr[1].substring(0, 1) + XXX + substring;
 
         }
-        return before + A + after;
+        return before + A + XXX;
     }
 
     /**
@@ -84,5 +88,41 @@ public class EncryptorUtil {
         return number;
     }
 
+    /**
+     * 姓名脱敏
+     *
+     * @param username 姓名
+     * @return
+     */
+    public static String hideUserName(String username) {
+        if (StringUtils.isBlank(username)) {
+            return username;
+        }
+        return username.substring(0, 1) + XXX;
+    }
+
+    /**
+     * 姓名脱敏
+     *
+     * @param address 姓名
+     * @return
+     */
+    public static String hideAddress(String address) {
+        if (StringUtils.isBlank(address)) {
+            return address;
+        }
+        boolean hasProvince = address.indexOf(PROVINCE) > -1;
+        if (hasProvince) {
+            String[] addressArray = address.split(PROVINCE);
+            return addressArray[0] + PROVINCE + XXX;
+        }
+
+        boolean hasCity = address.indexOf(CITY) > -1;
+        if (hasCity) {
+            String[] addressArray = address.split(CITY);
+            return addressArray[0] + CITY + XXX;
+        }
+        return "";
+    }
 
 }
