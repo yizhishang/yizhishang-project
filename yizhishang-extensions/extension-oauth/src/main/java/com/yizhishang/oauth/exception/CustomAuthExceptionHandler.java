@@ -56,7 +56,7 @@ public class CustomAuthExceptionHandler implements AuthenticationEntryPoint, Acc
     }
 
     private void generateResponse(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.addHeader("Access-Control-Allow-Origin", request.getHeader("origin"));
         response.addHeader("Cache-Control", "no-cache");
