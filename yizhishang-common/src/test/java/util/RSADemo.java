@@ -1,3 +1,5 @@
+package util;
+
 import com.yizhishang.common.util.RSAUtil;
 
 /**
