@@ -17,4 +17,5 @@ public interface CommonEnum {
      * @return
      */
     String getMessage();
+
 }

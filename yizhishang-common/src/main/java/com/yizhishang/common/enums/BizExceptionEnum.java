@@ -1,8 +1,13 @@
 package com.yizhishang.common.enums;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * @author yizhishang
  */
+@Getter
+@AllArgsConstructor
 public enum BizExceptionEnum implements CommonEnum {
     /**
      * 服务器异常
@@ -40,21 +45,8 @@ public enum BizExceptionEnum implements CommonEnum {
     ORGANIZATION_HAS_CHILD(410, "organization.has.child"),
     ORGANIZATION_IS_IN_USE(410, "organization.is.in.use");
 
-    private Integer code;
-    private String message;
+    private final Integer code;
+    private final String message;
 
-    private BizExceptionEnum(int code, String message) {
-        this.code = code;
-        this.message = message;
-    }
 
-    @Override
-    public Integer getCode() {
-        return this.code;
-    }
-
-    @Override
-    public String getMessage() {
-        return this.message;
-    }
 }

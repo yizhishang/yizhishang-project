@@ -1,5 +1,6 @@
 package com.yizhishang.common.enums;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
@@ -9,6 +10,7 @@ import lombok.Getter;
  * @since 2020-01-17 14:00
  */
 @Getter
+@AllArgsConstructor
 public enum CommonStatusEnum implements CommonEnum {
 
     /**
@@ -20,22 +22,17 @@ public enum CommonStatusEnum implements CommonEnum {
      */
     DISABLE(1, "禁用");
 
-    Integer code;
-    String message;
+    private final Integer code;
+    private final String message;
 
-    CommonStatusEnum(Integer code, String message) {
-        this.code = code;
-        this.message = message;
-    }
-
-    public static String getDescription(Integer status) {
+    public static CommonStatusEnum getCommonStatus(Integer status) {
         if (status != null) {
             for (CommonStatusEnum s : CommonStatusEnum.values()) {
                 if (s.getCode().equals(status)) {
-                    return s.getMessage();
+                    return s;
                 }
             }
         }
-        return "";
+        return null;
     }
 }

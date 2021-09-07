@@ -21,13 +21,13 @@ public class CustomExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
 
     @ExceptionHandler(DuplicateKeyException.class)
-    public ResponseData handleDuplicateKeyException(DuplicateKeyException e) {
+    public ResponseData<String> handleDuplicateKeyException(DuplicateKeyException e) {
         logger.error(e.getMessage(), e);
         return ResponseData.error("数据库中已存在该记录");
     }
 
     @ExceptionHandler(BindException.class)
-    public ResponseData handBindException(BindException e) {
+    public ResponseData<String> handBindException(BindException e) {
         BindingResult bindingResult = e.getBindingResult();
         logger.error("{}", bindingResult);
         ObjectError error = bindingResult.getAllErrors().get(0);
@@ -37,7 +37,7 @@ public class CustomExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseData handleException(Exception e) {
+    public ResponseData<String> handleException(Exception e) {
         logger.error(e.getMessage(), e);
         return ResponseData.error(e.getMessage());
     }
