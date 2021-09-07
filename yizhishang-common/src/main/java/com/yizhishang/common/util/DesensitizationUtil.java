@@ -125,4 +125,28 @@ public class DesensitizationUtil {
         return "";
     }
 
+    /**
+     * 公司名称脱敏
+     *
+     * @param companyName 公司名称
+     * @return
+     */
+    public static String hideCompanyName(String companyName) {
+        if (StringUtils.isBlank(companyName)) {
+            return companyName;
+        }
+        boolean hasProvince = companyName.indexOf(PROVINCE) > -1;
+        if (hasProvince) {
+            String[] companyArray = companyName.split(PROVINCE);
+            return XXX + companyArray[1].substring(0, 2) + XXX;
+        }
+
+        boolean hasCity = companyName.indexOf(CITY) > -1;
+        if (hasCity) {
+            String[] companyArray = companyName.split(CITY);
+            return XXX + companyArray[1].substring(0, 2) + XXX;
+        }
+        return XXX + companyName.substring(0, 2) + XXX;
+    }
+
 }

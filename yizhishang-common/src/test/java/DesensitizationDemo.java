@@ -5,7 +5,7 @@ import com.yizhishang.common.util.DesensitizationUtil;
  * @Description : 加密字符串 替换* 号
  * @since 2020-07-03 15:31
  */
-public class EncryptorDemo {
+public class DesensitizationDemo {
 
     public static void main(String[] args) {
         String number = "13088840046";
@@ -28,6 +28,15 @@ public class EncryptorDemo {
 
         number = "黄石市阳新县发送到发斯蒂芬";
         System.out.println(DesensitizationUtil.hideAddress(number));
+
+        number = "浙江省新华书店有限公司";
+        System.out.println(DesensitizationUtil.hideCompanyName(number));
+
+        number = "顺丰控股集团有限公司";
+        System.out.println(DesensitizationUtil.hideCompanyName(number));
+
+        number = "深圳市顺丰控股集团有限公司";
+        System.out.println(DesensitizationUtil.hideCompanyName(number));
 
     }
 
