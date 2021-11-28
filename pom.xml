@@ -89,7 +89,7 @@
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-extension</artifactId>
-            <version>3.1.0</version>
+            <version>3.3.2</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -143,119 +143,121 @@
         </developer>
     </developers>
 
-    <!--    <repositories>-->
-    <!--        <repository>-->
-    <!--            <id>maven-public</id>-->
-    <!--            <url>http://nexus.yizhishang.com/repository/maven-public/</url>-->
-    <!--        </repository>-->
-    <!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>maven-public</id>
+            <url>http://nexus.yizhishang.com/repository/maven-public/</url>
+        </repository>
+    </repositories>
 
-    <!--    <distributionManagement>-->
-    <!--        <repository>-->
-    <!--            <id>maven-releases</id>-->
-    <!--            <url>http://nexus.yizhishang.com/repository/maven-releases/</url>-->
-    <!--        </repository>-->
-    <!--        <snapshotRepository>-->
-    <!--            <id>maven-snapshots</id>-->
-    <!--            <url>http://nexus.yizhishang.com/repository/maven-snapshots/</url>-->
-    <!--        </snapshotRepository>-->
-    <!--    </distributionManagement>-->
+    <!-- 配置远程发布到私服，mvn deploy -->
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <url>http://nexus.yizhishang.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>http://nexus.yizhishang.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <!-- 使用个人资料：由于生成javadoc和源jar以及使用GPG签署组件是一个相当耗时的过程，因此这些执行通常与正常的构建配置隔离并移动到配置文件中。然后，在通过激活配置文件执行部署时，将使用此配置文件。 -->
-    <profiles>
-        <profile>
-            <id>oss</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>performRelease</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <build>
-                <plugins>
-                    <!-- 要生成Javadoc和Source jar文件，您必须配置javadoc和源Maven插件 -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>2.2.1</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>2.9.1</version>
-                        <configuration>
-                            <aggregate>true</aggregate>
-                            <charset>UTF-8</charset>
-                            <encoding>UTF-8</encoding>
-                            <docencoding>UTF-8</docencoding>
-                            <!-- 让maven忽视javadoc过程中警告和错误 -->
-                            <additionalparam>-Xdoclint:none</additionalparam>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadocs</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <!--  必须配置GPG插件用于使用以下配置对组件进行签名 -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.3</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <serverId>oss</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
-            <distributionManagement>
-                <snapshotRepository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-                </snapshotRepository>
-                <repository>
-                    <id>oss</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
-            </distributionManagement>
-        </profile>
-    </profiles>
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>oss</id>-->
+    <!--            <activation>-->
+    <!--                <activeByDefault>true</activeByDefault>-->
+    <!--                <property>-->
+    <!--                    <name>performRelease</name>-->
+    <!--                    <value>true</value>-->
+    <!--                </property>-->
+    <!--            </activation>-->
+    <!--            <build>-->
+    <!--                <plugins>-->
+    <!--                    &lt;!&ndash; 要生成Javadoc和Source jar文件，您必须配置javadoc和源Maven插件 &ndash;&gt;-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-source-plugin</artifactId>-->
+    <!--                        <version>2.2.1</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>attach-sources</id>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>jar-no-fork</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-javadoc-plugin</artifactId>-->
+    <!--                        <version>2.9.1</version>-->
+    <!--                        <configuration>-->
+    <!--                            <aggregate>true</aggregate>-->
+    <!--                            <charset>UTF-8</charset>-->
+    <!--                            <encoding>UTF-8</encoding>-->
+    <!--                            <docencoding>UTF-8</docencoding>-->
+    <!--                            &lt;!&ndash; 让maven忽视javadoc过程中警告和错误 &ndash;&gt;-->
+    <!--                            <additionalparam>-Xdoclint:none</additionalparam>-->
+    <!--                        </configuration>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>attach-javadocs</id>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>jar</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    &lt;!&ndash;  必须配置GPG插件用于使用以下配置对组件进行签名 &ndash;&gt;-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.apache.maven.plugins</groupId>-->
+    <!--                        <artifactId>maven-gpg-plugin</artifactId>-->
+    <!--                        <version>1.6</version>-->
+    <!--                        <executions>-->
+    <!--                            <execution>-->
+    <!--                                <id>sign-artifacts</id>-->
+    <!--                                <phase>verify</phase>-->
+    <!--                                <goals>-->
+    <!--                                    <goal>sign</goal>-->
+    <!--                                </goals>-->
+    <!--                            </execution>-->
+    <!--                        </executions>-->
+    <!--                    </plugin>-->
+    <!--                    <plugin>-->
+    <!--                        <groupId>org.sonatype.plugins</groupId>-->
+    <!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+    <!--                        <version>1.6.3</version>-->
+    <!--                        <extensions>true</extensions>-->
+    <!--                        <configuration>-->
+    <!--                            <serverId>oss</serverId>-->
+    <!--                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+    <!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+    <!--                        </configuration>-->
+    <!--                    </plugin>-->
+    <!--                </plugins>-->
+    <!--            </build>-->
+    <!--            &lt;!&ndash; 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ &ndash;&gt;-->
+    <!--            <distributionManagement>-->
+    <!--                <snapshotRepository>-->
+    <!--                    <id>oss</id>-->
+    <!--                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>-->
+    <!--                </snapshotRepository>-->
+    <!--                <repository>-->
+    <!--                    <id>oss</id>-->
+    <!--                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+    <!--                </repository>-->
+    <!--            </distributionManagement>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>3.1.0</version>
                 <!-- 绑定source插件到Maven的生命周期,并在生命周期后执行绑定的source的goal -->
                 <executions>
                     <execution>
