@@ -1,4 +1,4 @@
-package com.yizhishang.common.pdf;
+package com.yizhishang.common.pdf.export;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
@@ -24,7 +24,7 @@ import static org.springframework.beans.BeanUtils.getPropertyDescriptor;
  * @author YUANYONGJUN993
  */
 @Slf4j
-public class PDFUtils {
+public class PDFExportUtils {
 
     /**
      * 有四舍五入
@@ -33,7 +33,7 @@ public class PDFUtils {
 
     private static final String PATTERN = "yyy-MM-dd";
 
-    private PDFUtils() {
+    private PDFExportUtils() {
 
     }
 
