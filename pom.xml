@@ -148,6 +148,11 @@
             <id>maven-public</id>
             <url>http://nexus.yizhishang.com/repository/maven-public/</url>
         </repository>
+        <!-- pdf -->
+        <repository>
+            <id>com.e-iceblue</id>
+            <url>https://repo.e-iceblue.cn/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <!-- 配置远程发布到私服，mvn deploy -->

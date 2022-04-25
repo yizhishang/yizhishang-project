@@ -7,8 +7,6 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.sf.mtisp.enums.OcrStatusEnum;
-import com.streamline.core.mybatis.entity.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,15 +26,19 @@ import java.util.List;
 @Data
 @ApiModel("铁路大票")
 public class SettlementRailwayBill {
+
     @ApiModelProperty("基本信息")
     @JSONField(name = "基本信息")
     private BaseInfo baseInfo;
+
     @ApiModelProperty("托运人和收货人信息")
     @JSONField(name = "托运人和收货人信息")
     private List<UserInfo> userInfoList;
+
     @ApiModelProperty("货品信息")
     @JSONField(name = "货品信息")
     private List<CargoInfo> cargoInfoList;
+
     @ApiModelProperty("费用信息")
     @JSONField(name = "费用信息")
     private List<CostInfo> costInfoList;
@@ -44,8 +46,8 @@ public class SettlementRailwayBill {
     @Data
     @ApiModel("基础信息")
     @TableName("settlement_railway_bill_base")
-    @EqualsAndHashCode(callSuper = true)
-    public static class BaseInfo extends BaseEntity {
+    @EqualsAndHashCode()
+    public static class BaseInfo {
 
         private static final long serialVersionUID = -6633745133478629764L;
 
@@ -59,13 +61,6 @@ public class SettlementRailwayBill {
         @TableField("md5_hash_value")
         @ApiModelProperty(value = "文件MD5加密得到的哈希值，作为图片文件的唯一键")
         private String md5HashValue;
-
-        /**
-         * @see com.sf.mtisp.enums.OcrModuleEnum
-         */
-        @TableField("ocr_module")
-        @ApiModelProperty(value = "OCR识别所处模块")
-        private Integer ocrModule;
 
         @TableField("doc_code")
         @ApiModelProperty(value = "单证编码（系统生成）")
@@ -268,14 +263,6 @@ public class SettlementRailwayBill {
         @JSONField(serialize = false)
         private String url;
 
-        /**
-         * @see OcrStatusEnum
-         */
-        @TableField("status")
-        @ApiModelProperty(value = "状态")
-        @JSONField(serialize = false)
-        private Integer status;
-
         @TableField("json")
         @ApiModelProperty("识别结果json")
         private String json;
@@ -284,8 +271,8 @@ public class SettlementRailwayBill {
     @Data
     @ApiModel("发运人/收货人信息")
     @TableName("settlement_railway_bill_user")
-    @EqualsAndHashCode(callSuper = true)
-    public static class UserInfo extends BaseEntity {
+    @EqualsAndHashCode()
+    public static class UserInfo {
 
         private static final long serialVersionUID = -326074380723906880L;
 
@@ -299,13 +286,6 @@ public class SettlementRailwayBill {
         @TableField("md5_hash_value")
         @ApiModelProperty(value = "文件MD5加密得到的哈希值，可以作为图片文件的唯一键")
         private String md5HashValue;
-
-        /**
-         * @see com.sf.mtisp.enums.OcrModuleEnum
-         */
-        @TableField("ocr_module")
-        @ApiModelProperty(value = "OCR识别所处模块")
-        private Integer ocrModule;
 
         @TableField("waybill_code")
         @ApiModelProperty(value = "运单号")
@@ -381,8 +361,7 @@ public class SettlementRailwayBill {
     @Data
     @ApiModel("货品信息")
     @TableName("settlement_railway_bill_cargo")
-    @EqualsAndHashCode(callSuper = true)
-    public static class CargoInfo extends BaseEntity {
+    public static class CargoInfo {
 
         private static final long serialVersionUID = 3083101215306524943L;
 
@@ -396,13 +375,6 @@ public class SettlementRailwayBill {
         @TableField("md5_hash_value")
         @ApiModelProperty(value = "文件MD5加密得到的哈希值，可以作为图片文件的唯一键")
         private String md5HashValue;
-
-        /**
-         * @see com.sf.mtisp.enums.OcrModuleEnum
-         */
-        @TableField("ocr_module")
-        @ApiModelProperty(value = "OCR识别所处模块")
-        private Integer ocrModule;
 
         @TableField("waybill_code")
         @ApiModelProperty(value = "运单号")
@@ -480,8 +452,8 @@ public class SettlementRailwayBill {
     @Data
     @ApiModel("费用信息")
     @TableName("settlement_railway_bill_cost")
-    @EqualsAndHashCode(callSuper = true)
-    public static class CostInfo extends BaseEntity {
+    @EqualsAndHashCode()
+    public static class CostInfo {
 
         private static final long serialVersionUID = -2101674993790020783L;
 
@@ -495,13 +467,6 @@ public class SettlementRailwayBill {
         @TableField("md5_hash_value")
         @ApiModelProperty(value = "文件MD5加密得到的哈希值，可以作为图片文件的唯一键")
         private String md5HashValue;
-
-        /**
-         * @see com.sf.mtisp.enums.OcrModuleEnum
-         */
-        @TableField("ocr_module")
-        @ApiModelProperty(value = "OCR识别所处模块")
-        private Integer ocrModule;
 
         @TableField("waybill_code")
         @ApiModelProperty(value = "运单号")
