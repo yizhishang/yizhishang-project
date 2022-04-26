@@ -20,14 +20,18 @@ public class ReadPdf {
     public static void main(String[] args) {
         String inputPath = "F:\\gitee\\yizhishang-project\\docs\\铁路大票.pdf";
         String outputPath = "F:\\gitee\\yizhishang-project\\docs\\铁路大票.txt";
-        readPdf(inputPath, outputPath);
+//        readPdf(inputPath, outputPath);
 
 //        readPdfByPage(inputPath);
-//        String result = readPdfByPage(inputPath);
-
+        long startTime = System.currentTimeMillis();
+        String result = readPdfByPage(inputPath);
+        analysis(result);
+//        System.out.println(result);
+        long endTime = System.currentTimeMillis();
+        System.out.println("读写所用时间为：" + (endTime - startTime) + "ms");
     }
 
-    public void analysis(String result) {
+    public static void analysis(String result) {
         String[] pages = result.split("\nPDF解析分页\n");
 
         SettlementRailwayBill.BaseInfo baseInfo = new SettlementRailwayBill.BaseInfo();
