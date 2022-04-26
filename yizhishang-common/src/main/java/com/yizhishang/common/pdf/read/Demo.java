@@ -32,7 +32,7 @@ public class Demo {
             PdfTableExtractor extractor = new PdfTableExtractor(document);
             PdfTable[] tableLists;
             int k = 0;
-            for (int page = 10; page < document.getPages().getCount(); page++) {
+            for (int page = 0; page < document.getPages().getCount(); page++) {
                 tableLists = extractor.extractTable(page);
                 k++;
                 if (tableLists != null && tableLists.length > 0) {
@@ -50,6 +50,7 @@ public class Demo {
                 }
             }
             System.out.println(k);
+            System.out.println(builder);
 
             //将提取的表格内容写入txt文档
             FileWriter fileWriter = new FileWriter(outputPath);
