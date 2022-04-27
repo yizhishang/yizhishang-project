@@ -26,7 +26,7 @@ public class PdfUtils {
             // 获得页数
             int pageNum = reader.getNumberOfPages();
             // 只能从第1页开始读
-            for (int i = 1; i <= 1; i++) {
+            for (int i = 1; i <= 2; i++) {
                 String pageText = PdfTextExtractor.getTextFromPage(reader, i).trim();
                 sb.append(pageText).append("\nPDF解析分页\n");
             }
@@ -38,7 +38,8 @@ public class PdfUtils {
 
 
     public static void main(String args[]) {
-        String file = "F:\\gitee\\yizhishang-project\\docs\\铁路大票.pdf";
+//        String file = "F:\\gitee\\yizhishang-project\\docs\\铁路大票.pdf";
+        String file = "F:\\gitee\\yizhishang-project\\docs\\pdf\\大票3.pdf";
 //        String file = "F:\\gitee\\yizhishang-project\\docs\\大票.pdf";
         long startTime = System.currentTimeMillis();
         String result = extractTXTbyLine(file);
