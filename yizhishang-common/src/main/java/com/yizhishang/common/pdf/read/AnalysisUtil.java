@@ -28,14 +28,15 @@ public class AnalysisUtil {
         if (startIdx < 0) {
             return "";
         }
+        source = source.substring(startIdx);
         if (postfix == null) {
-            return source.substring(startIdx).substring(prefix.length()).trim();
+            return source.substring(prefix.length()).trim();
         }
         int endIdx = source.indexOf(postfix);
         if (endIdx < 0) {
             return "";
         }
-        return source.substring(startIdx, endIdx).substring(prefix.length()).trim();
+        return source.substring(0, endIdx).substring(prefix.length()).trim();
     }
 
     public static Integer getInnerInteger(String source, String prefix, String postfix) {
@@ -76,7 +77,7 @@ public class AnalysisUtil {
         return new BigDecimal(result);
     }
 
-    public static SettlementRailwayBill.BaseInfo buildBaseInfoList(String pageText){
+    public static SettlementRailwayBill.BaseInfo buildBaseInfoList(String pageText) {
         SettlementRailwayBill.BaseInfo baseInfo = new SettlementRailwayBill.BaseInfo();
         SettlementRailwayBill.UserInfo shipper = new SettlementRailwayBill.UserInfo();
         SettlementRailwayBill.UserInfo consignee = new SettlementRailwayBill.UserInfo();
@@ -86,6 +87,7 @@ public class AnalysisUtil {
         String end = "@yizhishang";
 
         String selectBox = "☑";
+        String emptyBox = "□";
 
         // ”选择服务“ 选择的行数
         int costLineMark = 0;
@@ -121,7 +123,6 @@ public class AnalysisUtil {
                     String code = line.replace(" ", "").substring(4);
                     baseInfo.setCode(code);
 
-                    System.out.println("##################### 运单号" + code);
                     break;
                 case 3:
                     // 需求号 + 整车
@@ -131,8 +132,7 @@ public class AnalysisUtil {
                     baseInfo.setDemandNumber(demandNumber);
                     String transportType = data[1];
                     baseInfo.setTransportType(transportType);
-                    System.out.println("##################### 需求号 " + demandNumber);
-                    System.out.println("##################### 整车 " + transportType);
+
                     break;
                 case 4:
                     // 发站(公司) 攀枝花（成） 专用线 [47999002]攀枝花市大西南实业有限公司专用线 货区
@@ -141,9 +141,7 @@ public class AnalysisUtil {
                     shipper.setSpecialLine(getInnerString(line, "专用线", "货区"));
                     baseInfo.setCargoArea(getInnerString(line, "货区", end));
 
-                    System.out.println("##################### 发站(公司) " + shipper.getNode());
-                    System.out.println("##################### 专用线 " + shipper.getSpecialLine());
-                    System.out.println("##################### 货区 " + baseInfo.getCargoArea());
+
                     break;
                 case 6:
                     // 经办人 陈华 货位
@@ -151,23 +149,17 @@ public class AnalysisUtil {
                     shipper.setAgent(getInnerString(line, "经办人", "货位"));
                     baseInfo.setCargoLocation(getInnerString(line, "货位", end));
 
-                    System.out.println("##################### 经办人: " + shipper.getAgent());
-                    System.out.println("##################### 货位: " + baseInfo.getCargoLocation());
                     break;
                 case 7:
                     // 托运人名称
                     data = line.split(" ");
                     shipper.setName(data[1]);
-                    System.out.println("##################### 托运人名称 " + shipper.getName());
                     break;
                 case 8:
                     // 手机号码 + 车种车号
                     line += end;
                     shipper.setPhoneNumber(getInnerString(line, "手机号码 ", "车种车号"));
                     baseInfo.setCarSizeAndNumber(getInnerString(line, "车种车号 ", end));
-
-                    System.out.println("##################### 发货人手机号码 " + shipper.getPhoneNumber());
-                    System.out.println("##################### 车种车号 " + baseInfo.getCarSizeAndNumber());
                     break;
                 case 10:
                     // □上门取货 取货地址 联系电话 取货里程(km)
@@ -179,10 +171,6 @@ public class AnalysisUtil {
                     shipper.setConcatNumber(getInnerString(line, "联系电话 ", "取货里程"));
                     shipper.setMileage(getInnerBigDecimal(line, "取货里程(km) ", end));
 
-                    System.out.println("##################### 发货人 上门取货 " + shipper.getDoorToDoor());
-                    System.out.println("##################### 发货人 取货地址 " + shipper.getAddress());
-                    System.out.println("##################### 发货人 联系电话 " + shipper.getConcatNumber());
-                    System.out.println("##################### 发货人 取货里程 " + shipper.getMileage());
                     break;
                 case 11:
                     // 到站(公司) 城厢（成） 专用线 运到期限 5 标重 70
@@ -192,10 +180,6 @@ public class AnalysisUtil {
                     baseInfo.setTransportationTerm(getInnerInteger(line, "运到期限", "标重"));
                     baseInfo.setMarkWeight(getInnerBigDecimal(line, "标重", end));
 
-                    System.out.println("##################### 到站(公司)" + consignee.getNode());
-                    System.out.println("##################### 专用线" + consignee.getSpecialLine());
-                    System.out.println("##################### 运到期限" + baseInfo.getTransportationTerm());
-                    System.out.println("##################### 标重" + baseInfo.getMarkWeight());
                     break;
                 case 13:
                     // 经办人 谢超 施封号
@@ -203,14 +187,11 @@ public class AnalysisUtil {
                     consignee.setAgent(getInnerString(line, "经办人", "施封号"));
                     baseInfo.setSealNumber(getInnerString(line, "施封号", end));
 
-                    System.out.println("##################### 收货经办人 " + consignee.getAgent());
-                    System.out.println("##################### 施封号 " + baseInfo.getSealNumber());
                     break;
                 case 14:
                     // 收货人名称
                     data = line.split(" ");
                     consignee.setName(data[1]);
-                    System.out.println("##################### 收货人名称 " + consignee.getName());
                     break;
                 case 15:
                     // 手机号码 篷布号
@@ -218,8 +199,6 @@ public class AnalysisUtil {
                     consignee.setPhoneNumber(getInnerString(line, "手机号码", "篷布号"));
                     baseInfo.setTarpaulinNumber(getInnerString(line, "篷布号", end));
 
-                    System.out.println("##################### 收货手机号码 " + consignee.getPhoneNumber());
-                    System.out.println("##################### 篷布号 " + baseInfo.getTarpaulinNumber());
                     break;
                 case 17:
                     // □上门送货 送货地址 联系电话 送货里程(km)
@@ -231,25 +210,20 @@ public class AnalysisUtil {
                     consignee.setConcatNumber(getInnerString(line, "联系电话 ", "送货里程"));
                     consignee.setMileage(getInnerBigDecimal(line, "送货里程(km) ", end));
 
-                    System.out.println("##################### 上门送货: " + consignee.getDoorToDoor());
-                    System.out.println("##################### 送货地址: " + consignee.getAddress());
-                    System.out.println("##################### 联系电话: " + consignee.getConcatNumber());
-                    System.out.println("##################### 送货里程: " + consignee.getMileage());
                     break;
                 case 18:
                     // 付费方式 □电子 □现金 □支票 □银行卡 ☑预付款 □汇总支付 领货方式 ☑电子领货 □纸质领货 装车方 货主 施封方 无
                     line = line.replace(" ", "") + end;
                     // TODO 付费方式
-                    baseInfo.setPaymentWay(getInnerString(line, "付费方式", "领货方式"));
+                    String paymentWay = getInnerString(line, "付费方式", "领货方式");
+                    System.out.println("###########" + paymentWay);
+                    baseInfo.setPaymentWay(getInnerString(paymentWay, selectBox, emptyBox));
                     // TODO 领货方式
-                    baseInfo.setReceiveCargoWay(getInnerString(line, "领货方式", "装车方"));
+                    String receiveCargoWay = getInnerString(line, "领货方式", "装车方");
+                    baseInfo.setReceiveCargoWay(getInnerString(receiveCargoWay, selectBox, emptyBox));
                     baseInfo.setLoader(getInnerString(line, "装车方", "施封方"));
                     baseInfo.setSealer(getInnerString(line, "施封方", end));
 
-                    System.out.println("##################### 付费方式 " + baseInfo.getPaymentWay());
-                    System.out.println("##################### 领货方式 " + baseInfo.getReceiveCargoWay());
-                    System.out.println("##################### 装车方 " + baseInfo.getLoader());
-                    System.out.println("##################### 施封方 " + baseInfo.getSealer());
                     break;
                 case 21:
                     // 下一行可能是箱货做个标记
@@ -269,9 +243,6 @@ public class AnalysisUtil {
                             boxNumber = boxNumber.split(" ")[0];
                             cargoInfo.setBoxNumber(boxNumber);
                         }
-                        System.out.println("##############货物名称: " + cargoInfo.getName());
-                        System.out.println("##############箱号: " + cargoInfo.getBoxNumber());
-
                         cargoInfo.setWaybillCode(baseInfo.getCode());
                         cargoInfoList.add(cargoInfo);
                         cargoLineMark++;
@@ -287,10 +258,6 @@ public class AnalysisUtil {
                         baseInfo.setCargoWeight(getBigDecimal(data[3]));
                         baseInfo.setCargoDeterminedWeight(getBigDecimal(data[4]));
 
-                        System.out.println("############## 件数合计: " + baseInfo.getCargoQuantity());
-                        System.out.println("############## 货物价格合计: " + baseInfo.getCargoPrice());
-                        System.out.println("############## 重量合计: " + baseInfo.getCargoWeight());
-                        System.out.println("############## 承运人确定重量合计: " + baseInfo.getCargoDeterminedWeight());
                         break;
                     }
                     // 解析费用信息
@@ -341,9 +308,6 @@ public class AnalysisUtil {
                         data = line.split(" ");
                         baseInfo.setTotalCost(getBigDecimal(data[2]));
                         baseInfo.setTotalCostCn(data[4].substring(2));
-
-                        System.out.println("############# 费用合计 " + baseInfo.getTotalCost());
-                        System.out.println("############# 大写 " + baseInfo.getTotalCostCn());
                     }
                     // 发票类型
                     if (line.contains("普通票") && line.contains(selectBox)) {
@@ -357,12 +321,65 @@ public class AnalysisUtil {
                     if (line.contains("制单日期")) {
                         String date = getInnerString(line, "制单日期：", null);
                         baseInfo.setBillCreatedDate(DateUtil.parseDate(date));
-                        System.out.println("##################### 制单日期 " + baseInfo.getBillCreatedDate());
                     }
                     break;
             }
             i++;
         }
+        System.out.println("***********************************************************************");
+        System.out.println("***********************************************************************");
+        System.out.println("***********************************************************************");
+        System.out.println("##################### 运单号 " + baseInfo.getCode());
+
+        System.out.println("##################### 需求号 " + baseInfo.getDemandNumber());
+        System.out.println("##################### 整车 " + baseInfo.getTransportType());
+        System.out.println("##################### 发站(公司) " + shipper.getNode());
+        System.out.println("##################### 专用线 " + shipper.getSpecialLine());
+        System.out.println("##################### 货区 " + baseInfo.getCargoArea());
+        System.out.println("##################### 经办人: " + shipper.getAgent());
+        System.out.println("##################### 货位: " + baseInfo.getCargoLocation());
+        System.out.println("##################### 托运人名称 " + shipper.getName());
+
+        System.out.println("##################### 发货人手机号码 " + shipper.getPhoneNumber());
+        System.out.println("##################### 车种车号 " + baseInfo.getCarSizeAndNumber());
+
+        System.out.println("##################### 发货人 上门取货 " + shipper.getDoorToDoor());
+        System.out.println("##################### 发货人 取货地址 " + shipper.getAddress());
+        System.out.println("##################### 发货人 联系电话 " + shipper.getConcatNumber());
+        System.out.println("##################### 发货人 取货里程 " + shipper.getMileage());
+
+        System.out.println("##################### 到站(公司)" + consignee.getNode());
+        System.out.println("##################### 专用线" + consignee.getSpecialLine());
+        System.out.println("##################### 运到期限" + baseInfo.getTransportationTerm());
+        System.out.println("##################### 标重" + baseInfo.getMarkWeight());
+        System.out.println("##################### 收货经办人 " + consignee.getAgent());
+        System.out.println("##################### 施封号 " + baseInfo.getSealNumber());
+        System.out.println("##################### 收货人名称 " + consignee.getName());
+
+        System.out.println("##################### 收货手机号码 " + consignee.getPhoneNumber());
+        System.out.println("##################### 篷布号 " + baseInfo.getTarpaulinNumber());
+        System.out.println("##################### 上门送货: " + consignee.getDoorToDoor());
+        System.out.println("##################### 送货地址: " + consignee.getAddress());
+        System.out.println("##################### 联系电话: " + consignee.getConcatNumber());
+        System.out.println("##################### 送货里程: " + consignee.getMileage());
+        System.out.println("##################### 付费方式 " + baseInfo.getPaymentWay());
+        System.out.println("##################### 领货方式 " + baseInfo.getReceiveCargoWay());
+        System.out.println("##################### 装车方 " + baseInfo.getLoader());
+        System.out.println("##################### 施封方 " + baseInfo.getSealer());
+
+        cargoInfoList.forEach(cargoInfo -> {
+            System.out.println("##############货物名称: " + cargoInfo.getName());
+            System.out.println("##############箱号: " + cargoInfo.getBoxNumber());
+        });
+
+        System.out.println("############## 件数合计: " + baseInfo.getCargoQuantity());
+        System.out.println("############## 货物价格合计: " + baseInfo.getCargoPrice());
+        System.out.println("############## 重量合计: " + baseInfo.getCargoWeight());
+        System.out.println("############## 承运人确定重量合计: " + baseInfo.getCargoDeterminedWeight());
+
+        System.out.println("############# 费用合计 " + baseInfo.getTotalCost());
+        System.out.println("############# 大写 " + baseInfo.getTotalCostCn());
+        System.out.println("##################### 制单日期 " + baseInfo.getBillCreatedDate());
 
         analysis(costInfoList, costStr, baseInfo.getCode());
 

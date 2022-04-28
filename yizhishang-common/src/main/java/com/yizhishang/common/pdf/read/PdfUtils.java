@@ -39,7 +39,7 @@ public class PdfUtils {
 
     public static void main(String args[]) {
 //        String file = "F:\\gitee\\yizhishang-project\\docs\\铁路大票.pdf";
-        String file = "F:\\gitee\\yizhishang-project\\docs\\pdf\\大票3.pdf";
+        String file = "E:\\GiteeRepository\\yizhishang-project\\docs\\pdf\\大票3.pdf";
 //        String file = "F:\\gitee\\yizhishang-project\\docs\\大票.pdf";
         long startTime = System.currentTimeMillis();
         String result = extractTXTbyLine(file);
