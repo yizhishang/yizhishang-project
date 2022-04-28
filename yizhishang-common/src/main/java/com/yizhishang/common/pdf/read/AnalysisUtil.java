@@ -80,13 +80,21 @@ public class AnalysisUtil {
         return new BigDecimal(result);
     }
 
-    private static SettlementRailwayBill.BaseInfo buildBaseInfoList(String pageText) {
+    private static SettlementRailwayBill buildBaseInfoList(String pageText) {
+        SettlementRailwayBill railwayBill = new SettlementRailwayBill();
         SettlementRailwayBill.BaseInfo baseInfo = new SettlementRailwayBill.BaseInfo();
         SettlementRailwayBill.UserInfo shipper = new SettlementRailwayBill.UserInfo();
         SettlementRailwayBill.UserInfo consignee = new SettlementRailwayBill.UserInfo();
         List<SettlementRailwayBill.CargoInfo> cargoInfoList = Lists.newArrayList();
         List<SettlementRailwayBill.CostInfo> costInfoList = Lists.newArrayList();
 
+        railwayBill.setBaseInfo(baseInfo);
+        railwayBill.setCargoInfoList(cargoInfoList);
+        railwayBill.setCostInfoList(costInfoList);
+
+        shipper.setType(1);
+        consignee.setType(2);
+        railwayBill.setUserInfoList(Lists.newArrayList(shipper, consignee));
 
         // ”选择服务“ 选择的行数
         int costLineMark = 0;
@@ -96,8 +104,6 @@ public class AnalysisUtil {
 
         // 箱货行标记
         int cargoLineMark = 0;
-        // 合计行标记
-        int totalLineMark = 0;
 
         List<String> costStr = Lists.newArrayList();
 
@@ -188,7 +194,7 @@ public class AnalysisUtil {
                 case 14:
                     // 收货人名称
                     data = line.split(" ");
-                    consignee.setName(data[1]);
+                    consignee.setName(data[2]);
                     break;
                 case 15:
                     // 手机号码 篷布号
@@ -250,7 +256,6 @@ public class AnalysisUtil {
                     }
                     // 可能是箱货，可能不是
                     if (line.startsWith("合计")) {
-                        totalLineMark = i;
                         data = line.split(" ");
                         // 件数合计 货物价格合计 重量合计 承运人确定重量合计
                         baseInfo.setCargoQuantity(getLong(data[1]));
@@ -354,10 +359,10 @@ public class AnalysisUtil {
         System.out.println("##################### 发货人 联系电话 " + shipper.getConcatNumber());
         System.out.println("##################### 发货人 取货里程 " + shipper.getMileage());
 
-        System.out.println("##################### 到站(公司)" + consignee.getNode());
-        System.out.println("##################### 专用线" + consignee.getSpecialLine());
-        System.out.println("##################### 运到期限" + baseInfo.getTransportationTerm());
-        System.out.println("##################### 标重" + baseInfo.getMarkWeight());
+        System.out.println("##################### 到站(公司) " + consignee.getNode());
+        System.out.println("##################### 专用线 " + consignee.getSpecialLine());
+        System.out.println("##################### 运到期限 " + baseInfo.getTransportationTerm());
+        System.out.println("##################### 标重 " + baseInfo.getMarkWeight());
         System.out.println("##################### 收货经办人 " + consignee.getAgent());
         System.out.println("##################### 施封号 " + baseInfo.getSealNumber());
         System.out.println("##################### 收货人名称 " + consignee.getName());
@@ -389,13 +394,14 @@ public class AnalysisUtil {
         System.out.println("费用项信息############");
         costInfoList.forEach(System.out::println);
         System.out.println("费用项信息############");
-        return baseInfo;
+        return railwayBill;
     }
 
     public static void analysis(List<String> page) {
-        List<SettlementRailwayBill.BaseInfo> baseInfoList = Lists.newArrayList();
+        List<SettlementRailwayBill> baseInfoList = Lists.newArrayList();
         for (String pageText : page) {
-            baseInfoList.add(buildBaseInfoList(pageText));
+            SettlementRailwayBill railwayBill = buildBaseInfoList(pageText);
+            baseInfoList.add(railwayBill);
         }
     }
 
