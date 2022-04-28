@@ -12,6 +12,7 @@ import java.util.logging.Logger;
  */
 public class PdfUtils {
 
+    public static final String SEPARATE_PAGE_TEXT = "\nPDF解析分页\n";
 
     /**
      * 按行提取文本
@@ -28,7 +29,7 @@ public class PdfUtils {
             // 只能从第1页开始读
             for (int i = 1; i <= 2; i++) {
                 String pageText = PdfTextExtractor.getTextFromPage(reader, i).trim();
-                sb.append(pageText).append("\nPDF解析分页\n");
+                sb.append(pageText).append(SEPARATE_PAGE_TEXT);
             }
         } catch (IOException ex) {
             Logger.getLogger(PdfUtils.class.getName()).log(Level.SEVERE, null, ex);
@@ -44,7 +45,7 @@ public class PdfUtils {
         long startTime = System.currentTimeMillis();
         String result = extractTXTbyLine(file);
 
-        AnalysisUtil.analysis(result);
+        AnalysisUtil.analysis(result, SEPARATE_PAGE_TEXT);
 
         long endTime = System.currentTimeMillis();
         System.out.println("读写所用时间为：" + (endTime - startTime) + "ms");

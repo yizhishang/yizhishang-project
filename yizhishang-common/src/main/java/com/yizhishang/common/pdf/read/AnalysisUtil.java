@@ -28,15 +28,15 @@ public class AnalysisUtil {
         if (startIdx < 0) {
             return "";
         }
-        source = source.substring(startIdx);
+        source = source.substring(startIdx + prefix.length()).trim();
         if (postfix == null) {
-            return source.substring(prefix.length()).trim();
+            return source;
         }
         int endIdx = source.indexOf(postfix);
         if (endIdx < 0) {
             return "";
         }
-        return source.substring(0, endIdx).substring(prefix.length()).trim();
+        return source.substring(0, endIdx);
     }
 
     public static Integer getInnerInteger(String source, String prefix, String postfix) {
@@ -77,7 +77,7 @@ public class AnalysisUtil {
         return new BigDecimal(result);
     }
 
-    public static SettlementRailwayBill.BaseInfo buildBaseInfoList(String pageText) {
+    private static SettlementRailwayBill.BaseInfo buildBaseInfoList(String pageText) {
         SettlementRailwayBill.BaseInfo baseInfo = new SettlementRailwayBill.BaseInfo();
         SettlementRailwayBill.UserInfo shipper = new SettlementRailwayBill.UserInfo();
         SettlementRailwayBill.UserInfo consignee = new SettlementRailwayBill.UserInfo();
@@ -214,13 +214,16 @@ public class AnalysisUtil {
                 case 18:
                     // 付费方式 □电子 □现金 □支票 □银行卡 ☑预付款 □汇总支付 领货方式 ☑电子领货 □纸质领货 装车方 货主 施封方 无
                     line = line.replace(" ", "") + end;
-                    // TODO 付费方式
+
+                    // 付费方式
                     String paymentWay = getInnerString(line, "付费方式", "领货方式");
-                    System.out.println("###########" + paymentWay);
                     baseInfo.setPaymentWay(getInnerString(paymentWay, selectBox, emptyBox));
-                    // TODO 领货方式
+
+                    // 领货方式
                     String receiveCargoWay = getInnerString(line, "领货方式", "装车方");
                     baseInfo.setReceiveCargoWay(getInnerString(receiveCargoWay, selectBox, emptyBox));
+
+                    // 装车方 施封方
                     baseInfo.setLoader(getInnerString(line, "装车方", "施封方"));
                     baseInfo.setSealer(getInnerString(line, "施封方", end));
 
@@ -326,6 +329,13 @@ public class AnalysisUtil {
             }
             i++;
         }
+
+        shipper.setWaybillCode(baseInfo.getCode());
+        consignee.setWaybillCode(baseInfo.getCode());
+        // 解析费用项
+        analysisCost(costInfoList, costStr, baseInfo.getCode());
+
+
         System.out.println("***********************************************************************");
         System.out.println("***********************************************************************");
         System.out.println("***********************************************************************");
@@ -380,19 +390,14 @@ public class AnalysisUtil {
         System.out.println("############# 费用合计 " + baseInfo.getTotalCost());
         System.out.println("############# 大写 " + baseInfo.getTotalCostCn());
         System.out.println("##################### 制单日期 " + baseInfo.getBillCreatedDate());
-
-        analysis(costInfoList, costStr, baseInfo.getCode());
-
         System.out.println("费用项信息############");
         costInfoList.forEach(info -> System.out.println(info));
         System.out.println("费用项信息############");
-        shipper.setWaybillCode(baseInfo.getCode());
-        consignee.setWaybillCode(baseInfo.getCode());
         return baseInfo;
     }
 
-    public static void analysis(String result) {
-        String[] pages = result.split("\nPDF解析分页\n");
+    public static void analysis(String result, String separatePage) {
+        String[] pages = result.split(separatePage);
         List<SettlementRailwayBill.BaseInfo> baseInfoList = Lists.newArrayList();
         for (String pageText : pages) {
             baseInfoList.add(buildBaseInfoList(pageText));
@@ -406,7 +411,7 @@ public class AnalysisUtil {
      * @param costStr
      * @param waybillCode
      */
-    public static void analysis(List<SettlementRailwayBill.CostInfo> costInfoList, List<String> costStr, String waybillCode) {
+    private static void analysisCost(List<SettlementRailwayBill.CostInfo> costInfoList, List<String> costStr, String waybillCode) {
         String[] data;
         for (String line : costStr) {
             data = line.split(" ");
