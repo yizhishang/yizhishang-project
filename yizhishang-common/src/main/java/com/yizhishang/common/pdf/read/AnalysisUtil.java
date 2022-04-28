@@ -12,12 +12,15 @@ import java.util.List;
  */
 public class AnalysisUtil {
 
+    private static final String selectBox = "☑";
+    private static final String emptyBox = "□";
+
     /**
      * 提取固定字符之间的字符串
      *
-     * @param source
-     * @param prefix
-     * @param postfix
+     * @param source  源字符串
+     * @param prefix  第一个固定字符串
+     * @param postfix 第二个固定字符串,为null是提取到最后字符
      * @return
      */
     public static String getInnerString(String source, String prefix, String postfix) {
@@ -84,10 +87,6 @@ public class AnalysisUtil {
         List<SettlementRailwayBill.CargoInfo> cargoInfoList = Lists.newArrayList();
         List<SettlementRailwayBill.CostInfo> costInfoList = Lists.newArrayList();
 
-        String end = "@yizhishang";
-
-        String selectBox = "☑";
-        String emptyBox = "□";
 
         // ”选择服务“ 选择的行数
         int costLineMark = 0;
@@ -136,56 +135,54 @@ public class AnalysisUtil {
                     break;
                 case 4:
                     // 发站(公司) 攀枝花（成） 专用线 [47999002]攀枝花市大西南实业有限公司专用线 货区
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     shipper.setNode(getInnerString(line, "发站(公司)", "专用线"));
                     shipper.setSpecialLine(getInnerString(line, "专用线", "货区"));
-                    baseInfo.setCargoArea(getInnerString(line, "货区", end));
-
+                    baseInfo.setCargoArea(getInnerString(line, "货区", null));
 
                     break;
                 case 6:
                     // 经办人 陈华 货位
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     shipper.setAgent(getInnerString(line, "经办人", "货位"));
-                    baseInfo.setCargoLocation(getInnerString(line, "货位", end));
+                    baseInfo.setCargoLocation(getInnerString(line, "货位", null));
 
                     break;
                 case 7:
                     // 托运人名称
                     data = line.split(" ");
-                    shipper.setName(data[1]);
+                    shipper.setName(data[2]);
                     break;
                 case 8:
                     // 手机号码 + 车种车号
-                    line += end;
                     shipper.setPhoneNumber(getInnerString(line, "手机号码 ", "车种车号"));
-                    baseInfo.setCarSizeAndNumber(getInnerString(line, "车种车号 ", end));
+                    baseInfo.setCarSizeAndNumber(getInnerString(line, "车种车号 ", null));
                     break;
                 case 10:
                     // □上门取货 取货地址 联系电话 取货里程(km)
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     if (line.contains(selectBox)) {
                         shipper.setDoorToDoor("上门取货");
                     }
                     shipper.setAddress(getInnerString(line, "取货地址 ", "联系电话"));
                     shipper.setConcatNumber(getInnerString(line, "联系电话 ", "取货里程"));
-                    shipper.setMileage(getInnerBigDecimal(line, "取货里程(km) ", end));
+                    shipper.setMileage(getInnerBigDecimal(line, "取货里程(km) ", null));
 
                     break;
                 case 11:
                     // 到站(公司) 城厢（成） 专用线 运到期限 5 标重 70
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     consignee.setNode(getInnerString(line, "到站(公司)", "专用线"));
                     consignee.setSpecialLine(getInnerString(line, "专用线", "运到期限"));
                     baseInfo.setTransportationTerm(getInnerInteger(line, "运到期限", "标重"));
-                    baseInfo.setMarkWeight(getInnerBigDecimal(line, "标重", end));
+                    baseInfo.setMarkWeight(getInnerBigDecimal(line, "标重", null));
 
                     break;
                 case 13:
                     // 经办人 谢超 施封号
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     consignee.setAgent(getInnerString(line, "经办人", "施封号"));
-                    baseInfo.setSealNumber(getInnerString(line, "施封号", end));
+                    baseInfo.setSealNumber(getInnerString(line, "施封号", null));
 
                     break;
                 case 14:
@@ -195,25 +192,25 @@ public class AnalysisUtil {
                     break;
                 case 15:
                     // 手机号码 篷布号
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     consignee.setPhoneNumber(getInnerString(line, "手机号码", "篷布号"));
-                    baseInfo.setTarpaulinNumber(getInnerString(line, "篷布号", end));
+                    baseInfo.setTarpaulinNumber(getInnerString(line, "篷布号", null));
 
                     break;
                 case 17:
                     // □上门送货 送货地址 联系电话 送货里程(km)
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
                     if (line.contains(selectBox)) {
                         consignee.setDoorToDoor("上门送货");
                     }
                     consignee.setAddress(getInnerString(line, "送货地址 ", "联系电话"));
                     consignee.setConcatNumber(getInnerString(line, "联系电话 ", "送货里程"));
-                    consignee.setMileage(getInnerBigDecimal(line, "送货里程(km) ", end));
+                    consignee.setMileage(getInnerBigDecimal(line, "送货里程(km) ", null));
 
                     break;
                 case 18:
                     // 付费方式 □电子 □现金 □支票 □银行卡 ☑预付款 □汇总支付 领货方式 ☑电子领货 □纸质领货 装车方 货主 施封方 无
-                    line = line.replace(" ", "") + end;
+                    line = line.replace(" ", "");
 
                     // 付费方式
                     String paymentWay = getInnerString(line, "付费方式", "领货方式");
@@ -225,7 +222,7 @@ public class AnalysisUtil {
 
                     // 装车方 施封方
                     baseInfo.setLoader(getInnerString(line, "装车方", "施封方"));
-                    baseInfo.setSealer(getInnerString(line, "施封方", end));
+                    baseInfo.setSealer(getInnerString(line, "施封方", null));
 
                     break;
                 case 21:
@@ -285,8 +282,7 @@ public class AnalysisUtil {
 
                     // 受票方名称
                     if (line.startsWith("受票方名称")) {
-                        line = line + end;
-                        baseInfo.setBillReceiverName(getInnerString(line, "受票方名称：", end));
+                        baseInfo.setBillReceiverName(getInnerString(line, "受票方名称：", null));
                     }
                     // 受票方识别号
                     if (line.startsWith("识别号")) {
@@ -391,15 +387,14 @@ public class AnalysisUtil {
         System.out.println("############# 大写 " + baseInfo.getTotalCostCn());
         System.out.println("##################### 制单日期 " + baseInfo.getBillCreatedDate());
         System.out.println("费用项信息############");
-        costInfoList.forEach(info -> System.out.println(info));
+        costInfoList.forEach(System.out::println);
         System.out.println("费用项信息############");
         return baseInfo;
     }
 
-    public static void analysis(String result, String separatePage) {
-        String[] pages = result.split(separatePage);
+    public static void analysis(List<String> page) {
         List<SettlementRailwayBill.BaseInfo> baseInfoList = Lists.newArrayList();
-        for (String pageText : pages) {
+        for (String pageText : page) {
             baseInfoList.add(buildBaseInfoList(pageText));
         }
     }
@@ -407,9 +402,9 @@ public class AnalysisUtil {
     /**
      * 解析费用项信息
      *
-     * @param costInfoList
-     * @param costStr
-     * @param waybillCode
+     * @param costInfoList 费用项list
+     * @param costStr      费用项拼接字符串
+     * @param waybillCode  运单号
      */
     private static void analysisCost(List<SettlementRailwayBill.CostInfo> costInfoList, List<String> costStr, String waybillCode) {
         String[] data;
