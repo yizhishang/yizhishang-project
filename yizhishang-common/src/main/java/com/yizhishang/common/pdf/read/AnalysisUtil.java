@@ -298,9 +298,15 @@ public class AnalysisUtil {
                         billReceiverAddressPhone = line.substring(5);
                         addressPhoneLineMark = i;
                     }
-                    if (i == addressPhoneLineMark + 2) {
+                    if (i == addressPhoneLineMark + 1) {
                         billReceiverAddressPhone += line;
-                        baseInfo.setBillReceiverName(billReceiverAddressPhone);
+                        billReceiverAddressPhone = billReceiverAddressPhone.replace("普通票", "").replace(emptyBox, "").replace(selectBox, "");
+                        baseInfo.setBillReceiverAddressPhone(billReceiverAddressPhone);
+                    }
+                    if (i == addressPhoneLineMark + 2 && !line.startsWith("开户行及账号")) {
+                        billReceiverAddressPhone = baseInfo.getBillReceiverAddressPhone() + line;
+                        billReceiverAddressPhone = billReceiverAddressPhone.replace("普通票", "").replace(emptyBox, "").replace(selectBox, "");
+                        baseInfo.setBillReceiverAddressPhone(billReceiverAddressPhone);
                     }
                     // 受票方开户行及账号
                     if (line.startsWith("开户行及账号")) {
@@ -377,6 +383,9 @@ public class AnalysisUtil {
         System.out.println("##################### 领货方式 " + baseInfo.getReceiveCargoWay());
         System.out.println("##################### 装车方 " + baseInfo.getLoader());
         System.out.println("##################### 施封方 " + baseInfo.getSealer());
+        System.out.println("##################### 受票方名称 " + baseInfo.getBillReceiverName());
+        System.out.println("##################### 受票方地址电话 " + baseInfo.getBillReceiverAddressPhone());
+        System.out.println("##################### 受票方开户行及账号 " + baseInfo.getBillReceiverBankAccount());
 
         cargoInfoList.forEach(cargoInfo -> {
             System.out.println("##############货物名称: " + cargoInfo.getName());
