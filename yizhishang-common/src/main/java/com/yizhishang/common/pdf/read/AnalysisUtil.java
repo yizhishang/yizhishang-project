@@ -325,6 +325,11 @@ public class AnalysisUtil {
                     }
                     if (line.contains("专用票") && line.contains(selectBox)) {
                         baseInfo.setVatInvoiceType("专用票");
+                        String account = getInnerString(line, "专用票 ", null);
+                        if (account != null) {
+                            String billReceiverBankAccount = baseInfo.getBillReceiverBankAccount() + " " + account;
+                            baseInfo.setBillReceiverBankAccount(billReceiverBankAccount);
+                        }
                     }
                     // 托运人记事+承运人记事  内容模糊，不解析
 
