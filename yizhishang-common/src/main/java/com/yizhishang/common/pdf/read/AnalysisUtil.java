@@ -309,7 +309,7 @@ public class AnalysisUtil {
                         baseInfo.setBillReceiverAddressPhone(billReceiverAddressPhone);
                     }
                     // 受票方开户行及账号
-                    if (line.startsWith("开户行及账号")) {
+                    if (line.contains("开户行及账号")) {
                         String billReceiverBankAccount = getInnerString(line, "开户行及账号：", null);
                         baseInfo.setBillReceiverBankAccount(billReceiverBankAccount);
                     }
@@ -386,6 +386,7 @@ public class AnalysisUtil {
         System.out.println("##################### 受票方名称 " + baseInfo.getBillReceiverName());
         System.out.println("##################### 受票方地址电话 " + baseInfo.getBillReceiverAddressPhone());
         System.out.println("##################### 受票方开户行及账号 " + baseInfo.getBillReceiverBankAccount());
+        System.out.println("##################### 增值税发票类型 " + baseInfo.getVatInvoiceType());
 
         cargoInfoList.forEach(cargoInfo -> {
             System.out.println("##############货物名称: " + cargoInfo.getName());
