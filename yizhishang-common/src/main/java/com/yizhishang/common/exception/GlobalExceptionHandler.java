@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  * @author yizhishang
  */
 @RestControllerAdvice
-public class CustomExceptionHandler {
+public class GlobalExceptionHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseData<String> handleDuplicateKeyException(DuplicateKeyException e) {
