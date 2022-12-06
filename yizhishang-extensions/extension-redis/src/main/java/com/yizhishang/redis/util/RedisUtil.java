@@ -1,5 +1,6 @@
 package com.yizhishang.redis.util;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.yizhishang.redis.RedisException;
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.validation.constraints.NotNull;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -51,7 +52,7 @@ public class RedisUtil {
 
     private final ZSetOperations<String, Object> zSetOperations;
 
-    private final Random random;
+    private final SecureRandom random;
 
     public RedisUtil(RedisTemplate<String, Object> redisTemplate, ValueOperations<String, Object> valueOperations, HashOperations<String, String, Object> hashOperations, ListOperations<String, Object> listOperations, SetOperations<String, Object> setOperations, ZSetOperations<String, Object> zSetOperations) {
         this.redisTemplate = redisTemplate;
@@ -60,7 +61,7 @@ public class RedisUtil {
         this.listOperations = listOperations;
         this.setOperations = setOperations;
         this.zSetOperations = zSetOperations;
-        this.random = new Random();
+        this.random = new SecureRandom();
     }
 
     /**=============================共同操作============================*/
@@ -155,6 +156,19 @@ public class RedisUtil {
             }
         }
     }
+
+    /**
+     * 批量删除
+     *
+     * @param keys
+     */
+    public void removeBatch(List<String> keys) {
+        if (CollectionUtil.isEmpty(keys)) {
+            return;
+        }
+        redisTemplate.delete(keys);
+    }
+
     /**============================ValueOperations操作=============================*/
     /**
      * 普通缓存放入
@@ -247,6 +261,17 @@ public class RedisUtil {
             throw new RedisException("递减因子必须大于0");
         }
         return valueOperations.increment(key, -delta);
+    }
+
+    /**
+     * 缓存基本的对象，Integer、String、实体类等
+     *
+     * @param key     Redis键
+     * @param value   缓存的值
+     * @param timeout 时间
+     */
+    public <T> Boolean lock(final String key, final T value, final long timeout) {
+        return valueOperations.setIfAbsent(key, value, timeout, TimeUnit.SECONDS);
     }
 
     /**================================HashOperations操作=================================*/

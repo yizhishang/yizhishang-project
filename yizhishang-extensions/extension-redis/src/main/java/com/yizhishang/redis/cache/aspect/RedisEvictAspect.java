@@ -1,5 +1,6 @@
 package com.yizhishang.redis.cache.aspect;
 
+import com.google.common.collect.Lists;
 import com.yizhishang.redis.cache.annotation.RedisEvict;
 import com.yizhishang.redis.util.ExplainUtil;
 import com.yizhishang.redis.util.RedisUtil;
@@ -9,6 +10,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 删除缓存
@@ -37,12 +40,13 @@ public class RedisEvictAspect {
      */
     @Around("@annotation(redisEvict)")
     public Object removeCache(ProceedingJoinPoint joinPoint, RedisEvict redisEvict) throws Throwable {
-
         if (redisEvict.keys().length > 0) {
+            List<String> keys = Lists.newArrayList();
             for (String key : redisEvict.keys()) {
                 String redisKey = ExplainUtil.explainKey(key, joinPoint);
-                redisUtil.remove(redisKey);
+                keys.add(redisKey);
             }
+            redisUtil.removeBatch(keys);
         }
         return joinPoint.proceed();
     }
