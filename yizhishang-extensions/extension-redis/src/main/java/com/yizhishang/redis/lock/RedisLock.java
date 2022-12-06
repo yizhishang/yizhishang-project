@@ -91,7 +91,7 @@ public class RedisLock {
     public boolean tryLock(String key, int expireTime) {
         String uniqueId = UUID.randomUUID().toString();
         Long count = redisTemplate.execute(redisLockScript, Collections.singletonList(LOCK_PREFIX + key), uniqueId, expireTime);
-        //判断是否成功
+        // 判断是否成功
         if (Consts.SUCCESS.equals(count)) {
             uuidLocal.set(uniqueId);
             return true;
@@ -107,7 +107,7 @@ public class RedisLock {
      */
     public boolean releaseLock(String key) {
         Long count = redisTemplate.execute(releaseScript, Collections.singletonList(LOCK_PREFIX + key), uuidLocal.get());
-        //判断是否成功
+        // 判断是否成功
         if (Consts.SUCCESS.equals(count)) {
             uuidLocal.remove();
         }
@@ -167,7 +167,7 @@ public class RedisLock {
      * @return
      */
     private List<String> getLockByKeys(List<?> keys, Long expireTime, String bizPrefix) {
-        if(CollectionUtil.isEmpty(keys)){
+        if (CollectionUtil.isEmpty(keys)) {
             return Lists.newArrayList();
         }
         List<String> lockKeys = Lists.newArrayList();
