@@ -123,7 +123,7 @@ public class RedisLock {
      * @param lockExBody 执行方法
      * @return
      */
-    public LockResult apply(List keys, Long expireTime, String bizPrefix, LockExBody lockExBody) {
+    public LockResult apply(List<?> keys, Long expireTime, String bizPrefix, LockExBody lockExBody) {
         if (CollectionUtil.isEmpty(keys)) {
             throw new BizException("加锁键值不可为空");
         }
@@ -166,7 +166,7 @@ public class RedisLock {
      * @param bizPrefix  前缀
      * @return
      */
-    private List<String> getLockByKeys(List keys, Long expireTime, String bizPrefix) {
+    private List<String> getLockByKeys(List<?> keys, Long expireTime, String bizPrefix) {
         if(CollectionUtil.isEmpty(keys)){
             return Lists.newArrayList();
         }
