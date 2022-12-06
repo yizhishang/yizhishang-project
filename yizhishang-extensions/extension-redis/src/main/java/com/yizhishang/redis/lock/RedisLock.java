@@ -1,6 +1,5 @@
 package com.yizhishang.redis.lock;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.google.common.collect.Lists;
 import com.yizhishang.common.exception.BizException;
 import com.yizhishang.redis.util.Consts;
@@ -12,6 +11,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.data.redis.core.script.RedisScript;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -70,7 +70,7 @@ public class RedisLock {
     private final RedisScript<Long> redisLockScript;
     private final RedisScript<Long> releaseScript;
 
-    private static ThreadLocal<String> uuidLocal = new ThreadLocal<>();
+    private static final ThreadLocal<String> UUID_LOCAL = new ThreadLocal<>();
 
     @Autowired
     public RedisLock(RedisTemplate<String, Object> redisTemplate, RedisUtil redisUtil) {
@@ -93,7 +93,7 @@ public class RedisLock {
         Long count = redisTemplate.execute(redisLockScript, Collections.singletonList(LOCK_PREFIX + key), uniqueId, expireTime);
         // 判断是否成功
         if (Consts.SUCCESS.equals(count)) {
-            uuidLocal.set(uniqueId);
+            UUID_LOCAL.set(uniqueId);
             return true;
         }
         return false;
@@ -106,10 +106,10 @@ public class RedisLock {
      * @return 返回true表示释放锁成功
      */
     public boolean releaseLock(String key) {
-        Long count = redisTemplate.execute(releaseScript, Collections.singletonList(LOCK_PREFIX + key), uuidLocal.get());
+        Long count = redisTemplate.execute(releaseScript, Collections.singletonList(LOCK_PREFIX + key), UUID_LOCAL.get());
         // 判断是否成功
         if (Consts.SUCCESS.equals(count)) {
-            uuidLocal.remove();
+            UUID_LOCAL.remove();
         }
         return false;
     }
@@ -121,10 +121,10 @@ public class RedisLock {
      * @param expireTime 加锁时长
      * @param bizPrefix  key前缀
      * @param lockExBody 执行方法
-     * @return
+     * @return 加锁执行结果
      */
     public LockResult apply(List<?> keys, Long expireTime, String bizPrefix, LockExBody lockExBody) {
-        if (CollectionUtil.isEmpty(keys)) {
+        if (CollectionUtils.isEmpty(keys)) {
             throw new BizException("加锁键值不可为空");
         }
         if (lockExBody == null) {
@@ -153,7 +153,7 @@ public class RedisLock {
         } finally {
             // 应用代码执行报错，解锁
             unLockByKeys(lockKeys);
-            uuidLocal.remove();
+            UUID_LOCAL.remove();
         }
         return lockResult;
     }
@@ -164,16 +164,16 @@ public class RedisLock {
      * @param keys       keys列表
      * @param expireTime 过期时间
      * @param bizPrefix  前缀
-     * @return
+     * @return 加锁结果
      */
     private List<String> getLockByKeys(List<?> keys, Long expireTime, String bizPrefix) {
-        if (CollectionUtil.isEmpty(keys)) {
+        if (CollectionUtils.isEmpty(keys)) {
             return Lists.newArrayList();
         }
         List<String> lockKeys = Lists.newArrayList();
         try {
             String uuid = UUID.randomUUID().toString();
-            uuidLocal.set(uuid);
+            UUID_LOCAL.set(uuid);
             for (Object key : keys) {
                 String redisKey = String.format("%s:%s", bizPrefix, key);
                 if (redisUtil.lock(redisKey, uuid, expireTime)) {
@@ -194,15 +194,15 @@ public class RedisLock {
     /**
      * 解锁
      *
-     * @param lockKeys
+     * @param lockKeys 加锁对象
      */
     private void unLockByKeys(List<String> lockKeys) {
         try {
-            if (CollectionUtil.isEmpty(lockKeys)) {
+            if (CollectionUtils.isEmpty(lockKeys)) {
                 return;
             }
             List<String> deleteKeys = Lists.newArrayList();
-            String uuid = uuidLocal.get();
+            String uuid = UUID_LOCAL.get();
             for (String redisKey : lockKeys) {
                 // 判断是否是自己的锁
                 if (StringUtils.equals(uuid, redisUtil.getString(redisKey))) {
