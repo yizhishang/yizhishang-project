@@ -19,36 +19,36 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
     private static final String VERSION = "version";
 
     private static final String ERROR_LOG = "没有{}此字段，则不处理";
-    
+
     @Override
     public void insertFill(MetaObject metaObject) {
         try {
             Object createTime = getFieldValByName(CREATE_TIME, metaObject);
             if (createTime == null) {
-                this.setInsertFieldValByName(CREATE_TIME, new Date(), metaObject);
+                this.strictInsertFill(metaObject, CREATE_TIME, Date.class, new Date());
             }
         } catch (ReflectionException e) {
-            //没有此字段，则不处理
+            // 没有此字段，则不处理
             log.warn(ERROR_LOG, CREATE_TIME, e);
         }
 
         try {
             Object modifyTime = getFieldValByName(UPDATE_TIME, metaObject);
             if (modifyTime == null) {
-                this.setInsertFieldValByName(UPDATE_TIME, new Date(), metaObject);
+                this.strictInsertFill(metaObject, UPDATE_TIME, Date.class, new Date());
             }
         } catch (ReflectionException e) {
-            //没有此字段，则不处理
+            // 没有此字段，则不处理
             log.warn(ERROR_LOG, UPDATE_TIME, e);
         }
 
         try {
             Object version = this.getFieldValByName(VERSION, metaObject);
             if (version == null) {
-                this.setInsertFieldValByName(VERSION, 1, metaObject);
+                this.strictInsertFill(metaObject, VERSION, Integer.class, 1);
             }
         } catch (ReflectionException e) {
-            //没有此字段，则不处理
+            // 没有此字段，则不处理
             log.warn(ERROR_LOG, VERSION, e);
         }
     }
@@ -58,7 +58,7 @@ public class CustomMetaObjectHandler implements MetaObjectHandler {
         try {
             this.setFieldValByName(UPDATE_TIME, new Date(), metaObject);
         } catch (ReflectionException e) {
-            //没有此字段，则不处理
+            // 没有此字段，则不处理
             log.warn(ERROR_LOG, VERSION, e);
         }
 
