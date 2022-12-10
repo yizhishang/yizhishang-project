@@ -35,7 +35,7 @@
 
         <sonar.scm.disabled>true</sonar.scm.disabled>
         <fastjson.version>1.2.74</fastjson.version>
-        <jackson.version>2.12.3</jackson.version>
+        <jackson.version>2.12.7.1</jackson.version>
         <commons-httpclient.version>3.1-rc1</commons-httpclient.version>
     </properties>
 
